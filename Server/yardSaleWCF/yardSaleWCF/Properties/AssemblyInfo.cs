@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GarageSaleService")]
+[assembly: AssemblyTitle("yardSaleWCF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GarageSaleService")]
+[assembly: AssemblyProduct("yardSaleWCF")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cc2fcca8-2250-4603-a262-8985122cc09a")]
+[assembly: Guid("d3695ed4-1b22-46e1-8eff-899b99427501")]
 
 // Version information for an assembly consists of the following four values:
 //
