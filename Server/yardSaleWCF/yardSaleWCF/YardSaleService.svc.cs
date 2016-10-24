@@ -14,12 +14,12 @@ namespace yardSaleWCF
 	{
 		DatabaseAccess DBACC = new DatabaseAccess();
 
-		public bool addComment(myDataTypes.commentWCF comment)
+		public bool addComment(commentWCF comment)
 		{
 			return DBACC.addComment(comment);
 		}
 
-		public bool createUser(myDataTypes.userWCF user)
+		public bool createUser(userWCF user)
 		{
 			return DBACC.createUser(user);
 		}
@@ -27,6 +27,14 @@ namespace yardSaleWCF
 		public bool updateUserActivity(string user_id)
 		{
 			return DBACC.updateUserActivity(user_id);
+		}
+
+		public List<itemWCF> getAllItems() {
+			return DBACC.getAllItems();
+		}
+
+		public bool addItem(itemWCF item) {
+			return DBACC.addItem(item);
 		}
 	}
 }

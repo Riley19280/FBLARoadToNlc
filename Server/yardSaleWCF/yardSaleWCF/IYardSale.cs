@@ -14,13 +14,21 @@ namespace yardSaleWCF
 	{
 
 		[OperationContract]
-		bool createUser(myDataTypes.userWCF user);
+		bool createUser(userWCF user);
 
 		[OperationContract]
 		bool updateUserActivity(string user_id);
 
 		[OperationContract]
-		bool addComment(myDataTypes.commentWCF comment);
+		bool addComment(commentWCF comment);
+
+		[OperationContract]
+		bool addItem(itemWCF item);
+
+		[OperationContract]
+		List<itemWCF> getAllItems();
+
+
 
 	}
 

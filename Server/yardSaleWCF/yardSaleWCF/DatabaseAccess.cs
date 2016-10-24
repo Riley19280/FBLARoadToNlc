@@ -8,9 +8,9 @@ namespace yardSaleWCF
 {
 	public class DatabaseAccess
 	{
-		public bool createUser(myDataTypes.userWCF user)
+		public bool createUser(userWCF user)
 		{
-			myDataTypes.userWCF u = user;
+			userWCF u = user;
 			int affected = 0;
 
 
@@ -53,9 +53,9 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool addComment(myDataTypes.commentWCF comment)
+		public bool addComment(commentWCF comment)
 		{
-			myDataTypes.commentWCF c = comment;
+			commentWCF c = comment;
 			int affected = 0;
 
 
@@ -78,9 +78,9 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool addItem(myDataTypes.itemWCF item)
+		public bool addItem(itemWCF item)
 		{
-			myDataTypes.itemWCF i = item;
+			itemWCF i = item;
 			int affected = 0;
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -105,9 +105,9 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool addBid(myDataTypes.bidWCF bid)
+		public bool addBid(bidWCF bid)
 		{
-			myDataTypes.bidWCF b = bid;
+			bidWCF b = bid;
 			int affected = 0;
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -128,7 +128,7 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public myDataTypes.bidWCF getTopBid(int item_id)
+		public bidWCF getTopBid(int item_id)
 		{
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -147,7 +147,7 @@ namespace yardSaleWCF
 							//TODO: chekc fvalues for null
 							while (reader.Read())
 							{
-								myDataTypes.bidWCF b = new myDataTypes.bidWCF(
+								bidWCF b = new bidWCF(
 									 reader.GetInt32(reader.GetOrdinal("id")),
 									 reader.GetInt32(reader.GetOrdinal("item_id")),
 									 reader.GetString(reader.GetOrdinal("bidder_id")),
@@ -164,9 +164,9 @@ namespace yardSaleWCF
 
 		}
 
-		public List<myDataTypes.itemWCF> getAllItems()
+		public List<itemWCF> getAllItems()
 		{
-			List<myDataTypes.itemWCF> items = new List<myDataTypes.itemWCF>();
+			List<itemWCF> items = new List<itemWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
@@ -181,17 +181,18 @@ namespace yardSaleWCF
 						{
 							while (reader.Read())
 							{
-								myDataTypes.itemWCF i = new myDataTypes.itemWCF(
-									 reader.GetInt32(reader.GetOrdinal("id")),
-									 reader.GetString(reader.GetOrdinal("owner_id")),
-									 reader.GetString(reader.GetOrdinal("name")),
-									 reader.GetString(reader.GetOrdinal("description")),
-									 reader.GetString(reader.GetOrdinal("pic_url")),
-							  		 reader.GetFloat(reader.GetOrdinal("price")),
-									 reader.GetFloat(reader.GetOrdinal("quality")),
-									 reader.GetBoolean(reader.GetOrdinal("sold")),
-									 reader.GetDateTime(reader.GetOrdinal("date_added"))
-									);
+					
+								itemWCF i = new itemWCF(
+								 reader.GetInt32(reader.GetOrdinal("id")),
+								 reader.GetString(reader.GetOrdinal("owner_id")),
+								 reader.GetString(reader.GetOrdinal("name")),
+								 reader.GetString(reader.GetOrdinal("description")),
+								 reader.GetString(reader.GetOrdinal("pic_url")),
+							     (float)reader.GetDouble(reader.GetOrdinal("price")),
+								 (float)reader.GetDouble(reader.GetOrdinal("quality")),
+								 reader.GetBoolean(reader.GetOrdinal("sold")),
+								 reader.GetDateTime(reader.GetOrdinal("date_added"))
+								);
 
 								items.Add(i);
 							}
@@ -202,7 +203,7 @@ namespace yardSaleWCF
 			return items;
 		}
 
-		public myDataTypes.userWCF getUser(string id) {
+		public userWCF getUser(string id) {
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
@@ -219,7 +220,7 @@ namespace yardSaleWCF
 							
 							while (reader.Read())
 							{
-								myDataTypes.userWCF u = new myDataTypes.userWCF(
+								userWCF u = new userWCF(
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("pic_url"))								
@@ -234,8 +235,8 @@ namespace yardSaleWCF
 			return null;
 		}
 
-		public List<myDataTypes.commentWCF> getComments(int item_id) {
-			List<myDataTypes.commentWCF> comments = new List<myDataTypes.commentWCF>();
+		public List<commentWCF> getComments(int item_id) {
+			List<commentWCF> comments = new List<commentWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
@@ -250,7 +251,7 @@ namespace yardSaleWCF
 						{
 							while (reader.Read())
 							{
-								myDataTypes.commentWCF c = new myDataTypes.commentWCF(
+								commentWCF c = new commentWCF(
 									 reader.GetInt32(reader.GetOrdinal("id")),
 									 reader.GetInt32(reader.GetOrdinal("item_id")),
 									 reader.GetString(reader.GetOrdinal("user_id")),
