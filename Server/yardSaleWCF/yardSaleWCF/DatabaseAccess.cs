@@ -8,7 +8,7 @@ namespace yardSaleWCF
 {
 	public class DatabaseAccess
 	{
-		public bool createUser(userWCF user)
+		public bool CreateUser(userWCF user)
 		{
 			userWCF u = user;
 			int affected = 0;
@@ -32,7 +32,7 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool updateUserActivity(string user_id)
+		public bool UpdateUserActivity(string user_id)
 		{
 			string id = user_id;
 			int affected = 0;
@@ -53,7 +53,7 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool addComment(commentWCF comment)
+		public bool AddComment(commentWCF comment)
 		{
 			commentWCF c = comment;
 			int affected = 0;
@@ -78,7 +78,7 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool addItem(itemWCF item)
+		public bool AddItem(itemWCF item)
 		{
 			itemWCF i = item;
 			int affected = 0;
@@ -105,7 +105,7 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bool addBid(bidWCF bid)
+		public bool AddBid(bidWCF bid)
 		{
 			bidWCF b = bid;
 			int affected = 0;
@@ -128,7 +128,7 @@ namespace yardSaleWCF
 				return false;
 		}
 
-		public bidWCF getTopBid(int item_id)
+		public bidWCF GetTopBid(int item_id)
 		{
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -164,7 +164,7 @@ namespace yardSaleWCF
 
 		}
 
-		public List<itemWCF> getAllItems()
+		public List<itemWCF> GetAllItems()
 		{
 			List<itemWCF> items = new List<itemWCF>();
 
@@ -203,7 +203,7 @@ namespace yardSaleWCF
 			return items;
 		}
 
-		public userWCF getUser(string id) {
+		public userWCF GetUser(string id) {
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
@@ -235,7 +235,7 @@ namespace yardSaleWCF
 			return null;
 		}
 
-		public List<commentWCF> getComments(int item_id) {
+		public List<commentWCF> GetComments(int item_id) {
 			List<commentWCF> comments = new List<commentWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))

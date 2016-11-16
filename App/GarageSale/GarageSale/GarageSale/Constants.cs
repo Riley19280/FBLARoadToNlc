@@ -9,6 +9,11 @@ namespace GarageSale
 {
 	public class Constants
 	{
+
+		public static string WCFURL = "http://192.168.1.101:9618/YardSaleService.svc";
+		//public static string WCFURL = "http://ec2-54-175-167-4.compute-1.amazonaws.com:9608/CaringCookieClubService.svc";
+
+
 		public static class palette
 		{
 			public static Color primary = Color.FromHex("#5974FF");

@@ -9,7 +9,8 @@ namespace GarageSale.Views
 {
 	class itemListView : ListView
 	{
-		public itemListView() {
+		public itemListView()
+		{
 
 			// Source of data items.
 
@@ -19,11 +20,12 @@ namespace GarageSale.Views
 			//      each item; it must return a Cell derivative.)
 			ItemTemplate = new DataTemplate(() =>
 			{
-					// Create views with bindings for displaying each property.
-					Label nameLabel = new Label(), userLabel = new Label(), descriptionLabel = new Label();
-				nameLabel.SetBinding(Label.TextProperty, "actInfo.actName");
-				userLabel.SetBinding(Label.TextProperty, "userInfo.userName");
-				descriptionLabel.SetBinding(Label.TextProperty, "description");
+				// Create views with bindings for displaying each property.
+				Label nameLabel = new Label(), descLabel = new Label(), priceLabel = new Label(), qualityLabel = new Label();
+				nameLabel.SetBinding(Label.TextProperty, "name");
+				descLabel.SetBinding(Label.TextProperty, "description");
+				priceLabel.SetBinding(Label.TextProperty, "price");
+				qualityLabel.SetBinding(Label.TextProperty, "quality");
 
 
 				Image imageView = new Image
@@ -34,8 +36,8 @@ namespace GarageSale.Views
 				};
 				imageView.SetBinding(Image.SourceProperty, "pic_url");
 
-					// Return an assembled ViewCell.
-					return new ViewCell
+				// Return an assembled ViewCell.
+				return new ViewCell
 				{
 					View = new StackLayout
 					{
@@ -51,23 +53,31 @@ namespace GarageSale.Views
 										Children =
 										{
 											nameLabel,
-											userLabel,
-											descriptionLabel
+											descLabel,
+											new StackLayout {
+												Spacing = 0,
+												Orientation = StackOrientation.Horizontal,
+												Children = {
+													priceLabel,
+													qualityLabel
+												}
+											}
+
 										}
 									}
 							}
 					}
 				};
-			})
+			});
 
 
 			IsPullToRefreshEnabled = true;
 
-			this.Refreshing += ( (sender, eventArgs) =>
-			{
-				
-				this.IsRefreshing = false;
-			});
+			this.Refreshing += ((sender, eventArgs) =>
+		   {
+
+			   this.IsRefreshing = false;
+		   });
 
 			this.ItemSelected += ((sender, eventArgs) =>
 			{
@@ -82,5 +92,5 @@ namespace GarageSale.Views
 
 		}
 
-	}	
+	}
 }

@@ -14,27 +14,47 @@ namespace yardSaleWCF
 	{
 		DatabaseAccess DBACC = new DatabaseAccess();
 
-		public bool addComment(commentWCF comment)
+		public bool AddComment(commentWCF comment)
 		{
-			return DBACC.addComment(comment);
+			return DBACC.AddComment(comment);
 		}
 
-		public bool createUser(userWCF user)
+		public bool CreateUser(userWCF user)
 		{
-			return DBACC.createUser(user);
+			return DBACC.CreateUser(user);
 		}
 
-		public bool updateUserActivity(string user_id)
+		public bool UpdateUserActivity(string user_id)
 		{
-			return DBACC.updateUserActivity(user_id);
+			return DBACC.UpdateUserActivity(user_id);
 		}
 
-		public List<itemWCF> getAllItems() {
-			return DBACC.getAllItems();
+		public List<itemWCF> GetAllItems() {
+			return DBACC.GetAllItems();
 		}
 
-		public bool addItem(itemWCF item) {
-			return DBACC.addItem(item);
+		public bool AddItem(itemWCF item) {
+			return DBACC.AddItem(item);
+		}
+
+		public bool AddBid(bidWCF bid)
+		{
+			return DBACC.AddBid(bid);
+		}
+
+		public bidWCF GetTopBid(int item_id)
+		{
+			return DBACC.GetTopBid(item_id);
+		}
+
+		public userWCF GetUser(string id)
+		{
+			return DBACC.GetUser(id);
+		}
+
+		public List<commentWCF> GetComments(int item_id)
+		{
+			return DBACC.GetComments(item_id);
 		}
 	}
 }

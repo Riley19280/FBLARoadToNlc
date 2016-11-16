@@ -1,6 +1,7 @@
 using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using GarageSale.Views.Pages;
 
 
 namespace GarageSale.Views.Menu
@@ -11,9 +12,9 @@ namespace GarageSale.Views.Menu
 		public MenuListData ()
 		{
 			this.Add (new MenuItem () { 
-				Title = "Definitions", 
+				Title = "All Items", 
 				//IconSource = "contacts.png", 
-				TargetType = typeof(basePage)
+				TargetType = typeof(allItems)
 			});
 
 

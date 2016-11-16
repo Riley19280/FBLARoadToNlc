@@ -14,22 +14,31 @@ namespace yardSaleWCF
 	{
 
 		[OperationContract]
-		bool createUser(userWCF user);
+		bool CreateUser(userWCF user);
 
 		[OperationContract]
-		bool updateUserActivity(string user_id);
+		bool UpdateUserActivity(string user_id);
 
 		[OperationContract]
-		bool addComment(commentWCF comment);
+		bool AddComment(commentWCF comment);
 
 		[OperationContract]
-		bool addItem(itemWCF item);
+		bool AddItem(itemWCF item);
+		
+		[OperationContract]
+		bool AddBid(bidWCF bid);
 
 		[OperationContract]
-		List<itemWCF> getAllItems();
+		bidWCF GetTopBid(int item_id);
 
+		[OperationContract]
+		List<itemWCF> GetAllItems();
 
+		[OperationContract]
+		userWCF GetUser(string id);
 
+		[OperationContract]
+		List<commentWCF> GetComments(int item_id);
 	}
 
 }
