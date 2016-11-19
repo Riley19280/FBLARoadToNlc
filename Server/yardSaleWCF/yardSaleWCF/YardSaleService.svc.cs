@@ -10,6 +10,7 @@ namespace yardSaleWCF
 {
 	// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
 	// NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+	[ServiceBehavior(IgnoreExtensionDataObject = true)]
 	public class YardSaleService : IYardSale
 	{
 		DatabaseAccess DBACC = new DatabaseAccess();
@@ -55,6 +56,21 @@ namespace yardSaleWCF
 		public List<commentWCF> GetComments(int item_id)
 		{
 			return DBACC.GetComments(item_id);
+		}
+
+		public bool SellItem(int item_id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<itemWCF> GetSearchedItems(string search)
+		{
+			return DBACC.GetSearchedItems(search);
+		}
+
+		public List<userWCF> GetSearchedUsers(string search)
+		{
+			return DBACC.GetSearchedUsers(search);
 		}
 	}
 }

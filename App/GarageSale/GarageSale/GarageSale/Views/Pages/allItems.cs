@@ -1,27 +1,42 @@
-﻿using System;
+﻿using myDataTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GarageSale.Views.Pages
 {
 	public class allItems : ContentPage
 	{
+		ListView listView;
+
 		public allItems()
 		{
-			ListView l = new itemListView();
-			l.ItemsSource = App.MANAGER.GetAllItems();
-
+			Title = "All Items";
+			 listView = new itemListView();
+			
 			Content = new StackLayout
 			{
 				Children = {
-					new Label { Text = "All Items"},
-					l
+					 listView
 				}
 			};
 		}
+
+		protected async override void OnAppearing()
+		{
+			base.OnAppearing();
+			if (listView.ItemsSource == null)
+			{
+				await Task.Delay(1000);
+
+				listView.ItemsSource = await App.MANAGER.GetAllItems();
+			//	Content = baseStack;
+			}
+		}
+
 	}
 }

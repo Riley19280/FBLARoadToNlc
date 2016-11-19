@@ -12,11 +12,10 @@ namespace GarageSale
 	public class YardSaleServiceImplementation
 	{
 		YardSaleClient service;
-
 		public YardSaleServiceImplementation() {
 			try
-			{
-				YardSaleClient c = new YardSaleClient(
+			{			
+				service = new YardSaleClient(
 				new BasicHttpBinding(),
 				new EndpointAddress(Constants.WCFURL));
 			}
@@ -30,10 +29,9 @@ namespace GarageSale
 
 		public async Task<List<item>> GetAllItems() {
 			List<item> Items = new List<item>();
-
 			try
 			{
-				var todoItems = await Task.Factory.FromAsync(service.BeginGetAllItems,service.EndGetAllItems, null, TaskCreationOptions.None);
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetAllItems, service.EndGetAllItems, null, TaskCreationOptions.None);
 
 				foreach (var item in todoItems)
 				{
@@ -58,17 +56,16 @@ namespace GarageSale
 		}
 
 
-
 		#region From
-		item convertFromWCF(itemWCF i)
+		public item convertFromWCF(itemWCF i)
 		{
 			return new item(i.id, i.owner_id, i.name, i.description, i.pic_url, i.price, i.quality, i.sold, i.date_added);
 		}
-		user convertFromWCF(userWCF u)
+		public user convertFromWCF(userWCF u)
 		{
 			return new user(u.id, u.name, u.pic_url);
 		}
-		comment convertFromWCF(commentWCF c)
+		public comment convertFromWCF(commentWCF c)
 		{
 			return new comment(c.id, c.item_id, c.user_id, c.comment, c.date_added);
 		}
@@ -76,7 +73,7 @@ namespace GarageSale
 
 		#region TO
 
-		itemWCF convertToWCF(item i)
+		public itemWCF convertToWCF(item i)
 		{
 			itemWCF item = new itemWCF();
 
@@ -92,7 +89,7 @@ namespace GarageSale
 
 			return item;
 		}
-		userWCF convertToWCF(user u)
+		public userWCF convertToWCF(user u)
 		{
 			userWCF user = new userWCF();
 
@@ -102,7 +99,7 @@ namespace GarageSale
 
 			return user;
 		}
-		commentWCF convertToWCF(comment c)
+		public commentWCF convertToWCF(comment c)
 		{
 			commentWCF comment = new commentWCF();
 
@@ -115,6 +112,8 @@ namespace GarageSale
 			return comment;
 		}
 		#endregion
+
+
 
 	}
 }

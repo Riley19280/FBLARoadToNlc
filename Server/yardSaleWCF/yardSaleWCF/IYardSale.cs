@@ -39,6 +39,15 @@ namespace yardSaleWCF
 
 		[OperationContract]
 		List<commentWCF> GetComments(int item_id);
+
+		[OperationContract]
+		bool SellItem(int item_id);
+
+		[OperationContract]
+		List<itemWCF> GetSearchedItems(string search);
+
+		[OperationContract]
+		List<userWCF> GetSearchedUsers(string search);
 	}
 
 }

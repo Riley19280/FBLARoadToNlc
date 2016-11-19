@@ -268,5 +268,87 @@ namespace yardSaleWCF
 			return comments;
 		}
 
+		public bool SellItem(int item_id) {
+			throw new NotImplementedException();
+		}
+
+		public List<itemWCF> GetSearchedItems(string search) {
+			List<itemWCF> items = new List<itemWCF>();
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.items WHERE name LIKE @term ORDER BY date_added DESC", connection))
+				{
+					cmd.Parameters.AddWithValue("limit", 25);
+					cmd.Parameters.AddWithValue("term", "%" + search + "%");
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								itemWCF i = new itemWCF(
+									 reader.GetInt32(reader.GetOrdinal("id")),
+									 reader.GetString(reader.GetOrdinal("owner_id")),
+									 reader.GetString(reader.GetOrdinal("name")),
+									 reader.GetString(reader.GetOrdinal("description")),
+									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 (float)reader.GetDouble(reader.GetOrdinal("price")),
+									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
+									 reader.GetBoolean(reader.GetOrdinal("sold")),
+									 reader.GetDateTime(reader.GetOrdinal("date_added"))
+									);
+
+								items.Add(i);
+							}
+						}
+					}
+				}
+			}
+			return items;
+		}
+
+		public List<userWCF> GetSearchedUsers(string search)
+		{
+			List<userWCF> users = new List<userWCF>();
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.users WHERE name LIKE @term ORDER BY date_added DESC", connection))
+				{
+					cmd.Parameters.AddWithValue("limit", 25);
+					cmd.Parameters.AddWithValue("term", "%" + search + "%");
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								userWCF u = new userWCF(
+								 reader.GetString(reader.GetOrdinal("id")),
+								 reader.GetString(reader.GetOrdinal("name")),
+								 reader.GetString(reader.GetOrdinal("pic_url"))
+								);
+
+								users.Add(u);
+							}
+						}
+					}
+				}
+			}
+			return users;
+		}
+
+
 	}
 }

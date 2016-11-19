@@ -11,7 +11,7 @@ namespace GarageSale.Views
 	{
 		public itemListView()
 		{
-
+			
 			// Source of data items.
 
 			RowHeight = 80;
@@ -75,7 +75,7 @@ namespace GarageSale.Views
 
 			this.Refreshing += ((sender, eventArgs) =>
 		   {
-
+			   
 			   this.IsRefreshing = false;
 		   });
 

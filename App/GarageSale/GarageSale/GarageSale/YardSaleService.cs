@@ -16,28 +16,16 @@ namespace yardSaleWCF
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="userWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
-    public partial class userWCF : object, System.Runtime.Serialization.IExtensibleDataObject
+    public partial class userWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
-        
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
+  
         private string idField;
         
         private string nameField;
         
         private string pic_urlField;
         
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return this.extensionDataField;
-            }
-            set
-            {
-                this.extensionDataField = value;
-            }
-        }
+      
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string id
@@ -48,7 +36,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.idField = value;
+                if ((object.ReferenceEquals(this.idField, value) != true))
+                {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
             }
         }
         
@@ -61,7 +53,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.nameField = value;
+                if ((object.ReferenceEquals(this.nameField, value) != true))
+                {
+                    this.nameField = value;
+                    this.RaisePropertyChanged("name");
+                }
             }
         }
         
@@ -74,7 +70,22 @@ namespace yardSaleWCF
             }
             set
             {
-                this.pic_urlField = value;
+                if ((object.ReferenceEquals(this.pic_urlField, value) != true))
+                {
+                    this.pic_urlField = value;
+                    this.RaisePropertyChanged("pic_url");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null))
+            {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -82,10 +93,10 @@ namespace yardSaleWCF
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="commentWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
-    public partial class commentWCF : object, System.Runtime.Serialization.IExtensibleDataObject
+    public partial class commentWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+    
         
         private string commentField;
         
@@ -96,19 +107,7 @@ namespace yardSaleWCF
         private int item_idField;
         
         private string user_idField;
-        
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return this.extensionDataField;
-            }
-            set
-            {
-                this.extensionDataField = value;
-            }
-        }
-        
+               
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string comment
         {
@@ -118,7 +117,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.commentField = value;
+                if ((object.ReferenceEquals(this.commentField, value) != true))
+                {
+                    this.commentField = value;
+                    this.RaisePropertyChanged("comment");
+                }
             }
         }
         
@@ -131,7 +134,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.date_addedField = value;
+                if ((this.date_addedField.Equals(value) != true))
+                {
+                    this.date_addedField = value;
+                    this.RaisePropertyChanged("date_added");
+                }
             }
         }
         
@@ -144,7 +151,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.idField = value;
+                if ((this.idField.Equals(value) != true))
+                {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
             }
         }
         
@@ -157,7 +168,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.item_idField = value;
+                if ((this.item_idField.Equals(value) != true))
+                {
+                    this.item_idField = value;
+                    this.RaisePropertyChanged("item_id");
+                }
             }
         }
         
@@ -170,7 +185,22 @@ namespace yardSaleWCF
             }
             set
             {
-                this.user_idField = value;
+                if ((object.ReferenceEquals(this.user_idField, value) != true))
+                {
+                    this.user_idField = value;
+                    this.RaisePropertyChanged("user_id");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null))
+            {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -178,10 +208,8 @@ namespace yardSaleWCF
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="itemWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
-    public partial class itemWCF : object, System.Runtime.Serialization.IExtensibleDataObject
+    public partial class itemWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
-        
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private System.DateTime date_addedField;
         
@@ -200,19 +228,7 @@ namespace yardSaleWCF
         private float qualityField;
         
         private bool soldField;
-        
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return this.extensionDataField;
-            }
-            set
-            {
-                this.extensionDataField = value;
-            }
-        }
-        
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime date_added
         {
@@ -222,7 +238,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.date_addedField = value;
+                if ((this.date_addedField.Equals(value) != true))
+                {
+                    this.date_addedField = value;
+                    this.RaisePropertyChanged("date_added");
+                }
             }
         }
         
@@ -235,7 +255,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.descriptionField = value;
+                if ((object.ReferenceEquals(this.descriptionField, value) != true))
+                {
+                    this.descriptionField = value;
+                    this.RaisePropertyChanged("description");
+                }
             }
         }
         
@@ -248,7 +272,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.idField = value;
+                if ((this.idField.Equals(value) != true))
+                {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
             }
         }
         
@@ -261,7 +289,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.nameField = value;
+                if ((object.ReferenceEquals(this.nameField, value) != true))
+                {
+                    this.nameField = value;
+                    this.RaisePropertyChanged("name");
+                }
             }
         }
         
@@ -274,7 +306,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.owner_idField = value;
+                if ((object.ReferenceEquals(this.owner_idField, value) != true))
+                {
+                    this.owner_idField = value;
+                    this.RaisePropertyChanged("owner_id");
+                }
             }
         }
         
@@ -287,7 +323,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.pic_urlField = value;
+                if ((object.ReferenceEquals(this.pic_urlField, value) != true))
+                {
+                    this.pic_urlField = value;
+                    this.RaisePropertyChanged("pic_url");
+                }
             }
         }
         
@@ -300,7 +340,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.priceField = value;
+                if ((this.priceField.Equals(value) != true))
+                {
+                    this.priceField = value;
+                    this.RaisePropertyChanged("price");
+                }
             }
         }
         
@@ -313,7 +357,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.qualityField = value;
+                if ((this.qualityField.Equals(value) != true))
+                {
+                    this.qualityField = value;
+                    this.RaisePropertyChanged("quality");
+                }
             }
         }
         
@@ -326,7 +374,22 @@ namespace yardSaleWCF
             }
             set
             {
-                this.soldField = value;
+                if ((this.soldField.Equals(value) != true))
+                {
+                    this.soldField = value;
+                    this.RaisePropertyChanged("sold");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null))
+            {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -334,10 +397,10 @@ namespace yardSaleWCF
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="bidWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
-    public partial class bidWCF : object, System.Runtime.Serialization.IExtensibleDataObject
+    public partial class bidWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+   
         
         private float amountField;
         
@@ -346,19 +409,7 @@ namespace yardSaleWCF
         private int idField;
         
         private int item_idField;
-        
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return this.extensionDataField;
-            }
-            set
-            {
-                this.extensionDataField = value;
-            }
-        }
-        
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public float amount
         {
@@ -368,7 +419,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.amountField = value;
+                if ((this.amountField.Equals(value) != true))
+                {
+                    this.amountField = value;
+                    this.RaisePropertyChanged("amount");
+                }
             }
         }
         
@@ -381,7 +436,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.bidder_idField = value;
+                if ((object.ReferenceEquals(this.bidder_idField, value) != true))
+                {
+                    this.bidder_idField = value;
+                    this.RaisePropertyChanged("bidder_id");
+                }
             }
         }
         
@@ -394,7 +453,11 @@ namespace yardSaleWCF
             }
             set
             {
-                this.idField = value;
+                if ((this.idField.Equals(value) != true))
+                {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
             }
         }
         
@@ -407,7 +470,22 @@ namespace yardSaleWCF
             }
             set
             {
-                this.item_idField = value;
+                if ((this.item_idField.Equals(value) != true))
+                {
+                    this.item_idField = value;
+                    this.RaisePropertyChanged("item_id");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null))
+            {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -490,6 +568,30 @@ public interface IYardSale
     System.IAsyncResult BeginGetComments(int item_id, System.AsyncCallback callback, object asyncState);
     
     yardSaleWCF.commentWCF[] EndGetComments(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/SellItem", ReplyAction="http://tempuri.org/IYardSale/SellItemResponse")]
+    bool SellItem(int item_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/SellItem", ReplyAction="http://tempuri.org/IYardSale/SellItemResponse")]
+    System.IAsyncResult BeginSellItem(int item_id, System.AsyncCallback callback, object asyncState);
+    
+    bool EndSellItem(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetSearchedItems", ReplyAction="http://tempuri.org/IYardSale/GetSearchedItemsResponse")]
+    yardSaleWCF.itemWCF[] GetSearchedItems(string search);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetSearchedItems", ReplyAction="http://tempuri.org/IYardSale/GetSearchedItemsResponse")]
+    System.IAsyncResult BeginGetSearchedItems(string search, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.itemWCF[] EndGetSearchedItems(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetSearchedUsers", ReplyAction="http://tempuri.org/IYardSale/GetSearchedUsersResponse")]
+    yardSaleWCF.userWCF[] GetSearchedUsers(string search);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetSearchedUsers", ReplyAction="http://tempuri.org/IYardSale/GetSearchedUsersResponse")]
+    System.IAsyncResult BeginGetSearchedUsers(string search, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.userWCF[] EndGetSearchedUsers(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -659,5 +761,50 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public yardSaleWCF.commentWCF[] EndGetComments(System.IAsyncResult result)
     {
         return base.Channel.EndGetComments(result);
+    }
+    
+    public bool SellItem(int item_id)
+    {
+        return base.Channel.SellItem(item_id);
+    }
+    
+    public System.IAsyncResult BeginSellItem(int item_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginSellItem(item_id, callback, asyncState);
+    }
+    
+    public bool EndSellItem(System.IAsyncResult result)
+    {
+        return base.Channel.EndSellItem(result);
+    }
+    
+    public yardSaleWCF.itemWCF[] GetSearchedItems(string search)
+    {
+        return base.Channel.GetSearchedItems(search);
+    }
+    
+    public System.IAsyncResult BeginGetSearchedItems(string search, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetSearchedItems(search, callback, asyncState);
+    }
+    
+    public yardSaleWCF.itemWCF[] EndGetSearchedItems(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetSearchedItems(result);
+    }
+    
+    public yardSaleWCF.userWCF[] GetSearchedUsers(string search)
+    {
+        return base.Channel.GetSearchedUsers(search);
+    }
+    
+    public System.IAsyncResult BeginGetSearchedUsers(string search, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetSearchedUsers(search, callback, asyncState);
+    }
+    
+    public yardSaleWCF.userWCF[] EndGetSearchedUsers(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetSearchedUsers(result);
     }
 }
