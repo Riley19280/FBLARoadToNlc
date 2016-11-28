@@ -320,7 +320,7 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.users WHERE name LIKE @term ORDER BY date_added DESC", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.users WHERE name LIKE @term ORDER BY account_created DESC", connection))
 				{
 					cmd.Parameters.AddWithValue("limit", 25);
 					cmd.Parameters.AddWithValue("term", "%" + search + "%");
@@ -349,6 +349,45 @@ namespace yardSaleWCF
 			return users;
 		}
 
+		public List<itemWCF> GetItemsAssociatedWithUser(string user_id) {
+			List<itemWCF> items = new List<itemWCF>();
 
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.items WHERE owner_id = @owner_id", connection))
+				{
+					cmd.Parameters.AddWithValue("limit", 25);
+					cmd.Parameters.AddWithValue("owner_id", user_id);
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								itemWCF i = new itemWCF(
+									 reader.GetInt32(reader.GetOrdinal("id")),
+									 reader.GetString(reader.GetOrdinal("owner_id")),
+									 reader.GetString(reader.GetOrdinal("name")),
+									 reader.GetString(reader.GetOrdinal("description")),
+									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 (float)reader.GetDouble(reader.GetOrdinal("price")),
+									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
+									 reader.GetBoolean(reader.GetOrdinal("sold")),
+									 reader.GetDateTime(reader.GetOrdinal("date_added"))
+									);
+
+								items.Add(i);
+							}
+						}
+					}
+				}
+			}
+			return items;
+		}
 	}
 }

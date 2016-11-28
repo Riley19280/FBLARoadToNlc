@@ -18,15 +18,14 @@ namespace yardSaleWCF
     [System.Runtime.Serialization.DataContractAttribute(Name="userWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
     public partial class userWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
-  
+
+        
         private string idField;
         
         private string nameField;
         
         private string pic_urlField;
-        
-      
-        
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string id
         {
@@ -95,9 +94,7 @@ namespace yardSaleWCF
     [System.Runtime.Serialization.DataContractAttribute(Name="commentWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
     public partial class commentWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
-        
-    
-        
+
         private string commentField;
         
         private System.DateTime date_addedField;
@@ -107,7 +104,7 @@ namespace yardSaleWCF
         private int item_idField;
         
         private string user_idField;
-               
+                
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string comment
         {
@@ -208,7 +205,7 @@ namespace yardSaleWCF
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="itemWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
-    public partial class itemWCF : object, System.ComponentModel.INotifyPropertyChanged
+    public partial class itemWCF : object,  System.ComponentModel.INotifyPropertyChanged
     {
         
         private System.DateTime date_addedField;
@@ -228,7 +225,7 @@ namespace yardSaleWCF
         private float qualityField;
         
         private bool soldField;
-
+               
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime date_added
         {
@@ -400,8 +397,6 @@ namespace yardSaleWCF
     public partial class bidWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-   
-        
         private float amountField;
         
         private string bidder_idField;
@@ -409,7 +404,7 @@ namespace yardSaleWCF
         private int idField;
         
         private int item_idField;
-
+                
         [System.Runtime.Serialization.DataMemberAttribute()]
         public float amount
         {
@@ -592,6 +587,14 @@ public interface IYardSale
     System.IAsyncResult BeginGetSearchedUsers(string search, System.AsyncCallback callback, object asyncState);
     
     yardSaleWCF.userWCF[] EndGetSearchedUsers(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetItemsAssociatedWithUser", ReplyAction="http://tempuri.org/IYardSale/GetItemsAssociatedWithUserResponse")]
+    yardSaleWCF.itemWCF[] GetItemsAssociatedWithUser(string user_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetItemsAssociatedWithUser", ReplyAction="http://tempuri.org/IYardSale/GetItemsAssociatedWithUserResponse")]
+    System.IAsyncResult BeginGetItemsAssociatedWithUser(string user_id, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.itemWCF[] EndGetItemsAssociatedWithUser(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -806,5 +809,20 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public yardSaleWCF.userWCF[] EndGetSearchedUsers(System.IAsyncResult result)
     {
         return base.Channel.EndGetSearchedUsers(result);
+    }
+    
+    public yardSaleWCF.itemWCF[] GetItemsAssociatedWithUser(string user_id)
+    {
+        return base.Channel.GetItemsAssociatedWithUser(user_id);
+    }
+    
+    public System.IAsyncResult BeginGetItemsAssociatedWithUser(string user_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetItemsAssociatedWithUser(user_id, callback, asyncState);
+    }
+    
+    public yardSaleWCF.itemWCF[] EndGetItemsAssociatedWithUser(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetItemsAssociatedWithUser(result);
     }
 }

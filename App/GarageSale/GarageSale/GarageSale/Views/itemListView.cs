@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,8 @@ namespace GarageSale.Views
 	{
 		public itemListView()
 		{
-			
+			Label qualityLabel = null;
+			Label priceLabel = null;
 			// Source of data items.
 
 			RowHeight = 80;
@@ -21,13 +23,14 @@ namespace GarageSale.Views
 			ItemTemplate = new DataTemplate(() =>
 			{
 				// Create views with bindings for displaying each property.
-				Label nameLabel = new Label(), descLabel = new Label(), priceLabel = new Label(), qualityLabel = new Label();
+				Label nameLabel = new Label(), descLabel = new Label();
+				priceLabel = new Label();
+				qualityLabel = new Label();
 				nameLabel.SetBinding(Label.TextProperty, "name");
 				descLabel.SetBinding(Label.TextProperty, "description");
-				priceLabel.SetBinding(Label.TextProperty, "price");
-				qualityLabel.SetBinding(Label.TextProperty, "quality");
+				//qualityLabel.SetBinding(Label.TextProperty, "quality");
 
-
+				//&#9734
 				Image imageView = new Image
 				{
 					HeightRequest = 100,
@@ -49,13 +52,13 @@ namespace GarageSale.Views
 									new StackLayout
 									{
 										VerticalOptions = LayoutOptions.Center,
-										Spacing = 0,
+										//Spacing = 0,
 										Children =
 										{
 											nameLabel,
 											descLabel,
 											new StackLayout {
-												Spacing = 0,
+												//Spacing = 0,
 												Orientation = StackOrientation.Horizontal,
 												Children = {
 													priceLabel,
@@ -70,12 +73,30 @@ namespace GarageSale.Views
 				};
 			});
 
+			ItemAppearing += (s, e) =>
+			{
+				myDataTypes.item item = e.Item as myDataTypes.item;
+				//formatting price to money
+				CultureInfo culture = new CultureInfo("en-us");
+				culture.NumberFormat.CurrencyNegativePattern = 1;
+
+				priceLabel.Text = string.Format(culture, "{0:c2}", item.price);
+
+				//giving stars to rating
+				string st = "";
+				for (int i = 0; i < item.quality; i++)
+				{
+					st += "\u2605";
+				}
+				qualityLabel.Text = st;
+			};
+
 
 			IsPullToRefreshEnabled = true;
 
 			this.Refreshing += ((sender, eventArgs) =>
 		   {
-			   
+
 			   this.IsRefreshing = false;
 		   });
 

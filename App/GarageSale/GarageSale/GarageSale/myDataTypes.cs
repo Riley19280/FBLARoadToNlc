@@ -67,5 +67,19 @@ namespace myDataTypes
 
 		}
 
-	
+		public class bid {
+
+		public bid(int id, int item_id, string bidder_id, float amount)
+		{
+			this.id = id;
+			this.item_id = item_id;
+			this.bidder_id = bidder_id;
+			this.amount = amount;
+		}
+		public int id { get; protected set; }
+		public int item_id { get; protected set; }
+		public string bidder_id { get; protected set; }
+		public float amount { get; protected set; }
+
+	}
 }

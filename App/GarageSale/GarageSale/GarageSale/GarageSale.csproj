@@ -49,6 +49,10 @@
     <Compile Include="Views\Menu\MenuPage.cs" />
     <Compile Include="Views\Menu\RootPage.cs" />
     <Compile Include="Views\Pages\allItems.cs" />
+    <Compile Include="Views\Pages\searchItems.cs" />
+    <Compile Include="Views\Pages\searchUsers.cs" />
+    <Compile Include="Views\userListView.cs" />
+    <Compile Include="Views\userView.cs" />
     <Compile Include="YardSaleService.cs" />
     <Compile Include="YardSaleServiceImplementation.cs" />
   </ItemGroup>

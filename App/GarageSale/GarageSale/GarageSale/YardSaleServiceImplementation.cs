@@ -12,9 +12,10 @@ namespace GarageSale
 	public class YardSaleServiceImplementation
 	{
 		YardSaleClient service;
-		public YardSaleServiceImplementation() {
+		public YardSaleServiceImplementation()
+		{
 			try
-			{			
+			{
 				service = new YardSaleClient(
 				new BasicHttpBinding(),
 				new EndpointAddress(Constants.WCFURL));
@@ -27,7 +28,8 @@ namespace GarageSale
 			}
 		}
 
-		public async Task<List<item>> GetAllItems() {
+		public async Task<List<item>> GetAllItems()
+		{
 			List<item> Items = new List<item>();
 			try
 			{
@@ -55,6 +57,154 @@ namespace GarageSale
 			return Items;
 		}
 
+		public async Task<bool> CreateUser(user u)
+		{
+			return await Task.Factory.FromAsync(service.BeginCreateUser, service.EndCreateUser, convertToWCF(u), TaskCreationOptions.None);
+		}
+
+		public async Task<bool> AddComment(comment c)
+		{
+			return await Task.Factory.FromAsync(service.BeginAddComment, service.EndAddComment, convertToWCF(c), TaskCreationOptions.None);
+		}
+
+		public async Task<bool> AddItem(item i)
+		{
+			return await Task.Factory.FromAsync(service.BeginAddItem, service.EndAddItem, convertToWCF(i), TaskCreationOptions.None);
+		}
+
+		public async Task<bool> AddBid(bid b)
+		{
+			return await Task.Factory.FromAsync(service.BeginAddBid, service.EndAddBid, convertToWCF(b), TaskCreationOptions.None);
+		}
+
+		public async Task<bid> GetTopBid(int item_id)
+		{
+			return convertFromWCF(await Task.Factory.FromAsync(service.BeginGetTopBid, service.EndGetTopBid, item_id, TaskCreationOptions.None));
+		}
+
+		public async Task<user> GetUser(string id)
+		{
+			return convertFromWCF(await Task.Factory.FromAsync(service.BeginGetUser, service.EndGetUser, id, TaskCreationOptions.None));
+		}
+
+		public async Task<List<comment>> GetComments(int item_id)
+		{
+			List<comment> comments = new List<comment>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetComments, service.EndGetComments, item_id, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						comments.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return comments;
+		}
+
+		public async Task<bool> SellItem(int item_id) {
+			throw new NotImplementedException();
+		}
+
+		public async Task<List<item>> GetSearchedItems(string search)
+		{
+			List<item> Items = new List<item>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetSearchedItems, service.EndGetSearchedItems, search, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						Items.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return Items;
+		}
+
+		public async Task<List<user>> GetSearchedUsers(string search)
+		{
+			List<user> users = new List<user>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetSearchedUsers, service.EndGetSearchedUsers, search, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						users.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return users;
+		}
+
+		public async Task<List<item>> GetItemsAssociatedWithUser(string user_id) {
+			List<item> Items = new List<item>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetItemsAssociatedWithUser, service.EndGetItemsAssociatedWithUser, user_id, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						Items.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return Items;
+		}
 
 		#region From
 		public item convertFromWCF(itemWCF i)
@@ -69,6 +219,11 @@ namespace GarageSale
 		{
 			return new comment(c.id, c.item_id, c.user_id, c.comment, c.date_added);
 		}
+		public bid convertFromWCF(bidWCF b)
+		{
+			return new bid(b.id, b.item_id, b.bidder_id, b.amount);
+		}
+
 		#endregion
 
 		#region TO
@@ -110,6 +265,18 @@ namespace GarageSale
 			comment.date_added = c.date_added;
 
 			return comment;
+		}
+		public bidWCF convertToWCF(bid b)
+		{
+			bidWCF bid = new bidWCF();
+
+			bid.id = b.id;
+			bid.item_id = b.item_id;
+			bid.bidder_id = b.bidder_id;
+			bid.amount = b.amount;
+
+
+			return bid;
 		}
 		#endregion
 

@@ -48,6 +48,9 @@ namespace yardSaleWCF
 
 		[OperationContract]
 		List<userWCF> GetSearchedUsers(string search);
-	}
 
+		[OperationContract]
+		List<itemWCF> GetItemsAssociatedWithUser(string user_id);
+
+	}
 }

@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace GarageSale.Views.Pages
 {
-	public class allItems : ContentPage
+	public class allItems : basePage
 	{
 		ListView listView;
 
@@ -33,7 +33,7 @@ namespace GarageSale.Views.Pages
 			{
 				await Task.Delay(1000);
 
-				listView.ItemsSource = await App.MANAGER.GetAllItems();
+				listView.ItemsSource = await App.MANAGER.YSSI.GetAllItems();
 			//	Content = baseStack;
 			}
 		}

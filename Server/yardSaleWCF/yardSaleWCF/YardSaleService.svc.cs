@@ -72,5 +72,10 @@ namespace yardSaleWCF
 		{
 			return DBACC.GetSearchedUsers(search);
 		}
+
+		public List<itemWCF> GetItemsAssociatedWithUser(string user_id)
+		{
+			return DBACC.GetItemsAssociatedWithUser(user_id);
+		}
 	}
 }
