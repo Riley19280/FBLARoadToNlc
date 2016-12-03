@@ -77,5 +77,25 @@ namespace yardSaleWCF
 		{
 			return DBACC.GetItemsAssociatedWithUser(user_id);
 		}
+
+		public List<itemWCF> GetFBLAChapterItems(int chapter_id)
+		{
+			return DBACC.GetFBLAChapterItems(chapter_id);
+		}
+
+		public List<userWCF> GetUsersByChapterStatus(int status, int chapter_id)
+		{
+			return DBACC.GetUsersByChapterStatus(status, chapter_id);
+		}
+
+		public bool SetChapterStatusOfUser(int status, string user_id)
+		{
+			return DBACC.SetChapterStatusOfUser(status, user_id);
+		}
+
+		public List<fblaChapterWCF> GetSearchedChapters(string search)
+		{
+			return DBACC.GetSearchedChapters(search);
+		}
 	}
 }

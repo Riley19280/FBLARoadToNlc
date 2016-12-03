@@ -116,7 +116,8 @@ namespace GarageSale
 			return comments;
 		}
 
-		public async Task<bool> SellItem(int item_id) {
+		public async Task<bool> SellItem(int item_id)
+		{
 			throw new NotImplementedException();
 		}
 
@@ -178,7 +179,8 @@ namespace GarageSale
 			return users;
 		}
 
-		public async Task<List<item>> GetItemsAssociatedWithUser(string user_id) {
+		public async Task<List<item>> GetItemsAssociatedWithUser(string user_id)
+		{
 			List<item> Items = new List<item>();
 			try
 			{
@@ -206,6 +208,99 @@ namespace GarageSale
 			return Items;
 		}
 
+		public async Task<List<item>> GetFBLAChapterItems(int chapter_id)
+		{
+			List<item> Items = new List<item>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetFBLAChapterItems, service.EndGetFBLAChapterItems, chapter_id, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						Items.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return Items;
+		}
+
+		public async Task<List<user>> GetUsersByChapterStatus(int status, int chapter_id)
+		{
+			List<user> users = new List<user>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetUsersByChapterStatus, service.EndGetUsersByChapterStatus, status, chapter_id, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						users.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return users;
+		}
+
+		public async Task<bool> SetChapterStatusOfUser(int status, string user_id)
+		{
+			return await Task.Factory.FromAsync(service.BeginSetChapterStatusOfUser, service.EndSetChapterStatusOfUser, status, user_id, TaskCreationOptions.None);
+		}
+
+		public async Task<List<fblaChapter>> GetSearchedChapters(string search)
+		{
+			List<fblaChapter> Items = new List<fblaChapter>();
+			try
+			{
+				var todoItems = await Task.Factory.FromAsync(service.BeginGetSearchedChapters, service.EndGetSearchedChapters, search, TaskCreationOptions.None);
+
+				foreach (var item in todoItems)
+				{
+					if (item != null)
+						Items.Add(convertFromWCF(item));
+					else
+					{
+						Debug.WriteLine("NULL ITEM");
+					}
+				}
+			}
+			catch (FaultException fe)
+			{
+				Debug.WriteLine(@"			{0} \n {1} \n {2}", fe.Message, fe.Reason, fe.StackTrace);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(@"				ERROR {0} \n {1}", ex.Message, ex.StackTrace);
+			}
+
+			return Items;
+		}
+
+
 		#region From
 		public item convertFromWCF(itemWCF i)
 		{
@@ -222,6 +317,10 @@ namespace GarageSale
 		public bid convertFromWCF(bidWCF b)
 		{
 			return new bid(b.id, b.item_id, b.bidder_id, b.amount);
+		}
+		public fblaChapter convertFromWCF(fblaChapterWCF f)
+		{
+			return new fblaChapter(f.id, f.name,f.state,f.city,f.school,f.contact_email,f.payment_email,f.pic_url);
 		}
 
 		#endregion
@@ -278,6 +377,23 @@ namespace GarageSale
 
 			return bid;
 		}
+		public fblaChapterWCF convertToWCF(fblaChapter f)
+		{
+			fblaChapterWCF fbla = new fblaChapterWCF();
+
+			fbla.id = f.id;
+			fbla.name = f.name;
+			fbla.state = f.state;
+			fbla.city = f.city;
+			fbla.school = f.school;
+			fbla.contact_email = f.contact_email;
+			fbla.payment_email = f.payment_email;
+			fbla.pic_url = f.pic_url;
+
+
+			return fbla;
+		}
+
 		#endregion
 
 

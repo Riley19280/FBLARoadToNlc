@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace GarageSale.Views
+namespace GarageSale.Views.ListViews
 {
 	class itemListView : ListView
 	{

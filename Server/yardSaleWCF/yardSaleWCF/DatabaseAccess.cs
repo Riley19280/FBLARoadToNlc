@@ -172,7 +172,7 @@ namespace yardSaleWCF
 			{
 
 				using (SqlCommand cmd = new SqlCommand("SELECT * from dbo.items ORDER BY date_added DESC", connection))
-				{					
+				{
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -181,14 +181,14 @@ namespace yardSaleWCF
 						{
 							while (reader.Read())
 							{
-					
+
 								itemWCF i = new itemWCF(
 								 reader.GetInt32(reader.GetOrdinal("id")),
 								 reader.GetString(reader.GetOrdinal("owner_id")),
 								 reader.GetString(reader.GetOrdinal("name")),
 								 reader.GetString(reader.GetOrdinal("description")),
 								 reader.GetString(reader.GetOrdinal("pic_url")),
-							     (float)reader.GetDouble(reader.GetOrdinal("price")),
+								 (float)reader.GetDouble(reader.GetOrdinal("price")),
 								 (float)reader.GetDouble(reader.GetOrdinal("quality")),
 								 reader.GetBoolean(reader.GetOrdinal("sold")),
 								 reader.GetDateTime(reader.GetOrdinal("date_added"))
@@ -203,7 +203,8 @@ namespace yardSaleWCF
 			return items;
 		}
 
-		public userWCF GetUser(string id) {
+		public userWCF GetUser(string id)
+		{
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
@@ -217,13 +218,13 @@ namespace yardSaleWCF
 						// Check is the reader has any rows at all before starting to read.
 						if (reader.HasRows)
 						{
-							
+
 							while (reader.Read())
 							{
 								userWCF u = new userWCF(
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
-									 reader.GetString(reader.GetOrdinal("pic_url"))								
+									 reader.GetString(reader.GetOrdinal("pic_url"))
 									);
 
 								return u;
@@ -235,7 +236,8 @@ namespace yardSaleWCF
 			return null;
 		}
 
-		public List<commentWCF> GetComments(int item_id) {
+		public List<commentWCF> GetComments(int item_id)
+		{
 			List<commentWCF> comments = new List<commentWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -268,11 +270,13 @@ namespace yardSaleWCF
 			return comments;
 		}
 
-		public bool SellItem(int item_id) {
+		public bool SellItem(int item_id)
+		{
 			throw new NotImplementedException();
 		}
 
-		public List<itemWCF> GetSearchedItems(string search) {
+		public List<itemWCF> GetSearchedItems(string search)
+		{
 			List<itemWCF> items = new List<itemWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -349,7 +353,8 @@ namespace yardSaleWCF
 			return users;
 		}
 
-		public List<itemWCF> GetItemsAssociatedWithUser(string user_id) {
+		public List<itemWCF> GetItemsAssociatedWithUser(string user_id)
+		{
 			List<itemWCF> items = new List<itemWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -388,6 +393,149 @@ namespace yardSaleWCF
 				}
 			}
 			return items;
+		}
+
+		public List<itemWCF> GetFBLAChapterItems(int chapter_id)
+		{
+			List<itemWCF> items = new List<itemWCF>();
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("select * from dbo.items where owner_id = (select user_id from member_status where chapter_id = @chapter_id)", connection))
+				{
+					cmd.Parameters.AddWithValue("limit", 25);
+					cmd.Parameters.AddWithValue("chapter_id", chapter_id);
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								itemWCF i = new itemWCF(
+									 reader.GetInt32(reader.GetOrdinal("id")),
+									 reader.GetString(reader.GetOrdinal("owner_id")),
+									 reader.GetString(reader.GetOrdinal("name")),
+									 reader.GetString(reader.GetOrdinal("description")),
+									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 (float)reader.GetDouble(reader.GetOrdinal("price")),
+									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
+									 reader.GetBoolean(reader.GetOrdinal("sold")),
+									 reader.GetDateTime(reader.GetOrdinal("date_added"))
+									);
+
+								items.Add(i);
+							}
+						}
+					}
+				}
+			}
+			return items;
+		}//TODO:query
+
+		public List<userWCF> GetUsersByChapterStatus(int status, int chapter_id)
+		{
+			List<userWCF> users = new List<userWCF>();
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+				SqlCommand cmd = null;
+
+				if (status < 0)
+					cmd = new SqlCommand("select * from dbo.member_status where status >= 0 and chapter_id = @chapter_id", connection);
+				else
+					cmd = new SqlCommand("select * from dbo.member_status where status = @status and chapter_id = @chapter_id", connection);
+				using (cmd)
+				{
+					cmd.Parameters.AddWithValue("status", status);
+					cmd.Parameters.AddWithValue("chapter_id", chapter_id);
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+
+							while (reader.Read())
+							{
+								userWCF u = new userWCF(
+									 reader.GetString(reader.GetOrdinal("id")),
+									 reader.GetString(reader.GetOrdinal("name")),
+									 reader.GetString(reader.GetOrdinal("pic_url"))
+									);
+								users.Add(u);
+
+							}
+						}
+					}
+				}
+			}
+			return users;
+		}
+
+		public bool SetChapterStatusOfUser(int status, string user_id)
+		{
+			{
+				int affected = 0;
+
+				using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+
+				using (SqlCommand cmd = new SqlCommand("UPDATE dbo.member_status SET status = @status where id = @user_id", connection))
+				{
+					cmd.Parameters.AddWithValue("@status", status);
+					cmd.Parameters.AddWithValue("@user_id", user_id);
+					connection.Open();
+					affected = cmd.ExecuteNonQuery();
+
+				}
+				if (affected > 0)
+					return true;
+				else
+					return false;
+			}
+		}
+
+		public List<fblaChapterWCF> GetSearchedChapters(string search) {
+			List<fblaChapterWCF> chapters = new List<fblaChapterWCF>();
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.fbla_chapters WHERE name LIKE @term ORDER BY name", connection))
+				{
+					cmd.Parameters.AddWithValue("limit", 25);
+					cmd.Parameters.AddWithValue("term", "%" + search + "%");
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								fblaChapterWCF f = new fblaChapterWCF(
+								 reader.GetInt32(reader.GetOrdinal("id")),
+								 reader.GetString(reader.GetOrdinal("name")),
+								 reader.GetString(reader.GetOrdinal("state")),
+								 reader.GetString(reader.GetOrdinal("city")),
+								 reader.GetString(reader.GetOrdinal("school")),
+								 reader.GetString(reader.GetOrdinal("contact_email")),
+								 reader.GetString(reader.GetOrdinal("payment_email")),
+								 reader.GetString(reader.GetOrdinal("pic_url"))						 
+								);
+
+								chapters.Add(f);
+							}
+						}
+					}
+				}
+			}
+			return chapters;
 		}
 	}
 }

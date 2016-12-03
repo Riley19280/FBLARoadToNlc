@@ -1,4 +1,5 @@
-﻿using myDataTypes;
+﻿using GarageSale.Views.ListViews;
+using myDataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

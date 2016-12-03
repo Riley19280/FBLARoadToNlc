@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GarageSale.Views.ListViews;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,12 @@ using Xamarin.Forms;
 
 namespace GarageSale.Views.Pages
 {
-	class searchUsers : basePage
+	class searchUsersPage : basePage
 	{
 		ListView listView;
 		SearchBar search;
 
-		public searchUsers()
+		public searchUsersPage()
 		{
 			Title = "Search Users";
 

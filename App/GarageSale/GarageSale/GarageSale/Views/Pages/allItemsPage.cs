@@ -1,4 +1,5 @@
-﻿using myDataTypes;
+﻿using GarageSale.Views.ListViews;
+using myDataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,15 @@ using Xamarin.Forms;
 
 namespace GarageSale.Views.Pages
 {
-	public class allItems : basePage
+	public class allItemsPage : basePage
 	{
 		ListView listView;
 
-		public allItems()
+		public allItemsPage()
 		{
 			Title = "All Items";
-			 listView = new itemListView();
-			
+			listView = new itemListView();
+
 			Content = new StackLayout
 			{
 				Children = {
@@ -34,7 +35,7 @@ namespace GarageSale.Views.Pages
 				await Task.Delay(1000);
 
 				listView.ItemsSource = await App.MANAGER.YSSI.GetAllItems();
-			//	Content = baseStack;
+				//	Content = baseStack;
 			}
 		}
 

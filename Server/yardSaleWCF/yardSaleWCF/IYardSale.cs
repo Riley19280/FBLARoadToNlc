@@ -52,5 +52,16 @@ namespace yardSaleWCF
 		[OperationContract]
 		List<itemWCF> GetItemsAssociatedWithUser(string user_id);
 
+		[OperationContract]
+		List<itemWCF> GetFBLAChapterItems(int chapter_id);
+
+		[OperationContract]
+		List<userWCF> GetUsersByChapterStatus(int status, int chapter_id);
+
+		[OperationContract]
+		bool SetChapterStatusOfUser(int status, string user_id);
+
+		[OperationContract]
+		List<fblaChapterWCF> GetSearchedChapters(string search);
 	}
 }

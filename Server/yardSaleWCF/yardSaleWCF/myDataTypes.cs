@@ -6,6 +6,13 @@ using System.Web;
 
 namespace yardSaleWCF
 {
+	//member status:
+	//0:pending membership
+	//1:member
+	//2:secritary
+	//3:VP
+	//4:Pres
+	//10:Admin
 
 	[DataContract]
 	public class itemWCF
@@ -108,4 +115,34 @@ namespace yardSaleWCF
 
 	}
 
+	[DataContract]
+	public class fblaChapterWCF {
+
+		public fblaChapterWCF(int id, string name, string state, string city, string school, string contact_email, string payment_email, string pic_url) {
+			this.id = id;
+			this.name = name;
+			this.state = state;
+			this.city = city;
+			this.school = school;
+			this.contact_email = contact_email;
+			this.payment_email = payment_email;
+			this.pic_url = pic_url;
+		}
+		[DataMember]
+		public int id;
+		[DataMember]
+		public string name;
+		[DataMember]
+		public string state;
+		[DataMember]
+		public string city;
+		[DataMember]
+		public string school;
+		[DataMember]
+		public string contact_email;
+		[DataMember]
+		public string payment_email;
+		[DataMember]
+		public string pic_url;
+	}
 }

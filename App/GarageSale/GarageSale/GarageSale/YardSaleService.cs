@@ -18,14 +18,17 @@ namespace yardSaleWCF
     [System.Runtime.Serialization.DataContractAttribute(Name="userWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
     public partial class userWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
-
+        
+      
         
         private string idField;
         
         private string nameField;
         
         private string pic_urlField;
-
+        
+     
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string id
         {
@@ -94,7 +97,9 @@ namespace yardSaleWCF
     [System.Runtime.Serialization.DataContractAttribute(Name="commentWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
     public partial class commentWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
-
+        
+      
+        
         private string commentField;
         
         private System.DateTime date_addedField;
@@ -104,7 +109,9 @@ namespace yardSaleWCF
         private int item_idField;
         
         private string user_idField;
-                
+        
+     
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string comment
         {
@@ -205,8 +212,10 @@ namespace yardSaleWCF
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="itemWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
-    public partial class itemWCF : object,  System.ComponentModel.INotifyPropertyChanged
+    public partial class itemWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
+        
+      
         
         private System.DateTime date_addedField;
         
@@ -225,7 +234,9 @@ namespace yardSaleWCF
         private float qualityField;
         
         private bool soldField;
-               
+        
+     
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime date_added
         {
@@ -397,6 +408,8 @@ namespace yardSaleWCF
     public partial class bidWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
+      
+        
         private float amountField;
         
         private string bidder_idField;
@@ -404,7 +417,9 @@ namespace yardSaleWCF
         private int idField;
         
         private int item_idField;
-                
+        
+     
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public float amount
         {
@@ -469,6 +484,180 @@ namespace yardSaleWCF
                 {
                     this.item_idField = value;
                     this.RaisePropertyChanged("item_id");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null))
+            {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="fblaChapterWCF", Namespace="http://schemas.datacontract.org/2004/07/yardSaleWCF")]
+    public partial class fblaChapterWCF : object, System.ComponentModel.INotifyPropertyChanged
+    {
+        
+      
+        
+        private string cityField;
+        
+        private string contact_emailField;
+        
+        private int idField;
+        
+        private string nameField;
+        
+        private string payment_emailField;
+        
+        private string pic_urlField;
+        
+        private string schoolField;
+        
+        private string stateField;
+        
+     
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string city
+        {
+            get
+            {
+                return this.cityField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.cityField, value) != true))
+                {
+                    this.cityField = value;
+                    this.RaisePropertyChanged("city");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string contact_email
+        {
+            get
+            {
+                return this.contact_emailField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.contact_emailField, value) != true))
+                {
+                    this.contact_emailField = value;
+                    this.RaisePropertyChanged("contact_email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int id
+        {
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                if ((this.idField.Equals(value) != true))
+                {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.nameField, value) != true))
+                {
+                    this.nameField = value;
+                    this.RaisePropertyChanged("name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string payment_email
+        {
+            get
+            {
+                return this.payment_emailField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.payment_emailField, value) != true))
+                {
+                    this.payment_emailField = value;
+                    this.RaisePropertyChanged("payment_email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string pic_url
+        {
+            get
+            {
+                return this.pic_urlField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.pic_urlField, value) != true))
+                {
+                    this.pic_urlField = value;
+                    this.RaisePropertyChanged("pic_url");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string school
+        {
+            get
+            {
+                return this.schoolField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.schoolField, value) != true))
+                {
+                    this.schoolField = value;
+                    this.RaisePropertyChanged("school");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string state
+        {
+            get
+            {
+                return this.stateField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.stateField, value) != true))
+                {
+                    this.stateField = value;
+                    this.RaisePropertyChanged("state");
                 }
             }
         }
@@ -595,6 +784,38 @@ public interface IYardSale
     System.IAsyncResult BeginGetItemsAssociatedWithUser(string user_id, System.AsyncCallback callback, object asyncState);
     
     yardSaleWCF.itemWCF[] EndGetItemsAssociatedWithUser(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetFBLAChapterItems", ReplyAction="http://tempuri.org/IYardSale/GetFBLAChapterItemsResponse")]
+    yardSaleWCF.itemWCF[] GetFBLAChapterItems(int chapter_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetFBLAChapterItems", ReplyAction="http://tempuri.org/IYardSale/GetFBLAChapterItemsResponse")]
+    System.IAsyncResult BeginGetFBLAChapterItems(int chapter_id, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.itemWCF[] EndGetFBLAChapterItems(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetUsersByChapterStatus", ReplyAction="http://tempuri.org/IYardSale/GetUsersByChapterStatusResponse")]
+    yardSaleWCF.userWCF[] GetUsersByChapterStatus(int status, int chapter_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetUsersByChapterStatus", ReplyAction="http://tempuri.org/IYardSale/GetUsersByChapterStatusResponse")]
+    System.IAsyncResult BeginGetUsersByChapterStatus(int status, int chapter_id, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.userWCF[] EndGetUsersByChapterStatus(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/SetChapterStatusOfUser", ReplyAction="http://tempuri.org/IYardSale/SetChapterStatusOfUserResponse")]
+    bool SetChapterStatusOfUser(int status, string user_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/SetChapterStatusOfUser", ReplyAction="http://tempuri.org/IYardSale/SetChapterStatusOfUserResponse")]
+    System.IAsyncResult BeginSetChapterStatusOfUser(int status, string user_id, System.AsyncCallback callback, object asyncState);
+    
+    bool EndSetChapterStatusOfUser(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetSearchedChapters", ReplyAction="http://tempuri.org/IYardSale/GetSearchedChaptersResponse")]
+    yardSaleWCF.fblaChapterWCF[] GetSearchedChapters(string search);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetSearchedChapters", ReplyAction="http://tempuri.org/IYardSale/GetSearchedChaptersResponse")]
+    System.IAsyncResult BeginGetSearchedChapters(string search, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.fblaChapterWCF[] EndGetSearchedChapters(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -824,5 +1045,65 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public yardSaleWCF.itemWCF[] EndGetItemsAssociatedWithUser(System.IAsyncResult result)
     {
         return base.Channel.EndGetItemsAssociatedWithUser(result);
+    }
+    
+    public yardSaleWCF.itemWCF[] GetFBLAChapterItems(int chapter_id)
+    {
+        return base.Channel.GetFBLAChapterItems(chapter_id);
+    }
+    
+    public System.IAsyncResult BeginGetFBLAChapterItems(int chapter_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetFBLAChapterItems(chapter_id, callback, asyncState);
+    }
+    
+    public yardSaleWCF.itemWCF[] EndGetFBLAChapterItems(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetFBLAChapterItems(result);
+    }
+    
+    public yardSaleWCF.userWCF[] GetUsersByChapterStatus(int status, int chapter_id)
+    {
+        return base.Channel.GetUsersByChapterStatus(status, chapter_id);
+    }
+    
+    public System.IAsyncResult BeginGetUsersByChapterStatus(int status, int chapter_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetUsersByChapterStatus(status, chapter_id, callback, asyncState);
+    }
+    
+    public yardSaleWCF.userWCF[] EndGetUsersByChapterStatus(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetUsersByChapterStatus(result);
+    }
+    
+    public bool SetChapterStatusOfUser(int status, string user_id)
+    {
+        return base.Channel.SetChapterStatusOfUser(status, user_id);
+    }
+    
+    public System.IAsyncResult BeginSetChapterStatusOfUser(int status, string user_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginSetChapterStatusOfUser(status, user_id, callback, asyncState);
+    }
+    
+    public bool EndSetChapterStatusOfUser(System.IAsyncResult result)
+    {
+        return base.Channel.EndSetChapterStatusOfUser(result);
+    }
+    
+    public yardSaleWCF.fblaChapterWCF[] GetSearchedChapters(string search)
+    {
+        return base.Channel.GetSearchedChapters(search);
+    }
+    
+    public System.IAsyncResult BeginGetSearchedChapters(string search, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetSearchedChapters(search, callback, asyncState);
+    }
+    
+    public yardSaleWCF.fblaChapterWCF[] EndGetSearchedChapters(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetSearchedChapters(result);
     }
 }

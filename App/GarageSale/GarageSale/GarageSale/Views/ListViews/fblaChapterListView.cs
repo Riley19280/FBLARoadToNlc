@@ -1,29 +1,34 @@
-﻿using System;
+﻿using GarageSale.Views.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace GarageSale.Views
+namespace GarageSale.Views.ListViews
 {
-	class userListView : ListView
+	class fblaChapterListView : ListView
 	{
-		public userListView()
+
+		public fblaChapterListView()
 		{
-
+			Label schoolLabel=null;
+			Label locLabel=null;
 			// Source of data items.
+			VerticalOptions = LayoutOptions.FillAndExpand;
+			HorizontalOptions = LayoutOptions.FillAndExpand;
 
-			RowHeight = 80;
+			RowHeight = 75;
 			// Define template for displaying each item.
 			// (Argument of DataTemplate constructor is called for 
 			//      each item; it must return a Cell derivative.)
 			ItemTemplate = new DataTemplate(() =>
 			{
 				// Create views with bindings for displaying each property.
-				Label nameLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) }, bioLabel = new Label();
-				nameLabel.SetBinding(Label.TextProperty, "name");
-				//bioLabel.SetBinding(Label.TextProperty, "bio");
+				schoolLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) };
+				locLabel = new Label();
+				schoolLabel.SetBinding(Label.TextProperty, "school");
 
 				Image imageView = new Image
 				{
@@ -34,6 +39,7 @@ namespace GarageSale.Views
 				imageView.SetBinding(Image.SourceProperty, "picture_URL");
 
 
+
 				// Return an assembled ViewCell.
 				return new ViewCell
 				{
@@ -42,7 +48,7 @@ namespace GarageSale.Views
 						Padding = new Thickness(5, 5, 5, 0),
 						Orientation = StackOrientation.Horizontal,
 						Children =
-								{
+							{
 									imageView,
 									new StackLayout
 									{
@@ -50,36 +56,34 @@ namespace GarageSale.Views
 										Spacing = 5,
 										Children =
 										{
-											nameLabel,
-											bioLabel,
+											schoolLabel,
+											locLabel,
 										}
 									}
-								}
+							}
 					}
 				};
-			});
-			
-
-
-		IsPullToRefreshEnabled = true;
-
-			this.Refreshing += ((sender, eventArgs) =>
-			{
-
-				this.IsRefreshing = false;
 			});
 
 			this.ItemSelected += ((sender, eventArgs) =>
 			{
 				if (this.SelectedItem != null)
 				{
-					var userView = new userView(SelectedItem as myDataTypes.user);
-					this.SelectedItem = null;
-					Navigation.PushAsync(userView);
+					var c = SelectedItem as myDataTypes.fblaChapter;
+					var chapterView = new fblaChapterView(c);
+					//this.SelectedItem = null;
+					//Navigation.PushAsync(chapterView);
 				}
 			});
 
+			ItemAppearing += (s, e) =>
+			{
+				myDataTypes.fblaChapter i = e.Item as myDataTypes.fblaChapter;
+				
+				locLabel.Text = i.city + ", " + i.state;
+			};
 		}
 
 	}
 }
+

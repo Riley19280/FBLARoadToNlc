@@ -14,21 +14,35 @@ namespace GarageSale.Views.Menu
 			this.Add (new MenuItem () { 
 				Title = "All Items", 
 				//IconSource = "contacts.png", 
-				TargetType = typeof(allItems)
+				TargetType = typeof(fblaChaptersPage)
 			});
 
 			this.Add(new MenuItem()
 			{
 				Title = "Search Items",
 				//IconSource = "contacts.png", 
-				TargetType = typeof(searchItems)
+				TargetType = typeof(searchItemsPage)
 			});
 
 			this.Add(new MenuItem()
 			{
 				Title = "Search Users",
 				//IconSource = "contacts.png", 
-				TargetType = typeof(searchUsers)
+				TargetType = typeof(searchUsersPage)
+			});
+
+			this.Add(new MenuItem()
+			{
+				Title = "Add Item",
+				//IconSource = "leads.png", 
+				TargetType = typeof(newItemPage)//help
+			});
+
+			this.Add(new MenuItem()
+			{
+				Title = "FBLA Chapters",
+				//IconSource = "leads.png", 
+				TargetType = typeof(fblaChaptersPage)//help
 			});
 
 			this.Add(new MenuItem()
