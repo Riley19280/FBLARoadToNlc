@@ -14,7 +14,7 @@ namespace GarageSale.Views.Menu
 			this.Add (new MenuItem () { 
 				Title = "All Items", 
 				//IconSource = "contacts.png", 
-				TargetType = typeof(fblaChaptersPage)
+				TargetType = typeof(allItemsPage)
 			});
 
 			this.Add(new MenuItem()
@@ -42,7 +42,7 @@ namespace GarageSale.Views.Menu
 			{
 				Title = "FBLA Chapters",
 				//IconSource = "leads.png", 
-				TargetType = typeof(fblaChaptersPage)//help
+				TargetType = typeof(fblaChaptersListPage)//help
 			});
 
 			this.Add(new MenuItem()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GarageSale.Views.Pages;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -104,10 +105,10 @@ namespace GarageSale.Views.ListViews
 			{
 				if (this.SelectedItem != null)
 				{
-					//var actView = new activityView(listView.SelectedItem as myDataTypes.activity);
+					var itemView = new itemPage(SelectedItem as myDataTypes.item);
 
 					this.SelectedItem = null;
-					//Navigation.PushAsync(actView);
+					Navigation.PushAsync(itemView);
 				}
 			});
 

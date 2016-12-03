@@ -10,11 +10,11 @@ using Xamarin.Forms;
 
 namespace GarageSale.Views.Pages
 {
-	public class fblaChaptersPage : basePage
+	public class fblaChaptersListPage : basePage
 	{
 		ListView listView;
 
-		public fblaChaptersPage()
+		public fblaChaptersListPage()
 		{
 			Title = "FBLA Chapters";
 			listView = new fblaChapterListView();
@@ -32,7 +32,7 @@ namespace GarageSale.Views.Pages
 			base.OnAppearing();
 			if (listView.ItemsSource == null)
 			{
-			
+			//TODO:ADD SEARCH BAR
 
 				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedChapters("");
 				//	Content = baseStack;

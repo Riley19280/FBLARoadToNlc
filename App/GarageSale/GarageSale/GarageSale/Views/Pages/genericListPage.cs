@@ -13,11 +13,18 @@ namespace GarageSale.Views.Pages
 		int code;
 		ListView view;
 		int fbla_id;
-		public viewListPage(ListView v,int fbla_id, int code) {
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="v">The list view you want to display</param>
+		/// <param name="fbla_id">ID of the Fbla group</param>
+		/// <param name="code">The Code that corresponds with the function you want to preform</param>
+		/// <param name="title">The title for the page</param>
+		public viewListPage(ListView v,int fbla_id, int code, string title) {
 			view = v;
 			this.code = code;
 			this.fbla_id = fbla_id;
-		
+			Title = title;
 		}
 
 

@@ -70,9 +70,9 @@ namespace GarageSale.Views.ListViews
 				if (this.SelectedItem != null)
 				{
 					var c = SelectedItem as myDataTypes.fblaChapter;
-					var chapterView = new fblaChapterView(c);
-					//this.SelectedItem = null;
-					//Navigation.PushAsync(chapterView);
+					var chapterView = new fblaChapterPage(c);
+					this.SelectedItem = null;
+					Navigation.PushAsync(chapterView);
 				}
 			});
 

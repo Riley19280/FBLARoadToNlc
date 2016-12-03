@@ -445,9 +445,9 @@ namespace yardSaleWCF
 				SqlCommand cmd = null;
 
 				if (status < 0)
-					cmd = new SqlCommand("select * from dbo.member_status where status >= 0 and chapter_id = @chapter_id", connection);
+					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from dbo.member_status where status >= 0 and chapter_id = @chapter_id)", connection);
 				else
-					cmd = new SqlCommand("select * from dbo.member_status where status = @status and chapter_id = @chapter_id", connection);
+					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from yardsale.dbo.member_status where status >=0 and chapter_id = 1)", connection);
 				using (cmd)
 				{
 					cmd.Parameters.AddWithValue("status", status);

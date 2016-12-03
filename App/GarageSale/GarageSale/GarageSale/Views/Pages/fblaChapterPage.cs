@@ -1,4 +1,5 @@
-﻿using GarageSale.Views.Pages;
+﻿using GarageSale.Views.ListViews;
+using GarageSale.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace GarageSale.Views.ListViews
+namespace GarageSale.Views
 {
-	public class fblaChapterView : basePage
+	public class fblaChapterPage : basePage
 	{
 
 		ListView listView;
@@ -46,7 +47,7 @@ namespace GarageSale.Views.ListViews
 
 		RelativeLayout relLayout = new RelativeLayout
 		{
-			Margin = 0,
+			//Margin = 0,
 			Padding = 0,
 			HorizontalOptions = LayoutOptions.Start,
 		};
@@ -66,7 +67,7 @@ namespace GarageSale.Views.ListViews
 		{
 			Text = " View Items ",
 			BorderRadius = 0,
-			Margin = 0,
+			//Margin = 0,
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 		};
 		
@@ -75,23 +76,23 @@ namespace GarageSale.Views.ListViews
 		{
 			Text = "View Members",
 			BorderRadius = 0,
-			Margin = 0,
+			//Margin = 0,
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 		};
 
 		#endregion
 
-		public fblaChapterView(myDataTypes.fblaChapter o)
+		public fblaChapterPage(myDataTypes.fblaChapter o)
 		{
 			fbla = o;
-			Title = "Profile";
+			Title = fbla.school+" FBLA";
 
 			viewItems.Command = new Command(() => {
-				Navigation.PushAsync(new viewListPage(new itemListView(),fbla.id, 1));
+				Navigation.PushAsync(new viewListPage(new itemListView(),fbla.id, 1,"Items for sale by"+fbla.school));
 			});
 
 			viewMembers.Command = new Command(() => {
-				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2));
+				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2,"Members of FBLA at"+fbla.school));
 			});
 
 			#region prof image
@@ -146,7 +147,7 @@ namespace GarageSale.Views.ListViews
                             new StackLayout {
                                 Orientation = StackOrientation.Horizontal,
                                 Padding = 0,
-                                Margin = 0,
+                               // Margin = 0,
                                 Spacing = 0,
                                 Children = {
                                     viewItems,
