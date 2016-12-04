@@ -8,7 +8,7 @@ namespace yardSaleWCF
 {
 	public class DatabaseAccess
 	{
-		public bool CreateUser(userWCF user)
+		public bool UpdateUser(userWCF user)
 		{
 			userWCF u = user;
 			int affected = 0;
@@ -16,10 +16,11 @@ namespace yardSaleWCF
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 
-			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.users(id,name,pic_url,account_created,last_activity,lastLogon) VALUES(@id, @name,@pic_url, SYSDATETIME() ,SYSDATETIME() ,SYSDATETIME())", connection))
+			using (SqlCommand cmd = new SqlCommand("IF EXISTS (SELECT * FROM dbo.users WHERE id=@id)    UPDATE dbo.users SET id=@id,name=@name,email=@email,pic_url=@pic_url,last_activity=SYSDATETIME(),lastLogon=SYSDATETIME() WHERE id=@id ELSE   INSERT INTO dbo.users(id,name,email,pic_url,account_created,last_activity,lastLogon) VALUES(@id, @name, @email, @pic_url, SYSDATETIME() ,SYSDATETIME() ,SYSDATETIME())", connection))
 			{
 				cmd.Parameters.AddWithValue("@id", u.id);
 				cmd.Parameters.AddWithValue("@name", u.name);
+				cmd.Parameters.AddWithValue("@email", u.email);
 				cmd.Parameters.AddWithValue("@pic_url", u.pic_url);
 
 				connection.Open();
@@ -224,6 +225,7 @@ namespace yardSaleWCF
 								userWCF u = new userWCF(
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
+									 reader.GetString(reader.GetOrdinal("email")),
 									 reader.GetString(reader.GetOrdinal("pic_url"))
 									);
 
@@ -341,6 +343,7 @@ namespace yardSaleWCF
 								userWCF u = new userWCF(
 								 reader.GetString(reader.GetOrdinal("id")),
 								 reader.GetString(reader.GetOrdinal("name")),
+								 reader.GetString(reader.GetOrdinal("email")),
 								 reader.GetString(reader.GetOrdinal("pic_url"))
 								);
 
@@ -445,7 +448,7 @@ namespace yardSaleWCF
 				SqlCommand cmd = null;
 
 				if (status < 0)
-					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from dbo.member_status where status >= 0 and chapter_id = @chapter_id)", connection);
+					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from dbo.member_status where status >= 1 and chapter_id = @chapter_id)", connection);
 				else
 					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from yardsale.dbo.member_status where status >=0 and chapter_id = 1)", connection);
 				using (cmd)
@@ -464,6 +467,7 @@ namespace yardSaleWCF
 								userWCF u = new userWCF(
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
+									 reader.GetString(reader.GetOrdinal("email")),
 									 reader.GetString(reader.GetOrdinal("pic_url"))
 									);
 								users.Add(u);

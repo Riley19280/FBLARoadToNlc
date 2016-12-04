@@ -14,6 +14,8 @@ namespace GarageSale
 		public static Page mainPage;
 
 		public static Manager MANAGER;
+		public static ICredentialManager CredManager;
+		public static OAuthReqManager ORM;
 
 		public App()
 		{
@@ -62,9 +64,51 @@ namespace GarageSale
 			#endregion
 
 			MANAGER = new Manager(new YardSaleServiceImplementation());
-
+			CredManager = DependencyService.Get<ICredentialManager>();
+			ORM = new OAuthReqManager();
+		
 			mainPage = new RootPage();
 			MainPage = mainPage;
+
+		}
+
+		public static Action SuccessfulLoginAction
+		{
+			get
+			{
+				return new Action(async () =>
+				{
+					try
+					{
+						//navigation.PopModalAsync();
+
+						if (!await ORM.GetProfileInfo())
+						{
+							await mainPage.DisplayAlert("Error logging in", "Error logging in, Please try again", "Dismiss");
+
+							CredManager.DeleteCredentials();
+						
+
+							return;
+						}
+
+
+						MANAGER.YSSI.UpdateUser(new myDataTypes.user(CredManager.GetAccountValue("G_id"), CredManager.GetAccountValue("G_name"), CredManager.GetAccountValue("G_email"), CredManager.GetAccountValue("G_picture")));
+						//TODO: Will need to update menu
+						//myProfile prof = new myProfile(false);
+						//mainPage.Children.RemoveAt(0);
+						//mainPage.Children.Insert(0, prof);
+						//mainPage.Children.Insert(1, new mycookies());
+						//mainPage.SelectedItem = mainPage.Children[0];
+
+					}
+					catch (Exception e)
+					{
+
+					}
+
+				});
+			}
 		}
 
 		protected override void OnStart()

@@ -21,7 +21,7 @@ namespace GarageSale.Views.ListViews
 			ItemTemplate = new DataTemplate(() =>
 			{
 				// Create views with bindings for displaying each property.
-				Label nameLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) }, bioLabel = new Label();
+				Label nameLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),VerticalOptions = LayoutOptions.CenterAndExpand,HorizontalOptions = LayoutOptions.CenterAndExpand }, bioLabel = new Label();
 				nameLabel.SetBinding(Label.TextProperty, "name");
 				//bioLabel.SetBinding(Label.TextProperty, "bio");
 
@@ -31,7 +31,7 @@ namespace GarageSale.Views.ListViews
 					WidthRequest = 75,
 
 				};
-				imageView.SetBinding(Image.SourceProperty, "picture_URL");
+				imageView.SetBinding(Image.SourceProperty, "pic_url");
 
 
 				// Return an assembled ViewCell.

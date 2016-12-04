@@ -251,3 +251,5 @@ paket-files/
 .idea/
 *.sln.iml
 Server/yardSaleWCF/yardSaleWCF/Constants.cs
+App/GarageSale/GarageSale/GarageSale/Constants.cs
+App/GarageSale/GarageSale/GarageSale/Constants.cs

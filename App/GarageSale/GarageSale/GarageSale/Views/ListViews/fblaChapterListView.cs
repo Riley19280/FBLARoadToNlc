@@ -36,7 +36,7 @@ namespace GarageSale.Views.ListViews
 					WidthRequest = 75,
 
 				};
-				imageView.SetBinding(Image.SourceProperty, "picture_URL");
+				imageView.SetBinding(Image.SourceProperty, "pic_url");
 
 
 

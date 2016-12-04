@@ -20,9 +20,9 @@ namespace yardSaleWCF
 			return DBACC.AddComment(comment);
 		}
 
-		public bool CreateUser(userWCF user)
+		public bool UpdateUser(userWCF user)
 		{
-			return DBACC.CreateUser(user);
+			return DBACC.UpdateUser(user);
 		}
 
 		public bool UpdateUserActivity(string user_id)

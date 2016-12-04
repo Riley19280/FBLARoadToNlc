@@ -57,9 +57,9 @@ namespace GarageSale
 			return Items;
 		}
 
-		public async Task<bool> CreateUser(user u)
+		public async Task<bool> UpdateUser(user u)
 		{
-			return await Task.Factory.FromAsync(service.BeginCreateUser, service.EndCreateUser, convertToWCF(u), TaskCreationOptions.None);
+			return await Task.Factory.FromAsync(service.BeginUpdateUser, service.EndUpdateUser, convertToWCF(u), TaskCreationOptions.None);
 		}
 
 		public async Task<bool> AddComment(comment c)
@@ -308,7 +308,7 @@ namespace GarageSale
 		}
 		public user convertFromWCF(userWCF u)
 		{
-			return new user(u.id, u.name, u.pic_url);
+			return new user(u.id, u.name,u.email, u.pic_url);
 		}
 		public comment convertFromWCF(commentWCF c)
 		{
@@ -349,6 +349,7 @@ namespace GarageSale
 
 			user.id = u.id;
 			user.name = u.name;
+			user.email = u.email;
 			user.pic_url = u.pic_url;
 
 			return user;

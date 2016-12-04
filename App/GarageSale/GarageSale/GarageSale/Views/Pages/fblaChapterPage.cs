@@ -88,11 +88,11 @@ namespace GarageSale.Views
 			Title = fbla.school+" FBLA";
 
 			viewItems.Command = new Command(() => {
-				Navigation.PushAsync(new viewListPage(new itemListView(),fbla.id, 1,"Items for sale by"+fbla.school));
+				Navigation.PushAsync(new viewListPage(new itemListView(),fbla.id, 1,"Items for sale by "+fbla.school));
 			});
 
 			viewMembers.Command = new Command(() => {
-				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2,"Members of FBLA at"+fbla.school));
+				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2,"Members of FBLA at "+fbla.school));
 			});
 
 			#region prof image
@@ -174,7 +174,7 @@ namespace GarageSale.Views
 			lblCity.Text = fbla.city;
 			lblSchool.Text = fbla.school;
 			//TODO: set profile image
-			//profImg.Source = ImageSource.FromUri(new Uri(prof.picture_URL));
+			//profImg.Source = ImageSource.FromUri(new Uri(prof.pic_url));
 
 			Content = baseStack;
 			//TODO: do this if user is admin

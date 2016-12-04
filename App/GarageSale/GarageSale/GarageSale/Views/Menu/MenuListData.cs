@@ -11,6 +11,13 @@ namespace GarageSale.Views.Menu
 	{
 		public MenuListData ()
 		{
+			this.Add(new MenuItem()
+			{
+				Title = "Log In",
+				//IconSource = "contacts.png", 
+				TargetType = typeof(loginPageModal)
+			});
+
 			this.Add (new MenuItem () { 
 				Title = "All Items", 
 				//IconSource = "contacts.png", 

@@ -21,6 +21,8 @@ namespace yardSaleWCF
         
       
         
+        private string emailField;
+        
         private string idField;
         
         private string nameField;
@@ -28,6 +30,23 @@ namespace yardSaleWCF
         private string pic_urlField;
         
      
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string email
+        {
+            get
+            {
+                return this.emailField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.emailField, value) != true))
+                {
+                    this.emailField = value;
+                    this.RaisePropertyChanged("email");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string id
@@ -681,13 +700,13 @@ namespace yardSaleWCF
 public interface IYardSale
 {
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/CreateUser", ReplyAction="http://tempuri.org/IYardSale/CreateUserResponse")]
-    bool CreateUser(yardSaleWCF.userWCF user);
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/UpdateUser", ReplyAction="http://tempuri.org/IYardSale/UpdateUserResponse")]
+    bool UpdateUser(yardSaleWCF.userWCF user);
     
-    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/CreateUser", ReplyAction="http://tempuri.org/IYardSale/CreateUserResponse")]
-    System.IAsyncResult BeginCreateUser(yardSaleWCF.userWCF user, System.AsyncCallback callback, object asyncState);
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/UpdateUser", ReplyAction="http://tempuri.org/IYardSale/UpdateUserResponse")]
+    System.IAsyncResult BeginUpdateUser(yardSaleWCF.userWCF user, System.AsyncCallback callback, object asyncState);
     
-    bool EndCreateUser(System.IAsyncResult result);
+    bool EndUpdateUser(System.IAsyncResult result);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/UpdateUserActivity", ReplyAction="http://tempuri.org/IYardSale/UpdateUserActivityResponse")]
     bool UpdateUserActivity(string user_id);
@@ -852,19 +871,19 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     {
     }
     
-    public bool CreateUser(yardSaleWCF.userWCF user)
+    public bool UpdateUser(yardSaleWCF.userWCF user)
     {
-        return base.Channel.CreateUser(user);
+        return base.Channel.UpdateUser(user);
     }
     
-    public System.IAsyncResult BeginCreateUser(yardSaleWCF.userWCF user, System.AsyncCallback callback, object asyncState)
+    public System.IAsyncResult BeginUpdateUser(yardSaleWCF.userWCF user, System.AsyncCallback callback, object asyncState)
     {
-        return base.Channel.BeginCreateUser(user, callback, asyncState);
+        return base.Channel.BeginUpdateUser(user, callback, asyncState);
     }
     
-    public bool EndCreateUser(System.IAsyncResult result)
+    public bool EndUpdateUser(System.IAsyncResult result)
     {
-        return base.Channel.EndCreateUser(result);
+        return base.Channel.EndUpdateUser(result);
     }
     
     public bool UpdateUserActivity(string user_id)

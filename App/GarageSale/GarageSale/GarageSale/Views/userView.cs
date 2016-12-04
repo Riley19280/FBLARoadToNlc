@@ -16,9 +16,9 @@ namespace GarageSale.Views
 		Label lblName = new Label
 		{
 			Text = "",
-			VerticalOptions = LayoutOptions.StartAndExpand,
+			VerticalOptions = LayoutOptions.CenterAndExpand,
 			HorizontalOptions = LayoutOptions.CenterAndExpand,
-
+			FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
 		};
 
 		Label lblRating = new Label
@@ -61,7 +61,7 @@ namespace GarageSale.Views
 								HorizontalOptions = LayoutOptions.FillAndExpand,
 								Children = {
 									lblName,
-									lblRating,
+									//lblRating,
 								}
 							}
 						}
@@ -83,7 +83,7 @@ namespace GarageSale.Views
 				lblName.Text = u.name;
 				Title = u.name;
 				lblStats.Text = "Items: " + items.Count.ToString();
-				//TODO:profImg.Source = ImageSource.FromUri(new Uri(u.pic_url));
+				profImg.Source = ImageSource.FromUri(new Uri(u.pic_url));
 			
 			}
 

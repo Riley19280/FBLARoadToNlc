@@ -54,17 +54,20 @@ namespace yardSaleWCF
 	[DataContract]
 	public class userWCF
 	{
-		public userWCF(string id, string name, string pic_url)
+		public userWCF(string id, string name,string email, string pic_url)
 		{
 
 			this.id = id;
 			this.name = name;
+			this.email = email;
 			this.pic_url = pic_url;
 		}
 		[DataMember]
 		public string id { get; protected set; }
 		[DataMember]
 		public string name { get; protected set; }
+		[DataMember]
+		public string email { get; protected set; }
 		[DataMember]
 		public string pic_url { get; protected set; }
 	}

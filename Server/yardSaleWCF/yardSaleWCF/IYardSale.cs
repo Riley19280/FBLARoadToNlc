@@ -14,7 +14,7 @@ namespace yardSaleWCF
 	{
 
 		[OperationContract]
-		bool CreateUser(userWCF user);
+		bool UpdateUser(userWCF user);
 
 		[OperationContract]
 		bool UpdateUserActivity(string user_id);
