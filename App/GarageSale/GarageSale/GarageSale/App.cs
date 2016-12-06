@@ -71,13 +71,16 @@ namespace GarageSale
 			CredManager = DependencyService.Get<ICredentialManager>();
 			ORM = new OAuthReqManager();
 
-			var task = Task.Run(async () =>
+			if (CredManager.IsLoggedIn())
 			{
-				user u = await MANAGER.YSSI.GetUser(CredManager.GetAccountValue("G_id"));
-				CredManager.UpdateAccountValue("FBLA_chapter_id", u.FBLA_chapter_id.ToString());
-			});
-			task.Wait();
+				var task = Task.Run(async () =>
+					{
+						user u = await MANAGER.YSSI.GetUser(CredManager.GetAccountValue("G_id"));
+						CredManager.UpdateAccountValue("FBLA_chapter_id", u.FBLA_chapter_id.ToString());
+					});
+				task.Wait();
 
+			}
 
 			mainPage = new RootPage();
 			MainPage = mainPage;
