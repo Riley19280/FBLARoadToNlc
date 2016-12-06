@@ -1,9 +1,12 @@
 ﻿using GarageSale.Views.Menu;
+using GarageSale.Views.Pages;
+using myDataTypes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GarageSale
@@ -12,6 +15,7 @@ namespace GarageSale
 	{
 
 		public static Page mainPage;
+		public static RootPage rootPage;
 
 		public static Manager MANAGER;
 		public static ICredentialManager CredManager;
@@ -66,7 +70,15 @@ namespace GarageSale
 			MANAGER = new Manager(new YardSaleServiceImplementation());
 			CredManager = DependencyService.Get<ICredentialManager>();
 			ORM = new OAuthReqManager();
-		
+
+			var task = Task.Run(async () =>
+			{
+				user u = await MANAGER.YSSI.GetUser(CredManager.GetAccountValue("G_id"));
+				CredManager.UpdateAccountValue("FBLA_chapter_id", u.FBLA_chapter_id.ToString());
+			});
+			task.Wait();
+
+
 			mainPage = new RootPage();
 			MainPage = mainPage;
 
@@ -84,27 +96,24 @@ namespace GarageSale
 
 						if (!await ORM.GetProfileInfo())
 						{
-							await mainPage.DisplayAlert("Error logging in", "Error logging in, Please try again", "Dismiss");
+							await mainPage.DisplayAlert("Error completing  login", "Error completing  login, Please try again", "Dismiss");
 
 							CredManager.DeleteCredentials();
-						
-
 							return;
 						}
 
 
 						MANAGER.YSSI.UpdateUser(new myDataTypes.user(CredManager.GetAccountValue("G_id"), CredManager.GetAccountValue("G_name"), CredManager.GetAccountValue("G_email"), CredManager.GetAccountValue("G_picture")));
-						//TODO: Will need to update menu
-						//myProfile prof = new myProfile(false);
-						//mainPage.Children.RemoveAt(0);
-						//mainPage.Children.Insert(0, prof);
-						//mainPage.Children.Insert(1, new mycookies());
-						//mainPage.SelectedItem = mainPage.Children[0];
+						user u = await MANAGER.YSSI.GetUser(CredManager.GetAccountValue("G_id"));
+						CredManager.UpdateAccountValue("FBLA_chapter_id", u.FBLA_chapter_id.ToString());
 
+						rootPage.menuPage.Menu.ItemsSource = new MenuListDataPrivate();
+						rootPage.setDetail(new welcomePage());
 					}
 					catch (Exception e)
 					{
-
+						await mainPage.DisplayAlert("Error completing  login", "Error completing  login, Please try again", "Dismiss");
+						Debug.WriteLine(e.Message + "\n" + e.StackTrace);
 					}
 
 				});

@@ -30,11 +30,13 @@ namespace yardSaleWCF
 			return DBACC.UpdateUserActivity(user_id);
 		}
 
-		public List<itemWCF> GetAllItems() {
+		public List<itemWCF> GetAllItems()
+		{
 			return DBACC.GetAllItems();
 		}
 
-		public bool AddItem(itemWCF item) {
+		public bool AddItem(itemWCF item)
+		{
 			return DBACC.AddItem(item);
 		}
 
@@ -96,6 +98,11 @@ namespace yardSaleWCF
 		public List<fblaChapterWCF> GetSearchedChapters(string search)
 		{
 			return DBACC.GetSearchedChapters(search);
+		}
+
+		public fblaChapterWCF GetFBLAChapter(int id)
+		{
+			return DBACC.GetFBLAChapter(id);
 		}
 	}
 }

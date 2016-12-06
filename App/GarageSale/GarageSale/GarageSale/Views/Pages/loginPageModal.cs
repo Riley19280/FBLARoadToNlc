@@ -32,7 +32,7 @@ namespace GarageSale.Views.Pages
 
 		private void BackButton_Clicked(object sender, EventArgs e)
 		{
-			App.CredManager.DeleteCredentials();
+
 			Navigation.PopModalAsync();
 		}
 	}

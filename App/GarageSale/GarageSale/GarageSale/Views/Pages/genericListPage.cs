@@ -27,6 +27,19 @@ namespace GarageSale.Views.Pages
 			Title = title;
 		}
 
+		string user_id;
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="v">The list view you want to display</param>
+		/// <param name="user_id">ID of the user</param>
+		/// <param name="title">The title for the page</param>
+		public viewListPage(ListView v, string user_id, string title)
+		{
+			view = v;
+			this.user_id = user_id;
+			Title = title;
+		}
 
 		protected async override void OnAppearing()
 		{
@@ -38,6 +51,9 @@ namespace GarageSale.Views.Pages
 					break;
 				case 2:
 					view.ItemsSource = await App.MANAGER.YSSI.GetUsersByChapterStatus(-1, fbla_id);
+					break;
+				case 3:
+					view.ItemsSource = await App.MANAGER.YSSI.GetItemsAssociatedWithUser(user_id);
 					break;
 			}
 

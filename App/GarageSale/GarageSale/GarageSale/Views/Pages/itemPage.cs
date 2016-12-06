@@ -147,8 +147,6 @@ namespace GarageSale.Views.Pages
 			Content = baseStack;
 
 		}
-
-		bool adminAlert = false;
 	}
 
 }

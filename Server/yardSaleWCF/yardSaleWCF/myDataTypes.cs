@@ -17,7 +17,7 @@ namespace yardSaleWCF
 	[DataContract]
 	public class itemWCF
 	{
-		
+
 		public itemWCF(int id, string owner_id, string name, string description, string pic_url, float price, float quality, bool sold, DateTime date_added)
 		{
 			this.id = id;
@@ -54,13 +54,14 @@ namespace yardSaleWCF
 	[DataContract]
 	public class userWCF
 	{
-		public userWCF(string id, string name,string email, string pic_url)
+		public userWCF(string id, string name, string email, string pic_url,int FBLA_chapter_id=-1)
 		{
 
 			this.id = id;
 			this.name = name;
 			this.email = email;
 			this.pic_url = pic_url;
+			this.FBLA_chapter_id = FBLA_chapter_id;
 		}
 		[DataMember]
 		public string id { get; protected set; }
@@ -70,6 +71,9 @@ namespace yardSaleWCF
 		public string email { get; protected set; }
 		[DataMember]
 		public string pic_url { get; protected set; }
+		[DataMember]
+		public int FBLA_chapter_id { get; protected set; }
+
 	}
 
 	[DataContract]
@@ -119,9 +123,11 @@ namespace yardSaleWCF
 	}
 
 	[DataContract]
-	public class fblaChapterWCF {
+	public class fblaChapterWCF
+	{
 
-		public fblaChapterWCF(int id, string name, string state, string city, string school, string contact_email, string payment_email, string pic_url) {
+		public fblaChapterWCF(int id, string name, string state, string city, string school, string contact_email, string payment_email, string pic_url)
+		{
 			this.id = id;
 			this.name = name;
 			this.state = state;

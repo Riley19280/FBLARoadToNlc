@@ -91,7 +91,7 @@ namespace GarageSale.Views.Pages
 			//App.ORM.GetProfileInfo(App.CredManager.GetCredentials());
 			if (!posted && !string.IsNullOrWhiteSpace(name.Text) && !string.IsNullOrWhiteSpace(desc.Text))
 			{//FIXME:SET OWNER ID FOR ADD ITEM HERE
-				myDataTypes.item act = new myDataTypes.item(0,"id",name.Text,desc.Text,"picurl",float.Parse(price.Text),quality.SelectedIndex+1,false,DateTime.Now);
+				myDataTypes.item act = new myDataTypes.item(0,App.CredManager.GetAccountValue("G_id"),name.Text,desc.Text,"picurl",float.Parse(price.Text),quality.SelectedIndex+1,false,DateTime.Now);
 				App.MANAGER.YSSI.AddItem(act);
 				posted = true;
 				Navigation.PopAsync();

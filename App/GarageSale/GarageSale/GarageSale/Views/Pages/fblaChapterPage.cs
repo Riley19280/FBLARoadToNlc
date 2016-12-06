@@ -11,8 +11,6 @@ namespace GarageSale.Views
 {
 	public class fblaChapterPage : basePage
 	{
-
-		ListView listView;
 		myDataTypes.fblaChapter fbla;
 
 		StackLayout baseStack;
@@ -70,7 +68,7 @@ namespace GarageSale.Views
 			//Margin = 0,
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 		};
-		
+
 
 		Button viewMembers = new Button
 		{
@@ -85,14 +83,27 @@ namespace GarageSale.Views
 		public fblaChapterPage(myDataTypes.fblaChapter o)
 		{
 			fbla = o;
-			Title = fbla.school+" FBLA";
+		
+			populateProfileFields();
 
-			viewItems.Command = new Command(() => {
-				Navigation.PushAsync(new viewListPage(new itemListView(),fbla.id, 1,"Items for sale by "+fbla.school));
+		}
+
+		public fblaChapterPage()
+		{
+			shouldGetChapter = true;
+			fblaid = int.Parse(App.CredManager.GetAccountValue("FBLA_chapter_id"));
+		}
+
+		StackLayout makeGUI()
+		{
+			viewItems.Command = new Command(() =>
+			{
+				Navigation.PushAsync(new viewListPage(new itemListView(), fbla.id, 1, "Items for sale by " + fbla.school));
 			});
 
-			viewMembers.Command = new Command(() => {
-				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2,"Members of FBLA at "+fbla.school));
+			viewMembers.Command = new Command(() =>
+			{
+				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2, " FBLA Members " + fbla.school));
 			});
 
 			#region prof image
@@ -129,52 +140,47 @@ namespace GarageSale.Views
 
 			#endregion
 
-			listView = new itemListView();
-
 			#region basestack
-			baseStack = new StackLayout
+			return new StackLayout
 			{
-                Children = {
-                    relLayout,
-                    new StackLayout {
-                        VerticalOptions = LayoutOptions.FillAndExpand,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
-                        Children = {
-                            lblName,
-                            lblSchool,
-                            lblCity,
-                            lblState,
-                            new StackLayout {
-                                Orientation = StackOrientation.Horizontal,
-                                Padding = 0,
+				Children = {
+					relLayout,
+					new StackLayout {
+						VerticalOptions = LayoutOptions.FillAndExpand,
+						HorizontalOptions = LayoutOptions.FillAndExpand,
+						Children = {
+							lblName,
+							lblSchool,
+							lblCity,
+							lblState,
+							new StackLayout {
+								Orientation = StackOrientation.Horizontal,
+								Padding = 0,
                                // Margin = 0,
                                 Spacing = 0,
-                                Children = {
-                                    viewItems,
-                                    viewMembers
-                                }
-                            }
-                        }
+								Children = {
+									viewItems,
+									viewMembers
+								}
+							}
+						}
 					}
 				}
 			};
 			#endregion
 
-			populateProfileFields();
-
 		}
-		
-		bool adminAlert = false;
 
 		public void populateProfileFields()
 		{
-
+			baseStack = makeGUI();
+			Title = fbla.school + " FBLA";
 			lblName.Text = fbla.name;
 			lblState.Text = fbla.state;
 			lblCity.Text = fbla.city;
 			lblSchool.Text = fbla.school;
-			//TODO: set profile image
-			//profImg.Source = ImageSource.FromUri(new Uri(prof.pic_url));
+
+			profImg.Source = ImageSource.FromUri(new Uri(fbla.pic_url));
 
 			Content = baseStack;
 			//TODO: do this if user is admin
@@ -187,6 +193,17 @@ namespace GarageSale.Views
 
 		}
 
+		bool shouldGetChapter = false;
+		int fblaid;
+
+		protected async override void OnAppearing()
+		{
+			if (shouldGetChapter)
+			{
+				fbla = await App.MANAGER.YSSI.GetFBLAChapter(fblaid);
+				populateProfileFields();
+			}
+		}
 	}
 
 }

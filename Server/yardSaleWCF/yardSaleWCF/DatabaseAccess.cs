@@ -137,7 +137,7 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 * from dbo.bids WHERE item_id = @item_id ORDER BY amount DESC", connection))
 				{
-					cmd.Parameters.AddWithValue("item_id", item_id);
+					cmd.Parameters.AddWithValue("@item_id", item_id);
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -212,7 +212,7 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("SELECT * from dbo.users WHERE id = @id", connection))
 				{
-					cmd.Parameters.AddWithValue("id", id);
+					cmd.Parameters.AddWithValue("@id", id);
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -226,7 +226,8 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("email")),
-									 reader.GetString(reader.GetOrdinal("pic_url"))
+									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 GetChapterIdOfUser(reader.GetString(reader.GetOrdinal("id")))
 									);
 
 								return u;
@@ -286,8 +287,8 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.items WHERE name LIKE @term ORDER BY date_added DESC", connection))
 				{
-					cmd.Parameters.AddWithValue("limit", 25);
-					cmd.Parameters.AddWithValue("term", "%" + search + "%");
+					cmd.Parameters.AddWithValue("@limit", 25);
+					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -328,8 +329,8 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.users WHERE name LIKE @term ORDER BY account_created DESC", connection))
 				{
-					cmd.Parameters.AddWithValue("limit", 25);
-					cmd.Parameters.AddWithValue("term", "%" + search + "%");
+					cmd.Parameters.AddWithValue("@limit", 25);
+					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -344,7 +345,8 @@ namespace yardSaleWCF
 								 reader.GetString(reader.GetOrdinal("id")),
 								 reader.GetString(reader.GetOrdinal("name")),
 								 reader.GetString(reader.GetOrdinal("email")),
-								 reader.GetString(reader.GetOrdinal("pic_url"))
+								 reader.GetString(reader.GetOrdinal("pic_url")),
+								 GetChapterIdOfUser(reader.GetString(reader.GetOrdinal("id")))
 								);
 
 								users.Add(u);
@@ -365,8 +367,8 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.items WHERE owner_id = @owner_id", connection))
 				{
-					cmd.Parameters.AddWithValue("limit", 25);
-					cmd.Parameters.AddWithValue("owner_id", user_id);
+					cmd.Parameters.AddWithValue("@limit", 25);
+					cmd.Parameters.AddWithValue("@owner_id", user_id);
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -407,8 +409,7 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("select * from dbo.items where owner_id = (select user_id from member_status where chapter_id = @chapter_id)", connection))
 				{
-					cmd.Parameters.AddWithValue("limit", 25);
-					cmd.Parameters.AddWithValue("chapter_id", chapter_id);
+					cmd.Parameters.AddWithValue("@chapter_id", chapter_id);
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -447,14 +448,14 @@ namespace yardSaleWCF
 			{
 				SqlCommand cmd = null;
 
-				if (status < 0)
-					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from dbo.member_status where status >= 1 and chapter_id = @chapter_id)", connection);
+				if (status < 0)//used if we want all users in a chapter 0 is pending member, 1 is member
+					cmd = new SqlCommand("select * from dbo.users where id in (select user_id from dbo.member_status where status >= 1 and chapter_id = @chapter_id)", connection);
 				else
-					cmd = new SqlCommand("select * from dbo.users where id=(select user_id from yardsale.dbo.member_status where status >=0 and chapter_id = 1)", connection);
+					cmd = new SqlCommand("select * from dbo.users where id in (select user_id from yardsale.dbo.member_status where status >=@status and chapter_id = @chapter_id)", connection);
 				using (cmd)
 				{
-					cmd.Parameters.AddWithValue("status", status);
-					cmd.Parameters.AddWithValue("chapter_id", chapter_id);
+					cmd.Parameters.AddWithValue("@status", status);
+					cmd.Parameters.AddWithValue("@chapter_id", chapter_id);
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -468,7 +469,8 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("email")),
-									 reader.GetString(reader.GetOrdinal("pic_url"))
+									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 GetChapterIdOfUser(reader.GetString(reader.GetOrdinal("id")))
 									);
 								users.Add(u);
 
@@ -502,7 +504,8 @@ namespace yardSaleWCF
 			}
 		}
 
-		public List<fblaChapterWCF> GetSearchedChapters(string search) {
+		public List<fblaChapterWCF> GetSearchedChapters(string search)
+		{
 			List<fblaChapterWCF> chapters = new List<fblaChapterWCF>();
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -510,8 +513,8 @@ namespace yardSaleWCF
 
 				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.fbla_chapters WHERE name LIKE @term ORDER BY name", connection))
 				{
-					cmd.Parameters.AddWithValue("limit", 25);
-					cmd.Parameters.AddWithValue("term", "%" + search + "%");
+					cmd.Parameters.AddWithValue("@limit", 25);
+					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -530,7 +533,7 @@ namespace yardSaleWCF
 								 reader.GetString(reader.GetOrdinal("school")),
 								 reader.GetString(reader.GetOrdinal("contact_email")),
 								 reader.GetString(reader.GetOrdinal("payment_email")),
-								 reader.GetString(reader.GetOrdinal("pic_url"))						 
+								 reader.GetString(reader.GetOrdinal("pic_url"))
 								);
 
 								chapters.Add(f);
@@ -541,5 +544,112 @@ namespace yardSaleWCF
 			}
 			return chapters;
 		}
+
+		public fblaChapterWCF GetFBLAChapter(int id)
+		{
+			fblaChapterWCF chapter = null;
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.fbla_chapters WHERE id =@id", connection))
+				{
+					cmd.Parameters.AddWithValue("@id", id);
+
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								fblaChapterWCF f = new fblaChapterWCF(
+								 reader.GetInt32(reader.GetOrdinal("id")),
+								 reader.GetString(reader.GetOrdinal("name")),
+								 reader.GetString(reader.GetOrdinal("state")),
+								 reader.GetString(reader.GetOrdinal("city")),
+								 reader.GetString(reader.GetOrdinal("school")),
+								 reader.GetString(reader.GetOrdinal("contact_email")),
+								 reader.GetString(reader.GetOrdinal("payment_email")),
+								 reader.GetString(reader.GetOrdinal("pic_url"))
+								);
+
+								chapter = f;
+							}
+						}
+					}
+				}
+			}
+			return chapter;
+		}
+
+
+		int GetChapterStatusOfUser(string user_id)
+		{
+			//select status from dbo.member_status where user_id = @user_id
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("select status from dbo.member_status where user_id = @user_id", connection))
+				{
+					cmd.Parameters.AddWithValue("@user_id", user_id);
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								return reader.GetInt32(reader.GetOrdinal("status"));
+							}
+						}
+						else
+						{
+							return -1;
+						}
+					}
+				}
+			}
+			return -1;
+		}
+
+		int GetChapterIdOfUser(string user_id)
+		{
+			//select status from dbo.member_status where user_id = @user_id
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("select chapter_id from dbo.member_status where user_id = @user_id", connection))
+				{
+					cmd.Parameters.AddWithValue("@user_id", user_id);
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							// Read advances to the next row.
+							//TODO: chekc fvalues for null
+							while (reader.Read())
+							{
+								return reader.GetInt32(reader.GetOrdinal("chapter_id"));
+							}
+						}
+						else
+						{
+							return -1;
+						}
+					}
+				}
+			}
+			return -1;
+		}
+
 	}
 }

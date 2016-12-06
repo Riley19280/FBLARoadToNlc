@@ -300,6 +300,10 @@ namespace GarageSale
 			return Items;
 		}
 
+		public async Task<fblaChapter> GetFBLAChapter(int id)
+		{
+			return convertFromWCF(await Task.Factory.FromAsync(service.BeginGetFBLAChapter, service.EndGetFBLAChapter, id, TaskCreationOptions.None));
+		}
 
 		#region From
 		public item convertFromWCF(itemWCF i)
@@ -308,7 +312,7 @@ namespace GarageSale
 		}
 		public user convertFromWCF(userWCF u)
 		{
-			return new user(u.id, u.name,u.email, u.pic_url);
+			return new user(u.id, u.name,u.email, u.pic_url,u.FBLA_chapter_id);
 		}
 		public comment convertFromWCF(commentWCF c)
 		{
@@ -351,6 +355,7 @@ namespace GarageSale
 			user.name = u.name;
 			user.email = u.email;
 			user.pic_url = u.pic_url;
+			user.FBLA_chapter_id = u.FBLA_chapter_id;
 
 			return user;
 		}

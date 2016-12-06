@@ -1,28 +1,39 @@
+﻿using GarageSale.Views.Pages;
 using System;
-using Xamarin.Forms;
 using System.Collections.Generic;
-using GarageSale.Views.Pages;
-
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GarageSale.Views.Menu
 {
-
-	public class MenuListData : List<MenuItem>
+	public class MenuListDataPrivate : List<MenuItem>
 	{
-		public MenuListData ()
+		public MenuListDataPrivate()
 		{
 			this.Add(new MenuItem()
 			{
-				Title = "Log In",
+				Title = "Log Out",
 				//IconSource = "contacts.png", 
-				TargetType = typeof(loginPageModal)
+				TargetType = typeof(logOutPage)
 			});
 
-			this.Add (new MenuItem () { 
-				Title = "All Items", 
+			this.Add(new MenuItem()
+			{
+				Title = "My Items",
 				//IconSource = "contacts.png", 
-				TargetType = typeof(allItemsPage)
+				TargetType = typeof(myItemsPage)
 			});
+
+			if (App.CredManager.AccountValueExists("FBLA_chapter_id"))
+				if (int.Parse(App.CredManager.GetAccountValue("FBLA_chapter_id")) > 0)
+					this.Add(new MenuItem()
+					{
+						Title = "My FBLA",
+						//IconSource = "contacts.png", 
+						TargetType = typeof(fblaChapterPage),
+					});
+
 
 			this.Add(new MenuItem()
 			{
@@ -58,8 +69,6 @@ namespace GarageSale.Views.Menu
 				//IconSource = "leads.png", 
 				TargetType = typeof(basePage)//help
 			});
-
-
 		}
 	}
 }

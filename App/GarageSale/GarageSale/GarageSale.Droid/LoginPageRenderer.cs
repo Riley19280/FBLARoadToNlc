@@ -42,7 +42,7 @@ namespace GarageSale.Droid
 					if (eventArgs.IsAuthenticated)
 					{
 						// Use eventArgs.Account to do wonderful things
-						App.CredManager.DeleteCredentials();
+						//App.CredManager.DeleteCredentials();
 						store.Save(eventArgs.Account, Constants.AppName);
 						
 						App.SuccessfulLoginAction.Invoke();
@@ -71,11 +71,7 @@ namespace GarageSale.Droid
 			catch (Exception ex)
 			{
 				Toast.MakeText(this.Context, "Error logging in", ToastLength.Long).Show();
-				//App.CredManager.DeleteCredentials();
-
-				//App.mainPage.Children.RemoveAt(0);
-				//App.mainPage.Children.Insert(0, new login());
-				//App.mainPage.SelectedItem = App.mainPage.Children[0];
+				
 			}
 
 

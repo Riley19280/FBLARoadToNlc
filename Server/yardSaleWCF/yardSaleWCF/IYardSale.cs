@@ -63,5 +63,9 @@ namespace yardSaleWCF
 
 		[OperationContract]
 		List<fblaChapterWCF> GetSearchedChapters(string search);
+
+		[OperationContract]
+		fblaChapterWCF GetFBLAChapter(int id);
+
 	}
 }

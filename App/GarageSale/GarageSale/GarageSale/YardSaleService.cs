@@ -21,6 +21,8 @@ namespace yardSaleWCF
         
       
         
+        private int FBLA_chapter_idField;
+        
         private string emailField;
         
         private string idField;
@@ -30,6 +32,23 @@ namespace yardSaleWCF
         private string pic_urlField;
         
      
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int FBLA_chapter_id
+        {
+            get
+            {
+                return this.FBLA_chapter_idField;
+            }
+            set
+            {
+                if ((this.FBLA_chapter_idField.Equals(value) != true))
+                {
+                    this.FBLA_chapter_idField = value;
+                    this.RaisePropertyChanged("FBLA_chapter_id");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string email
@@ -835,6 +854,14 @@ public interface IYardSale
     System.IAsyncResult BeginGetSearchedChapters(string search, System.AsyncCallback callback, object asyncState);
     
     yardSaleWCF.fblaChapterWCF[] EndGetSearchedChapters(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetFBLAChapter", ReplyAction="http://tempuri.org/IYardSale/GetFBLAChapterResponse")]
+    yardSaleWCF.fblaChapterWCF GetFBLAChapter(int id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetFBLAChapter", ReplyAction="http://tempuri.org/IYardSale/GetFBLAChapterResponse")]
+    System.IAsyncResult BeginGetFBLAChapter(int id, System.AsyncCallback callback, object asyncState);
+    
+    yardSaleWCF.fblaChapterWCF EndGetFBLAChapter(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1124,5 +1151,20 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public yardSaleWCF.fblaChapterWCF[] EndGetSearchedChapters(System.IAsyncResult result)
     {
         return base.Channel.EndGetSearchedChapters(result);
+    }
+    
+    public yardSaleWCF.fblaChapterWCF GetFBLAChapter(int id)
+    {
+        return base.Channel.GetFBLAChapter(id);
+    }
+    
+    public System.IAsyncResult BeginGetFBLAChapter(int id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetFBLAChapter(id, callback, asyncState);
+    }
+    
+    public yardSaleWCF.fblaChapterWCF EndGetFBLAChapter(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetFBLAChapter(result);
     }
 }

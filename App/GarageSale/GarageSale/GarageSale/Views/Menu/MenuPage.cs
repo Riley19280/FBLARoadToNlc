@@ -11,6 +11,8 @@ namespace GarageSale.Views.Menu
 
 		public MenuPage ()
 		{
+			
+
 			Icon = "settings.png";
 			Title = "menu"; // The Title property must be set.
 

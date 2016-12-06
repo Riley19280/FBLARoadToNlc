@@ -16,6 +16,8 @@ namespace GarageSale
 		bool UpdateAccountValue(string key, string value);		
 		string GetAccountValue(string key);
 		bool IsLoggedIn();
+		bool AccountValueExists(string key);
+
 
 	}
 }

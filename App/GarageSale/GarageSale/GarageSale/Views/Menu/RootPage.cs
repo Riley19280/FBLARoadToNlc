@@ -2,36 +2,46 @@
 using Xamarin.Forms;
 using System.Linq;
 using System.Collections.Generic;
+using GarageSale.Views.Pages;
 
 namespace GarageSale.Views.Menu
 {
 	public class RootPage : MasterDetailPage
 	{
-		MenuPage menuPage;
+		public MenuPage menuPage;
 
-		public RootPage ()
+		public RootPage()
 		{
+			App.rootPage = this;
+
 			menuPage = new MenuPage();
 
-			menuPage.Menu.ItemSelected += (sender, e) => NavigateTo (e.SelectedItem as MenuItem);
+			menuPage.Menu.ItemSelected += (sender, e) => NavigateTo(e.SelectedItem as MenuItem);
 
 			Master = menuPage;
-			Detail = new NavigationPage(new basePage())//TODO:WELCOME PAGE
+			Detail = new NavigationPage(new welcomePage())
 			{
 				//BarBackgroundColor = Constants.palette.primary_dark,
 				//BarTextColor = Constants.palette.icons,
 			};
 		}
 
-		void NavigateTo (MenuItem menu)
+		public void setDetail(Page page)
+		{
+			Detail = new NavigationPage(page);
+			IsPresented = false;
+		}
+
+		void NavigateTo(MenuItem menu)
 		{
 			if (menu == null)
 				return;
 
 			Page displayPage = (Page)Activator.CreateInstance(menu.TargetType);
-			
 
-			Detail = new NavigationPage(displayPage) {
+
+			Detail = new NavigationPage(displayPage)
+			{
 				//BarBackgroundColor = Constants.palette.primary_dark,
 				//BarTextColor = Constants.palette.icons,
 			};

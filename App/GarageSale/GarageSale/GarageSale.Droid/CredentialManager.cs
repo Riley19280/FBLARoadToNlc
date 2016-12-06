@@ -17,6 +17,19 @@ namespace GarageSale.Droid
 {
 	public class CredentialManager : ICredentialManager
 	{
+		public bool AccountValueExists(string key)
+		{
+			Account acct = GetCredentials();
+
+			if (acct == null)
+				return false;
+			if (!acct.Properties.ContainsKey(key))
+				return false;
+			else
+				return true;
+
+		}
+
 		public bool DeleteCredentials()
 		{
 			List<Account> accounts = AccountStore.Create(Forms.Context).FindAccountsForService(Constants.AppName).ToList();
@@ -47,7 +60,7 @@ namespace GarageSale.Droid
 			Account acct = GetCredentials();
 			if (acct != null)
 			{
-				if (acct.Properties.ContainsKey("id"))
+				if (acct.Properties.ContainsKey("G_id"))
 				{
 					return true;
 				}

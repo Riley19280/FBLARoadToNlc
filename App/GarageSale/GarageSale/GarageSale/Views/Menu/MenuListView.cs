@@ -7,19 +7,24 @@ namespace GarageSale.Views.Menu
 
 	public class MenuListView : ListView
 	{
-		public MenuListView ()
+		public MenuListView()
 		{
-			List<MenuItem> data = new MenuListData ();
-			
+			List<MenuItem> data;
+
+			if (App.CredManager.IsLoggedIn())
+			{ data = new MenuListDataPrivate(); }
+			else
+			{ data = new MenuListDataPublic(); }
+
 			ItemsSource = data;
 			VerticalOptions = LayoutOptions.FillAndExpand;
 			BackgroundColor = Color.Transparent;
 			SeparatorVisibility = SeparatorVisibility.None;
 
-			var cell = new DataTemplate (typeof(MenuCell));
-			
-			cell.SetBinding (MenuCell.TextProperty, "Title");
-		//	cell.SetBinding (MenuCell.ImageSourceProperty, "IconSource");
+			var cell = new DataTemplate(typeof(MenuCell));
+
+			cell.SetBinding(MenuCell.TextProperty, "Title");
+			//	cell.SetBinding (MenuCell.ImageSourceProperty, "IconSource");
 
 			ItemTemplate = cell;
 		}
