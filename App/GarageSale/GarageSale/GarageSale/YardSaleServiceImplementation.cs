@@ -16,8 +16,12 @@ namespace GarageSale
 		{
 			try
 			{
+				BasicHttpBinding httpBinding = new BasicHttpBinding();
+				httpBinding.MaxReceivedMessageSize = 2147483647;
+				httpBinding.MaxBufferSize = 2147483647;
+
 				service = new YardSaleClient(
-				new BasicHttpBinding(),
+				httpBinding,
 				new EndpointAddress(Constants.WCFURL));
 			}
 			catch (Exception e)
@@ -69,7 +73,7 @@ namespace GarageSale
 
 		public async Task<bool> AddItem(item i)
 		{
-			return await Task.Factory.FromAsync(service.BeginAddItem, service.EndAddItem, convertToWCF(i), TaskCreationOptions.None);
+			return await Task.Factory.FromAsync(service.BeginAddItem, service.EndAddItem, convertToWCF(i), TaskCreationOptions.LongRunning);	
 		}
 
 		public async Task<bool> AddBid(bid b)
@@ -308,7 +312,7 @@ namespace GarageSale
 		#region From
 		public item convertFromWCF(itemWCF i)
 		{
-			return new item(i.id, i.owner_id, i.name, i.description, i.pic_url, i.price, i.quality, i.sold, i.date_added);
+			return new item(i.id, i.owner_id, i.name, i.description, i.picture, i.price, i.quality, i.sold, i.date_added);
 		}
 		public user convertFromWCF(userWCF u)
 		{
@@ -324,7 +328,7 @@ namespace GarageSale
 		}
 		public fblaChapter convertFromWCF(fblaChapterWCF f)
 		{
-			return new fblaChapter(f.id, f.name,f.state,f.city,f.school,f.contact_email,f.payment_email,f.pic_url);
+			return new fblaChapter(f.id, f.name,f.state,f.city,f.school,f.contact_email,f.payment_email,f.picture);
 		}
 
 		#endregion
@@ -339,7 +343,7 @@ namespace GarageSale
 			item.owner_id = i.owner_id;
 			item.name = i.name;
 			item.description = i.description;
-			item.pic_url = i.pic_url;
+			item.picture = i.picture;
 			item.price = i.price;
 			item.quality = i.quality;
 			item.sold = i.sold;
@@ -394,7 +398,7 @@ namespace GarageSale
 			fbla.school = f.school;
 			fbla.contact_email = f.contact_email;
 			fbla.payment_email = f.payment_email;
-			fbla.pic_url = f.pic_url;
+			fbla.picture = f.picture;
 
 
 			return fbla;

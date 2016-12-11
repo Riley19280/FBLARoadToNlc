@@ -104,5 +104,10 @@ namespace yardSaleWCF
 		{
 			return DBACC.GetFBLAChapter(id);
 		}
+
+		public bool SetFBLAChapterPicture(int id, byte[] picture)
+		{
+			return DBACC.SetFBLAChapterPicture(id, picture);
+		}
 	}
 }

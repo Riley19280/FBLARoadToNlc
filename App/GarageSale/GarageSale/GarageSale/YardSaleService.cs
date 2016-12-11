@@ -265,7 +265,7 @@ namespace yardSaleWCF
         
         private string owner_idField;
         
-        private string pic_urlField;
+        private byte[] pictureField;
         
         private float priceField;
         
@@ -361,18 +361,18 @@ namespace yardSaleWCF
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string pic_url
+        public byte[] picture
         {
             get
             {
-                return this.pic_urlField;
+                return this.pictureField;
             }
             set
             {
-                if ((object.ReferenceEquals(this.pic_urlField, value) != true))
+                if ((object.ReferenceEquals(this.pictureField, value) != true))
                 {
-                    this.pic_urlField = value;
-                    this.RaisePropertyChanged("pic_url");
+                    this.pictureField = value;
+                    this.RaisePropertyChanged("picture");
                 }
             }
         }
@@ -556,7 +556,7 @@ namespace yardSaleWCF
         
         private string payment_emailField;
         
-        private string pic_urlField;
+        private byte[] pictureField;
         
         private string schoolField;
         
@@ -650,18 +650,18 @@ namespace yardSaleWCF
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string pic_url
+        public byte[] picture
         {
             get
             {
-                return this.pic_urlField;
+                return this.pictureField;
             }
             set
             {
-                if ((object.ReferenceEquals(this.pic_urlField, value) != true))
+                if ((object.ReferenceEquals(this.pictureField, value) != true))
                 {
-                    this.pic_urlField = value;
-                    this.RaisePropertyChanged("pic_url");
+                    this.pictureField = value;
+                    this.RaisePropertyChanged("picture");
                 }
             }
         }
@@ -862,6 +862,14 @@ public interface IYardSale
     System.IAsyncResult BeginGetFBLAChapter(int id, System.AsyncCallback callback, object asyncState);
     
     yardSaleWCF.fblaChapterWCF EndGetFBLAChapter(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/SetFBLAChapterPicture", ReplyAction="http://tempuri.org/IYardSale/SetFBLAChapterPictureResponse")]
+    bool SetFBLAChapterPicture(int id, byte[] picture);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/SetFBLAChapterPicture", ReplyAction="http://tempuri.org/IYardSale/SetFBLAChapterPictureResponse")]
+    System.IAsyncResult BeginSetFBLAChapterPicture(int id, byte[] picture, System.AsyncCallback callback, object asyncState);
+    
+    bool EndSetFBLAChapterPicture(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1166,5 +1174,20 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public yardSaleWCF.fblaChapterWCF EndGetFBLAChapter(System.IAsyncResult result)
     {
         return base.Channel.EndGetFBLAChapter(result);
+    }
+    
+    public bool SetFBLAChapterPicture(int id, byte[] picture)
+    {
+        return base.Channel.SetFBLAChapterPicture(id, picture);
+    }
+    
+    public System.IAsyncResult BeginSetFBLAChapterPicture(int id, byte[] picture, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginSetFBLAChapterPicture(id, picture, callback, asyncState);
+    }
+    
+    public bool EndSetFBLAChapterPicture(System.IAsyncResult result)
+    {
+        return base.Channel.EndSetFBLAChapterPicture(result);
     }
 }

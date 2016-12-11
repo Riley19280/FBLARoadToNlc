@@ -67,5 +67,7 @@ namespace yardSaleWCF
 		[OperationContract]
 		fblaChapterWCF GetFBLAChapter(int id);
 
+		[OperationContract]
+		bool SetFBLAChapterPicture(int id, byte[] picture);
 	}
 }

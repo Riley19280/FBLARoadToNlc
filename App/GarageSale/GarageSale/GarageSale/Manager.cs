@@ -11,9 +11,11 @@ namespace GarageSale
 	{
 		public YardSaleServiceImplementation YSSI;
 
+		public mediaController MediaContorller;
+
 		public Manager(YardSaleServiceImplementation y) {
 			YSSI = y;
-			
+			MediaContorller = new mediaController();
 		}
 
 	}

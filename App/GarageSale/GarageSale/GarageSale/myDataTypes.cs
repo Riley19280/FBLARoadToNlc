@@ -8,13 +8,13 @@ namespace myDataTypes
 {
 	public class item
 	{
-		public item(int id, string owner_id, string name, string description, string pic_url, float price, float quality, bool sold, DateTime date_added)
+		public item(int id, string owner_id, string name, string description, byte[] picture, float price, float quality, bool sold, DateTime date_added)
 		{
 			this.id = id;
 			this.owner_id = owner_id;
 			this.name = name;
 			this.description = description;
-			this.pic_url = pic_url;
+			this.picture = picture;
 			this.price = price;
 			this.quality = quality;
 			this.sold = sold;
@@ -26,7 +26,7 @@ namespace myDataTypes
 		public string owner_id { get; protected set; }
 		public string name { get; protected set; }
 		public string description { get; protected set; }
-		public string pic_url { get; protected set; }
+		public byte[] picture { get; protected set; }
 		public float price { get; protected set; }
 		public float quality { get; protected set; }
 		public bool sold { get; protected set; }
@@ -91,7 +91,7 @@ namespace myDataTypes
 	public class fblaChapter
 	{
 
-		public fblaChapter(int id, string name, string state, string city, string school, string contact_email, string payment_email, string pic_url)
+		public fblaChapter(int id, string name, string state, string city, string school, string contact_email, string payment_email, byte[] picture)
 		{
 			this.id = id;
 			this.name = name;
@@ -100,7 +100,7 @@ namespace myDataTypes
 			this.school = school;
 			this.contact_email = contact_email;
 			this.payment_email = payment_email;
-			this.pic_url = pic_url;
+			this.picture = picture;
 		}
 
 		public int id;
@@ -117,7 +117,7 @@ namespace myDataTypes
 
 		public string payment_email;
 
-		public string pic_url;
+		public byte[] picture;
 	}
 
 }

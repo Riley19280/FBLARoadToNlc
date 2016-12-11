@@ -2,6 +2,7 @@
 using GarageSale.Views.Pages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,7 +84,7 @@ namespace GarageSale.Views
 		public fblaChapterPage(myDataTypes.fblaChapter o)
 		{
 			fbla = o;
-		
+
 			populateProfileFields();
 
 		}
@@ -180,7 +181,7 @@ namespace GarageSale.Views
 			lblCity.Text = fbla.city;
 			lblSchool.Text = fbla.school;
 
-			profImg.Source = ImageSource.FromUri(new Uri(fbla.pic_url));
+			profImg.Source = ImageSource.FromStream(() => new MemoryStream(fbla.picture));
 
 			Content = baseStack;
 			//TODO: do this if user is admin

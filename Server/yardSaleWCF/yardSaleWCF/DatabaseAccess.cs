@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 
 
@@ -86,12 +88,12 @@ namespace yardSaleWCF
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 
-			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.items(owner_id,name,description,pic_url,price,quality,sold,date_added) VALUES(@owner_id,@name,@description,@pic_url,@price,@quality,@sold,SYSDATETIME())", connection))
+			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.items(owner_id,name,description,picture,price,quality,sold,date_added) VALUES(@owner_id,@name,@description,@picture,@price,@quality,@sold,SYSDATETIME())", connection))
 			{
 				cmd.Parameters.AddWithValue("@owner_id", i.owner_id);
 				cmd.Parameters.AddWithValue("@name", i.name);
 				cmd.Parameters.AddWithValue("@description", i.description);
-				cmd.Parameters.AddWithValue("@pic_url", i.pic_url);
+				cmd.Parameters.Add(new SqlParameter("@picture", SqlDbType.VarBinary, i.picture.Length) {Value= (SqlBinary)i.picture });
 				cmd.Parameters.AddWithValue("@price", i.price);
 				cmd.Parameters.AddWithValue("@quality", i.quality);
 				cmd.Parameters.AddWithValue("@sold", i.sold ? 1 : 0);
@@ -188,7 +190,7 @@ namespace yardSaleWCF
 								 reader.GetString(reader.GetOrdinal("owner_id")),
 								 reader.GetString(reader.GetOrdinal("name")),
 								 reader.GetString(reader.GetOrdinal("description")),
-								 reader.GetString(reader.GetOrdinal("pic_url")),
+								 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 								 (float)reader.GetDouble(reader.GetOrdinal("price")),
 								 (float)reader.GetDouble(reader.GetOrdinal("quality")),
 								 reader.GetBoolean(reader.GetOrdinal("sold")),
@@ -304,7 +306,7 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("owner_id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("description")),
-									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 									 (float)reader.GetDouble(reader.GetOrdinal("price")),
 									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
 									 reader.GetBoolean(reader.GetOrdinal("sold")),
@@ -384,7 +386,7 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("owner_id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("description")),
-									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 									 (float)reader.GetDouble(reader.GetOrdinal("price")),
 									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
 									 reader.GetBoolean(reader.GetOrdinal("sold")),
@@ -425,7 +427,7 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("owner_id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("description")),
-									 reader.GetString(reader.GetOrdinal("pic_url")),
+									 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 									 (float)reader.GetDouble(reader.GetOrdinal("price")),
 									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
 									 reader.GetBoolean(reader.GetOrdinal("sold")),
@@ -439,7 +441,7 @@ namespace yardSaleWCF
 				}
 			}
 			return items;
-		}//TODO:query
+		}
 
 		public List<userWCF> GetUsersByChapterStatus(int status, int chapter_id)
 		{
@@ -533,7 +535,7 @@ namespace yardSaleWCF
 								 reader.GetString(reader.GetOrdinal("school")),
 								 reader.GetString(reader.GetOrdinal("contact_email")),
 								 reader.GetString(reader.GetOrdinal("payment_email")),
-								 reader.GetString(reader.GetOrdinal("pic_url"))
+								 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0]
 								);
 
 								chapters.Add(f);
@@ -574,7 +576,7 @@ namespace yardSaleWCF
 								 reader.GetString(reader.GetOrdinal("school")),
 								 reader.GetString(reader.GetOrdinal("contact_email")),
 								 reader.GetString(reader.GetOrdinal("payment_email")),
-								 reader.GetString(reader.GetOrdinal("pic_url"))
+								 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0]
 								);
 
 								chapter = f;
@@ -586,6 +588,26 @@ namespace yardSaleWCF
 			return chapter;
 		}
 
+		public bool SetFBLAChapterPicture(int id, byte[] picture) {
+			
+			int affected = 0;
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+
+			using (SqlCommand cmd = new SqlCommand("UPDATE dbo.fbla_chapters SET picture = @picture WHERE id = @id", connection))
+			{
+				cmd.Parameters.Add(new SqlParameter("@picture", SqlDbType.VarBinary, picture.Length) { Value = (SqlBinary)picture });
+				cmd.Parameters.AddWithValue("@id", id);
+
+				connection.Open();
+				affected = cmd.ExecuteNonQuery();
+
+			}
+			if (affected > 0)
+				return true;
+			else
+				return false;
+		}
 
 		int GetChapterStatusOfUser(string user_id)
 		{

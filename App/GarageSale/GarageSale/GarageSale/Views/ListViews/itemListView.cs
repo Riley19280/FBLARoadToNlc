@@ -15,6 +15,7 @@ namespace GarageSale.Views.ListViews
 		{
 			Label qualityLabel = null;
 			Label priceLabel = null;
+			Image imageView = null;
 			// Source of data items.
 
 			RowHeight = 80;
@@ -32,13 +33,12 @@ namespace GarageSale.Views.ListViews
 				//qualityLabel.SetBinding(Label.TextProperty, "quality");
 
 				//&#9734
-				Image imageView = new Image
+				imageView = new Image
 				{
 					HeightRequest = 100,
 					WidthRequest = 100,
 
 				};
-				imageView.SetBinding(Image.SourceProperty, "pic_url");
 
 				// Return an assembled ViewCell.
 				return new ViewCell
@@ -90,6 +90,10 @@ namespace GarageSale.Views.ListViews
 					st += "\u2605";
 				}
 				qualityLabel.Text = st;
+
+				imageView.Source = ImageSource.FromStream(() => new System.IO.MemoryStream(item.picture));
+
+
 			};
 
 

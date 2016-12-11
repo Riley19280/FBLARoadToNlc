@@ -18,13 +18,13 @@ namespace yardSaleWCF
 	public class itemWCF
 	{
 
-		public itemWCF(int id, string owner_id, string name, string description, string pic_url, float price, float quality, bool sold, DateTime date_added)
+		public itemWCF(int id, string owner_id, string name, string description, byte[] picture, float price, float quality, bool sold, DateTime date_added)
 		{
 			this.id = id;
 			this.owner_id = owner_id;
 			this.name = name;
 			this.description = description;
-			this.pic_url = pic_url;
+			this.picture = picture;
 			this.price = price;
 			this.quality = quality;
 			this.sold = sold;
@@ -40,7 +40,7 @@ namespace yardSaleWCF
 		[DataMember]
 		public string description { get; protected set; }
 		[DataMember]
-		public string pic_url { get; protected set; }
+		public byte[] picture { get; protected set; }
 		[DataMember]
 		public float price { get; protected set; }
 		[DataMember]
@@ -126,7 +126,7 @@ namespace yardSaleWCF
 	public class fblaChapterWCF
 	{
 
-		public fblaChapterWCF(int id, string name, string state, string city, string school, string contact_email, string payment_email, string pic_url)
+		public fblaChapterWCF(int id, string name, string state, string city, string school, string contact_email, string payment_email, byte[] picture)
 		{
 			this.id = id;
 			this.name = name;
@@ -135,7 +135,7 @@ namespace yardSaleWCF
 			this.school = school;
 			this.contact_email = contact_email;
 			this.payment_email = payment_email;
-			this.pic_url = pic_url;
+			this.picture = picture;
 		}
 		[DataMember]
 		public int id;
@@ -152,6 +152,6 @@ namespace yardSaleWCF
 		[DataMember]
 		public string payment_email;
 		[DataMember]
-		public string pic_url;
+		public byte[] picture;
 	}
 }
