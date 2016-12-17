@@ -21,8 +21,6 @@ namespace yardSaleWCF
         
       
         
-        private int FBLA_chapter_idField;
-        
         private string emailField;
         
         private string idField;
@@ -32,23 +30,6 @@ namespace yardSaleWCF
         private string pic_urlField;
         
      
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int FBLA_chapter_id
-        {
-            get
-            {
-                return this.FBLA_chapter_idField;
-            }
-            set
-            {
-                if ((this.FBLA_chapter_idField.Equals(value) != true))
-                {
-                    this.FBLA_chapter_idField = value;
-                    this.RaisePropertyChanged("FBLA_chapter_id");
-                }
-            }
-        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string email
@@ -870,6 +851,14 @@ public interface IYardSale
     System.IAsyncResult BeginSetFBLAChapterPicture(int id, byte[] picture, System.AsyncCallback callback, object asyncState);
     
     bool EndSetFBLAChapterPicture(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetChapterInfoOfUser", ReplyAction="http://tempuri.org/IYardSale/GetChapterInfoOfUserResponse")]
+    int[] GetChapterInfoOfUser(string user_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetChapterInfoOfUser", ReplyAction="http://tempuri.org/IYardSale/GetChapterInfoOfUserResponse")]
+    System.IAsyncResult BeginGetChapterInfoOfUser(string user_id, System.AsyncCallback callback, object asyncState);
+    
+    int[] EndGetChapterInfoOfUser(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1189,5 +1178,20 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public bool EndSetFBLAChapterPicture(System.IAsyncResult result)
     {
         return base.Channel.EndSetFBLAChapterPicture(result);
+    }
+    
+    public int[] GetChapterInfoOfUser(string user_id)
+    {
+        return base.Channel.GetChapterInfoOfUser(user_id);
+    }
+    
+    public System.IAsyncResult BeginGetChapterInfoOfUser(string user_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetChapterInfoOfUser(user_id, callback, asyncState);
+    }
+    
+    public int[] EndGetChapterInfoOfUser(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetChapterInfoOfUser(result);
     }
 }

@@ -13,6 +13,7 @@ namespace GarageSale.Views.ListViews
 
 		public fblaChapterListView()
 		{
+			SeparatorColor = Constants.palette.divider;
 			Label schoolLabel=null;
 			Label locLabel=null;
 			// Source of data items.
@@ -45,7 +46,7 @@ namespace GarageSale.Views.ListViews
 				{
 					View = new StackLayout
 					{
-						Padding = new Thickness(5, 5, 5, 0),
+						Padding = new Thickness(5, 5, 5, 5),
 						Orientation = StackOrientation.Horizontal,
 						Children =
 							{

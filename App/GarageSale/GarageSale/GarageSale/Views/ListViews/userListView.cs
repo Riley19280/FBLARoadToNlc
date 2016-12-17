@@ -4,14 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XLabs.Forms.Controls;
 
 namespace GarageSale.Views.ListViews
 {
-	class userListView : ListView
+	public class userListView : ListView
 	{
+		EventHandler<SelectedItemChangedEventArgs> Itemselected;
+
+
 		public userListView()
 		{
+			Itemselected = ((sender, eventArgs) =>
+				 {
+					 if (this.SelectedItem != null)
+					 {
+						 var userView = new userView(SelectedItem as myDataTypes.user);
+						 this.SelectedItem = null;
+						 Navigation.PushAsync(userView);
+					 }
+				 });
 
+
+			SeparatorColor = Constants.palette.divider;
 			// Source of data items.
 
 			RowHeight = 80;
@@ -21,7 +36,7 @@ namespace GarageSale.Views.ListViews
 			ItemTemplate = new DataTemplate(() =>
 			{
 				// Create views with bindings for displaying each property.
-				Label nameLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),VerticalOptions = LayoutOptions.CenterAndExpand,HorizontalOptions = LayoutOptions.CenterAndExpand }, bioLabel = new Label();
+				Label nameLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.CenterAndExpand }, bioLabel = new Label();
 				nameLabel.SetBinding(Label.TextProperty, "name");
 				//bioLabel.SetBinding(Label.TextProperty, "bio");
 
@@ -39,7 +54,7 @@ namespace GarageSale.Views.ListViews
 				{
 					View = new StackLayout
 					{
-						Padding = new Thickness(5, 5, 5, 0),
+						Padding = new Thickness(5, 5, 5, 5),
 						Orientation = StackOrientation.Horizontal,
 						Children =
 								{
@@ -58,10 +73,10 @@ namespace GarageSale.Views.ListViews
 					}
 				};
 			});
-			
 
 
-		IsPullToRefreshEnabled = true;
+
+			IsPullToRefreshEnabled = true;
 
 			this.Refreshing += ((sender, eventArgs) =>
 			{
@@ -69,17 +84,16 @@ namespace GarageSale.Views.ListViews
 				this.IsRefreshing = false;
 			});
 
-			this.ItemSelected += ((sender, eventArgs) =>
-			{
-				if (this.SelectedItem != null)
-				{
-					var userView = new userView(SelectedItem as myDataTypes.user);
-					this.SelectedItem = null;
-					Navigation.PushAsync(userView);
-				}
-			});
-
+			this.ItemSelected += Itemselected;
+			
 		}
 
+		public void removeEventHandlers()
+		{
+			Delegate[] clientList = this.Itemselected.GetInvocationList();
+			foreach (Delegate d in clientList)
+				this.ItemSelected -= (d as EventHandler<SelectedItemChangedEventArgs>);
+		
+		}
 	}
 }

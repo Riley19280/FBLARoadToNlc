@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XLabs.Forms.Controls;
 
 namespace GarageSale
 {
@@ -24,45 +25,78 @@ namespace GarageSale
 		public App()
 		{
 			#region Style
+			Resources = new ResourceDictionary();
 			var contentPageStyle = new Style(typeof(ContentPage))
 			{
 				Setters = {
-				new Setter { Property = ContentPage.BackgroundColorProperty, Value = Constants.palette.primary },
+					new Setter { Property = ContentPage.BackgroundColorProperty, Value = Constants.palette.primary },
 				}
 			};
+			Resources.Add("contentPageStyle", contentPageStyle);
+
 			var labelStyle = new Style(typeof(Label))
 			{
 				Setters = {
-				new Setter { Property = Label.TextColorProperty, Value = Constants.palette.primary_text },
+					new Setter { Property = Label.TextColorProperty, Value = Constants.palette.primary_text },
 				}
 			};
-			var editorStyle = new Style(typeof(Editor))
+			Resources.Add(labelStyle);
+
+			var editorStyle = new Style(typeof(ExtendedEditor))
 			{
 				Setters = {
-				new Setter { Property = Editor.TextColorProperty, Value = Constants.palette.primary_text },
-				new Setter { Property = Editor.BackgroundColorProperty, Value = Constants.palette.primary_light },
+					new Setter { Property = ExtendedEditor.TextColorProperty, Value = Constants.palette.primary_text },
+					new Setter { Property = ExtendedEditor.BackgroundColorProperty, Value = Constants.palette.primary_variant },
 				}
 			};
+			Resources.Add(editorStyle);
+
+			var entryStyle = new Style(typeof(ExtendedEntry))
+			{
+				Setters = {
+					new Setter { Property = ExtendedEntry.TextColorProperty, Value = Constants.palette.primary_text },
+					new Setter { Property = ExtendedEntry.BackgroundColorProperty, Value = Constants.palette.primary_variant },
+					new Setter { Property = ExtendedEntry.PlaceholderTextColorProperty, Value = Constants.palette.secondary_text },
+				}
+			};
+			Resources.Add(entryStyle);
+
+			var searchStyle = new Style(typeof(SearchBar))
+			{
+				Setters = {
+			//	new Setter { Property = SearchBar.TextColorProperty, Value = Constants.palette.primary_text },
+				new Setter { Property = SearchBar.BackgroundColorProperty, Value = Constants.palette.barColor },
+				new Setter { Property = SearchBar.CancelButtonColorProperty, Value = Constants.palette.primary_text },
+
+				}
+			};
+			Resources.Add(searchStyle);
+
+
 			var buttonStyle = new Style(typeof(Button))
 			{
 				Setters = {
-				new Setter { Property = Button.TextColorProperty, Value = Constants.palette.primary_text },
-				new Setter { Property = Button.BackgroundColorProperty, Value = Constants.palette.primary_light },
+				new Setter { Property = Button.TextColorProperty, Value = Color.FromHex("#FFFFFF") },
+				new Setter { Property = Button.BackgroundColorProperty, Value = Constants.palette.primary_dark_variant },
 				}
 			};
-			var switchStyle = new Style(typeof(Switch))
+			Resources.Add(buttonStyle);
+
+			var activityIndicatorStyle = new Style(typeof(ActivityIndicator))
 			{
 				Setters = {
-				new Setter { Property = Switch.BackgroundColorProperty, Value = Constants.palette.primary_light },
+				new Setter { Property = ActivityIndicator.ColorProperty, Value = Constants.palette.primary_dark_variant },
 				}
 			};
+			Resources.Add(activityIndicatorStyle);
 
-			Resources = new ResourceDictionary();
-			Resources.Add("contentPageStyle", contentPageStyle);
-			Resources.Add("labelStyle", labelStyle);
-			Resources.Add("editorStyle", editorStyle);
-
-
+			var listViewStyle = new Style(typeof(ListView))
+			{
+				Setters = {
+				new Setter { Property = ListView.SeparatorColorProperty, Value = Constants.palette.divider },
+				}
+			};
+			Resources.Add(listViewStyle);
 
 
 			#endregion
@@ -71,15 +105,26 @@ namespace GarageSale
 			CredManager = DependencyService.Get<ICredentialManager>();
 			ORM = new OAuthReqManager();
 
+			//TODO:Do this in load page before main page load so that the private list adds fbla correctly
 			if (CredManager.IsLoggedIn())
 			{
-				var task = Task.Run(async () =>
-					{
-						user u = await MANAGER.YSSI.GetUser(CredManager.GetAccountValue("G_id"));
-						CredManager.UpdateAccountValue("FBLA_chapter_id", u.FBLA_chapter_id.ToString());
-					});
-				task.Wait();
-
+				try
+				{
+					var task = Task.Run( async() =>
+						{
+							//TODO: check membership fo chapter, could have changed, we may be technicall doing this?
+							int[] fblaInfo = await MANAGER.YSSI.GetChapterInfoOfUser(CredManager.GetAccountValue("G_id"));
+							CredManager.UpdateAccountValue("FBLA_chapter_id", fblaInfo[0].ToString());
+							CredManager.UpdateAccountValue("FBLA_status", fblaInfo[1].ToString());
+						});
+					task.Wait();
+				}
+				catch (Exception e)
+				{
+					CredManager.UpdateAccountValue("FBLA_chapter_id", "-1");
+					CredManager.UpdateAccountValue("FBLA_status", "-1");
+					Debug.WriteLine("ERROR: "+e.Message + "\n" + e.StackTrace);
+				}
 			}
 
 			mainPage = new RootPage();
@@ -107,8 +152,18 @@ namespace GarageSale
 
 
 						MANAGER.YSSI.UpdateUser(new myDataTypes.user(CredManager.GetAccountValue("G_id"), CredManager.GetAccountValue("G_name"), CredManager.GetAccountValue("G_email"), CredManager.GetAccountValue("G_picture")));
-						user u = await MANAGER.YSSI.GetUser(CredManager.GetAccountValue("G_id"));
-						CredManager.UpdateAccountValue("FBLA_chapter_id", u.FBLA_chapter_id.ToString());
+						try
+						{
+							int[] fblaInfo = await MANAGER.YSSI.GetChapterInfoOfUser(CredManager.GetAccountValue("G_id"));
+							CredManager.UpdateAccountValue("FBLA_chapter_id", fblaInfo[0].ToString());
+							CredManager.UpdateAccountValue("FBLA_status", fblaInfo[1].ToString());
+						}
+						catch (Exception e)
+						{
+							CredManager.UpdateAccountValue("FBLA_chapter_id", "-1");
+							CredManager.UpdateAccountValue("FBLA_status", "-1");
+							Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+						}
 
 						rootPage.menuPage.Menu.ItemsSource = new MenuListDataPrivate();
 						rootPage.setDetail(new welcomePage());

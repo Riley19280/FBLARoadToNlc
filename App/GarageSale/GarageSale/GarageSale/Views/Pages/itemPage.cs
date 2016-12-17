@@ -17,17 +17,10 @@ namespace GarageSale.Views.Pages
 		StackLayout baseStack;
 
 		#region Views
-		Label lblName = new Label
-		{
-			Text = "",
-			VerticalOptions = LayoutOptions.StartAndExpand,
-			HorizontalOptions = LayoutOptions.CenterAndExpand
-
-		};
 
 		Label lblDesc = new Label
 		{
-			Text = "",
+			Text = "Description:\n",
 
 			HorizontalOptions = LayoutOptions.CenterAndExpand
 		};
@@ -41,12 +34,15 @@ namespace GarageSale.Views.Pages
 		Label lblQuality = new Label
 		{
 			HorizontalOptions = LayoutOptions.CenterAndExpand,
-			Text = ""
+			Text = "Quality: "
 		};
 
 		Image profImg = new Image
 		{
-			HorizontalOptions = LayoutOptions.FillAndExpand
+			HorizontalOptions = LayoutOptions.FillAndExpand,
+			VerticalOptions = LayoutOptions.FillAndExpand,
+			HeightRequest = 300,
+			Aspect = Aspect.AspectFit,
 		};
 
 		Button viewComments = new Button
@@ -54,14 +50,20 @@ namespace GarageSale.Views.Pages
 			Text = "View Comments",
 			BorderRadius = 0,
 			//Margin = 0,
-			HorizontalOptions = LayoutOptions.FillAndExpand,
+			HorizontalOptions = LayoutOptions.FillAndExpand
 		};
+
 		#endregion
 
 		public itemPage(myDataTypes.item i)
 		{
 			item = i;
 			Title = i.name;
+
+			viewComments.Clicked += (s, e) =>
+			{
+				Navigation.PushAsync(new commentPage(i.id));
+			};
 
 			#region basestack
 			baseStack = new StackLayout
@@ -72,7 +74,6 @@ namespace GarageSale.Views.Pages
 						HorizontalOptions = LayoutOptions.FillAndExpand,
 						Children = {
 							profImg,
-							lblName,
 							lblDesc,
 							lblPrice,
 							lblQuality,
@@ -83,15 +84,14 @@ namespace GarageSale.Views.Pages
 			};
 			#endregion
 
-			lblName.Text = i.name;
-			lblDesc.Text = i.description;
+			lblDesc.Text += i.description;
 
 			CultureInfo culture = new CultureInfo("en-us");
 			culture.NumberFormat.CurrencyNegativePattern = 1;
 
 			lblPrice.Text = string.Format(culture, "{0:c2}", item.price);
 
-			profImg.Source = ImageSource.FromStream(()=>new MemoryStream(i.picture));
+			profImg.Source = ImageSource.FromStream(() => new MemoryStream(i.picture));
 
 			//giving stars to rating
 			string st = "";
@@ -99,7 +99,7 @@ namespace GarageSale.Views.Pages
 			{
 				st += "\u2605";
 			}
-			lblQuality.Text = st;
+			lblQuality.Text += st;
 			Content = baseStack;
 
 		}

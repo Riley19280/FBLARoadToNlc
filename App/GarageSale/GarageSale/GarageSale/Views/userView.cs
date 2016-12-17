@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace GarageSale.Views
 {
-	class userView:basePage
+	class userView : basePage
 	{
 		ListView listView;
 
@@ -65,7 +65,7 @@ namespace GarageSale.Views
 								}
 							}
 						}
-					},			
+					},
 					lblStats,
 					listView
 
@@ -75,7 +75,7 @@ namespace GarageSale.Views
 
 		public async void populateProfileFields(user u)
 		{
-			
+
 			List<item> items = await App.MANAGER.YSSI.GetItemsAssociatedWithUser(u.id);
 			listView.ItemsSource = items;
 			if (u != null)
@@ -83,8 +83,16 @@ namespace GarageSale.Views
 				lblName.Text = u.name;
 				Title = u.name;
 				lblStats.Text = "Items: " + items.Count.ToString();
-				profImg.Source = ImageSource.FromUri(new Uri(u.pic_url));
-			
+				try
+				{
+					profImg.Source = ImageSource.FromUri(new Uri(u.pic_url));
+				}
+				catch (Exception e)
+				{
+					System.Diagnostics.Debug.WriteLine("Error: Unable to display profile image!\n{0}\n{1}", e.Message, e.StackTrace);
+
+				}
+
 			}
 
 		}

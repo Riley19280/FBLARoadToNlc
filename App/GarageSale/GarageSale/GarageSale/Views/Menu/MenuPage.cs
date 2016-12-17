@@ -21,7 +21,7 @@ namespace GarageSale.Views.Menu
 			var menuLabel = new ContentView {
 				Padding = new Thickness (10, 36, 0, 5),
 				Content = new Label {
-					
+					TextColor = Constants.palette.primary_text,
 					Text = "MENU", 
 				}
 			};

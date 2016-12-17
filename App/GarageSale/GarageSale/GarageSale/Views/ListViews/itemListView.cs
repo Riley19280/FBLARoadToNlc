@@ -13,6 +13,8 @@ namespace GarageSale.Views.ListViews
 	{
 		public itemListView()
 		{
+			SeparatorColor = Constants.palette.divider;
+
 			Label qualityLabel = null;
 			Label priceLabel = null;
 			Image imageView = null;
@@ -45,7 +47,7 @@ namespace GarageSale.Views.ListViews
 				{
 					View = new StackLayout
 					{
-						Padding = new Thickness(5, 5, 5, 0),
+						Padding = new Thickness(5, 5, 5, 5),
 						Orientation = StackOrientation.Horizontal,
 						Children =
 							{

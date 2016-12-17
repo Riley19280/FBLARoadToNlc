@@ -20,46 +20,30 @@ namespace GarageSale.Views
 		Label lblName = new Label
 		{
 			Text = "",
-			VerticalOptions = LayoutOptions.StartAndExpand,
+			VerticalOptions = LayoutOptions.Start,
 			HorizontalOptions = LayoutOptions.CenterAndExpand
-
-		};
-
-		Label lblState = new Label
-		{
-			Text = "",
-
-			HorizontalOptions = LayoutOptions.CenterAndExpand
-		};
-
-		Label lblCity = new Label
-		{
-			HorizontalOptions = LayoutOptions.CenterAndExpand,
-			Text = ""
 		};
 
 		Label lblSchool = new Label
 		{
-			HorizontalOptions = LayoutOptions.CenterAndExpand,
-			Text = ""
+			Text = "",
+			VerticalOptions = LayoutOptions.Start,
+			HorizontalOptions = LayoutOptions.CenterAndExpand
 		};
 
-		RelativeLayout relLayout = new RelativeLayout
+		Label lblLocation = new Label
 		{
-			//Margin = 0,
-			Padding = 0,
-			HorizontalOptions = LayoutOptions.Start,
+			Text = "",
+			VerticalOptions = LayoutOptions.Center,
+			HorizontalOptions = LayoutOptions.CenterAndExpand
 		};
 
 		Image profImg = new Image
 		{
-			HorizontalOptions = LayoutOptions.CenterAndExpand,
-			HeightRequest = 150,
-		};
-
-		Label profImgLabel = new Label
-		{//TODO: only enable changing this if user is administrator
-			Text = "Click to change"
+			HorizontalOptions = LayoutOptions.FillAndExpand,
+			VerticalOptions = LayoutOptions.FillAndExpand,
+			HeightRequest = 300,
+			Aspect = Aspect.AspectFit,
 		};
 
 		Button viewItems = new Button
@@ -69,7 +53,6 @@ namespace GarageSale.Views
 			//Margin = 0,
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 		};
-
 
 		Button viewMembers = new Button
 		{
@@ -104,66 +87,30 @@ namespace GarageSale.Views
 
 			viewMembers.Command = new Command(() =>
 			{
-				Navigation.PushAsync(new viewListPage(new userListView(), fbla.id, 2, " FBLA Members " + fbla.school));
+				Navigation.PushAsync(new fblaMembersPage(fbla.id));
 			});
 
-			#region prof image
-			profImg.GestureRecognizers.Add(new TapGestureRecognizer
-			{
-				Command = new Command(async () =>
-				{
-					var answer = await DisplayAlert("Change profile picture", "Would you like to change the picture?", "Yes", "No");
-					if (answer)
-					{
-						//FIXME: go to change image screen
-						//Device.OpenUri(new Uri("https://plus.google.com/u/0/me?tab=XX"));
-					}
-				}),
-				NumberOfTapsRequired = 1
-			});
 
-			relLayout.Children.Add(profImg,
-				Constraint.RelativeToParent((parent) =>
-				{
-					return parent.X;
-				}), Constraint.RelativeToParent((parent) =>
-				{
-					return parent.Y;
-				}));
-
-			relLayout.Children.Add(profImgLabel, Constraint.RelativeToView(profImg, (parent, sibling) =>
-			{
-				return (sibling.Width / 2) - (profImgLabel.Width / 2);
-			}), Constraint.RelativeToView(profImg, (parent, sibling) =>
-			{
-				return sibling.Height - 5 - profImgLabel.Height;
-			}));
-
-			#endregion
 
 			#region basestack
 			return new StackLayout
 			{
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				HorizontalOptions = LayoutOptions.FillAndExpand,
 				Children = {
-					relLayout,
+					//lblName,
+					profImg,
+					lblSchool,
+					lblLocation,
 					new StackLayout {
-						VerticalOptions = LayoutOptions.FillAndExpand,
 						HorizontalOptions = LayoutOptions.FillAndExpand,
+						Orientation = StackOrientation.Horizontal,
+						Padding = 0,
+                        // Margin = 0,
+                        Spacing = 0,
 						Children = {
-							lblName,
-							lblSchool,
-							lblCity,
-							lblState,
-							new StackLayout {
-								Orientation = StackOrientation.Horizontal,
-								Padding = 0,
-                               // Margin = 0,
-                                Spacing = 0,
-								Children = {
-									viewItems,
-									viewMembers
-								}
-							}
+							viewItems,
+							viewMembers
 						}
 					}
 				}
@@ -176,10 +123,8 @@ namespace GarageSale.Views
 		{
 			baseStack = makeGUI();
 			Title = fbla.school + " FBLA";
-			lblName.Text = fbla.name;
-			lblState.Text = fbla.state;
-			lblCity.Text = fbla.city;
 			lblSchool.Text = fbla.school;
+			lblLocation.Text = fbla.city + ", " + fbla.state;
 
 			profImg.Source = ImageSource.FromStream(() => new MemoryStream(fbla.picture));
 

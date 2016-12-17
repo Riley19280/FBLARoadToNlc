@@ -13,16 +13,28 @@ namespace GarageSale.Views.Pages
 	public class fblaChaptersListPage : basePage
 	{
 		ListView listView;
+		SearchBar search;
 
 		public fblaChaptersListPage()
 		{
 			Title = "FBLA Chapters";
 			listView = new fblaChapterListView();
 
+			search = new SearchBar
+			{
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				Placeholder = "Search for FBLA Chapter.."
+			};
+			search.SearchCommand = new Command(async () =>
+			{
+				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedItems(search.Text);
+			});
+
 			Content = new StackLayout
 			{
 				Children = {
-					 listView
+					search,
+					listView
 				}
 			};
 		}
@@ -32,10 +44,7 @@ namespace GarageSale.Views.Pages
 			base.OnAppearing();
 			if (listView.ItemsSource == null)
 			{
-			//TODO:ADD SEARCH BAR
-
 				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedChapters("");
-				//	Content = baseStack;
 			}
 		}
 

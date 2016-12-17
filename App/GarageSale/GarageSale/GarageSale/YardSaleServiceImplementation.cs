@@ -16,9 +16,15 @@ namespace GarageSale
 		{
 			try
 			{
-				BasicHttpBinding httpBinding = new BasicHttpBinding();
-				httpBinding.MaxReceivedMessageSize = 2147483647;
-				httpBinding.MaxBufferSize = 2147483647;
+				BasicHttpBinding httpBinding = new BasicHttpBinding()
+				{
+					MaxReceivedMessageSize = 3000000,
+					MaxBufferSize = 3000000,
+					SendTimeout = TimeSpan.FromMinutes(10),
+					OpenTimeout = TimeSpan.FromMinutes(10),
+					ReceiveTimeout = TimeSpan.FromMinutes(10),
+					CloseTimeout = TimeSpan.FromMinutes(10)
+				};
 
 				service = new YardSaleClient(
 				httpBinding,
@@ -26,6 +32,7 @@ namespace GarageSale
 			}
 			catch (Exception e)
 			{
+
 				Debug.WriteLine(e.Message);
 				Debug.WriteLine(e.StackTrace);
 
@@ -73,7 +80,7 @@ namespace GarageSale
 
 		public async Task<bool> AddItem(item i)
 		{
-			return await Task.Factory.FromAsync(service.BeginAddItem, service.EndAddItem, convertToWCF(i), TaskCreationOptions.LongRunning);	
+			return await Task.Factory.FromAsync(service.BeginAddItem, service.EndAddItem, convertToWCF(i), TaskCreationOptions.LongRunning);
 		}
 
 		public async Task<bool> AddBid(bid b)
@@ -309,6 +316,9 @@ namespace GarageSale
 			return convertFromWCF(await Task.Factory.FromAsync(service.BeginGetFBLAChapter, service.EndGetFBLAChapter, id, TaskCreationOptions.None));
 		}
 
+		public async Task<int[]> GetChapterInfoOfUser(string user_id) {
+			return await Task.Factory.FromAsync(service.BeginGetChapterInfoOfUser, service.EndGetChapterInfoOfUser, user_id, TaskCreationOptions.None);
+		}
 		#region From
 		public item convertFromWCF(itemWCF i)
 		{
@@ -316,7 +326,7 @@ namespace GarageSale
 		}
 		public user convertFromWCF(userWCF u)
 		{
-			return new user(u.id, u.name,u.email, u.pic_url,u.FBLA_chapter_id);
+			return new user(u.id, u.name, u.email, u.pic_url);
 		}
 		public comment convertFromWCF(commentWCF c)
 		{
@@ -328,7 +338,7 @@ namespace GarageSale
 		}
 		public fblaChapter convertFromWCF(fblaChapterWCF f)
 		{
-			return new fblaChapter(f.id, f.name,f.state,f.city,f.school,f.contact_email,f.payment_email,f.picture);
+			return new fblaChapter(f.id, f.name, f.state, f.city, f.school, f.contact_email, f.payment_email, f.picture);
 		}
 
 		#endregion
@@ -359,8 +369,7 @@ namespace GarageSale
 			user.name = u.name;
 			user.email = u.email;
 			user.pic_url = u.pic_url;
-			user.FBLA_chapter_id = u.FBLA_chapter_id;
-
+			
 			return user;
 		}
 		public commentWCF convertToWCF(comment c)

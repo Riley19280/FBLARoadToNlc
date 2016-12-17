@@ -5,16 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XLabs.Forms.Controls;
 using XLabs.Platform.Services.Media;
 
 namespace GarageSale.Views.Pages
 {
 	public class newItemPage : basePage
 	{
-		Entry name;
-		Editor desc;
+		ExtendedEntry name;
+		ExtendedEditor desc;
 
-		Entry price;
+		ExtendedEntry price;
 
 		Picker quality;
 		Image image;
@@ -30,6 +31,7 @@ namespace GarageSale.Views.Pages
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				Text = "Put item for sale!",
+				VerticalOptions = LayoutOptions.End
 			};
 			postBtn.Clicked += postBtnClicked;
 
@@ -37,26 +39,28 @@ namespace GarageSale.Views.Pages
 			Button cameraBtn = new Button
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.End,
 				Text = "Add A picture",
 			};
 			cameraBtn.Clicked += cameraBtnClicked;
 
-			name = new Entry
+			name = new ExtendedEntry
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				Placeholder = "Enter item Name"
 			};
 
-			desc = new Editor
+			desc = new ExtendedEditor
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.FillAndExpand
-
+				VerticalOptions = LayoutOptions.StartAndExpand,
+				HeightRequest = 50
 			};
 
 			quality = new Picker
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.End,
 				Title = "Quality",
 			};
 			quality.Items.Add("\u2605");
@@ -68,13 +72,15 @@ namespace GarageSale.Views.Pages
 			image = new Image
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
-				WidthRequest= 300,
-				HeightRequest= 300
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				HeightRequest = 100,
+				//Aspect = Aspect.AspectFit,
 			};
 
-			price = new Entry
+			price = new ExtendedEntry
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.End,
 				Placeholder = "Enter Price",
 				Keyboard = Keyboard.Numeric
 			};
@@ -82,7 +88,8 @@ namespace GarageSale.Views.Pages
 			baseStack = new StackLayout
 			{
 				Padding = new Thickness(25),
-				HorizontalOptions = LayoutOptions.FillAndExpand,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
 				Children = {
 					name,
 
@@ -126,25 +133,30 @@ namespace GarageSale.Views.Pages
 
 			image.Source = ImageSource.FromStream(() => m.Source);
 			pic = ReadFully(m.Source);
-			
+
 		}
 
 		bool posted = false;
-		private void postBtnClicked(object sender, EventArgs e)
+		private async void postBtnClicked(object sender, EventArgs e)
 		{
 
 			//App.ORM.GetProfileInfo(App.CredManager.GetCredentials());
 			if (!posted && !string.IsNullOrWhiteSpace(name.Text) && !string.IsNullOrWhiteSpace(desc.Text))
-			{//FIXME:SET OWNER ID FOR ADD ITEM HERE
+			{
 				myDataTypes.item act = new myDataTypes.item(0, App.CredManager.GetAccountValue("G_id"), name.Text, desc.Text, pic, float.Parse(price.Text), quality.SelectedIndex + 1, false, DateTime.Now);
-				App.MANAGER.YSSI.AddItem(act);
-				//todo:posted = true;
-				//Navigation.PopAsync();
 
+				bool success = await App.MANAGER.YSSI.AddItem(act);
+
+				if (success)
+				{
+					//Navigation.PopAsync();
+				}
+				else
+					await DisplayAlert("Error adding item", "There was an error adding your item. Please try again", "OK");
 			}
 			else
 			{
-				DisplayAlert("Empty Fields", "Please add a name and/or description to your item", "OK");
+				await DisplayAlert("Empty Fields", "Please add a name and/or description to your item", "OK");
 			}
 
 		}

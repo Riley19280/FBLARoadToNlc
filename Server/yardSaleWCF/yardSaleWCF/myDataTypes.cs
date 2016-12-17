@@ -9,9 +9,11 @@ namespace yardSaleWCF
 	//member status:
 	//0:pending membership
 	//1:member
-	//2:secritary
-	//3:VP
-	//4:Pres
+	//2:Parliamentarian
+	//3:Treasurer
+	//4:Secretary
+	//5:Vice-President
+	//6:President
 	//10:Admin
 
 	[DataContract]
@@ -40,7 +42,7 @@ namespace yardSaleWCF
 		[DataMember]
 		public string description { get; protected set; }
 		[DataMember]
-		public byte[] picture { get; protected set; }
+		public byte[] picture { get; set; }
 		[DataMember]
 		public float price { get; protected set; }
 		[DataMember]
@@ -54,14 +56,12 @@ namespace yardSaleWCF
 	[DataContract]
 	public class userWCF
 	{
-		public userWCF(string id, string name, string email, string pic_url,int FBLA_chapter_id=-1)
+		public userWCF(string id, string name, string email, string pic_url)
 		{
-
 			this.id = id;
 			this.name = name;
 			this.email = email;
-			this.pic_url = pic_url;
-			this.FBLA_chapter_id = FBLA_chapter_id;
+			this.pic_url = pic_url;		
 		}
 		[DataMember]
 		public string id { get; protected set; }
@@ -71,8 +71,7 @@ namespace yardSaleWCF
 		public string email { get; protected set; }
 		[DataMember]
 		public string pic_url { get; protected set; }
-		[DataMember]
-		public int FBLA_chapter_id { get; protected set; }
+		
 
 	}
 

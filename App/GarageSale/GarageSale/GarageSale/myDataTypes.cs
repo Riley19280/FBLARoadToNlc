@@ -35,21 +35,18 @@ namespace myDataTypes
 
 	public class user
 	{
-		public user(string id, string name, string email, string pic_url, int FBLA_chapter_id = -1)
+		public user(string id, string name, string email, string pic_url)
 		{
-
 			this.id = id;
 			this.name = name;
 			this.email = email;
-			this.pic_url = pic_url;
-			this.FBLA_chapter_id = FBLA_chapter_id;
+			this.pic_url = pic_url;		
 		}
 
 		public string id { get; protected set; }
 		public string name { get; protected set; }
 		public string email { get; protected set; }
 		public string pic_url { get; protected set; }
-		public int FBLA_chapter_id { get; protected set; }
 	}
 
 	public class comment

@@ -11,8 +11,8 @@ namespace GarageSale
 	{
 		public basePage()
 		{
-			//Style = (Style)Application.Current.Resources["contentPageStyle"];
-			//Resources = new ResourceDictionary();
+			Style = (Style)Application.Current.Resources["contentPageStyle"];
+			Resources = new ResourceDictionary();
 		}
 	}
 }

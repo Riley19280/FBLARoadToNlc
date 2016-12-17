@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.IO;
 using System.Linq;
 
 
@@ -29,10 +30,7 @@ namespace yardSaleWCF
 				affected = cmd.ExecuteNonQuery();
 
 			}
-			if (affected > 0)
-				return true;
-			else
-				return false;
+			return affected > 0 ? true : false;
 		}
 
 		public bool UpdateUserActivity(string user_id)
@@ -50,10 +48,7 @@ namespace yardSaleWCF
 				affected = cmd.ExecuteNonQuery();
 
 			}
-			if (affected > 0)
-				return true;
-			else
-				return false;
+			return affected > 0 ? true : false;
 		}
 
 		public bool AddComment(commentWCF comment)
@@ -64,9 +59,9 @@ namespace yardSaleWCF
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 
-			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.comments(id,item_id,user_id,comment,date_added) VALUES(@id, @item_id,@user_id, @comment ,SYSDATETIME())", connection))
+			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.comments(item_id,user_id,comment,date_added) VALUES(@item_id,@user_id, @comment ,SYSDATETIME())", connection))
 			{
-				cmd.Parameters.AddWithValue("@id", c.id);
+				//cmd.Parameters.AddWithValue("@id", c.id);
 				cmd.Parameters.AddWithValue("@item_id", c.item_id);
 				cmd.Parameters.AddWithValue("@user_id", c.user_id);
 				cmd.Parameters.AddWithValue("@comment", c.comment);
@@ -75,16 +70,18 @@ namespace yardSaleWCF
 				affected = cmd.ExecuteNonQuery();
 
 			}
-			if (affected > 0)
-				return true;
-			else
-				return false;
+
+			return affected > 0 ? true : false;
 		}
 
 		public bool AddItem(itemWCF item)
 		{
 			itemWCF i = item;
 			int affected = 0;
+
+			//Stream s = new FileStream("", FileMode.Open);
+
+			//i.picture = ReadFully(s);
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 
@@ -93,7 +90,7 @@ namespace yardSaleWCF
 				cmd.Parameters.AddWithValue("@owner_id", i.owner_id);
 				cmd.Parameters.AddWithValue("@name", i.name);
 				cmd.Parameters.AddWithValue("@description", i.description);
-				cmd.Parameters.Add(new SqlParameter("@picture", SqlDbType.VarBinary, i.picture.Length) {Value= (SqlBinary)i.picture });
+				cmd.Parameters.Add(new SqlParameter("@picture", SqlDbType.VarBinary, i.picture.Length) { Value = (SqlBinary)i.picture });
 				cmd.Parameters.AddWithValue("@price", i.price);
 				cmd.Parameters.AddWithValue("@quality", i.quality);
 				cmd.Parameters.AddWithValue("@sold", i.sold ? 1 : 0);
@@ -102,10 +99,7 @@ namespace yardSaleWCF
 				affected = cmd.ExecuteNonQuery();
 
 			}
-			if (affected > 0)
-				return true;
-			else
-				return false;
+			return affected > 0 ? true : false;
 		}
 
 		public bool AddBid(bidWCF bid)
@@ -125,10 +119,7 @@ namespace yardSaleWCF
 				affected = cmd.ExecuteNonQuery();
 
 			}
-			if (affected > 0)
-				return true;
-			else
-				return false;
+			return affected > 0 ? true : false;
 		}
 
 		public bidWCF GetTopBid(int item_id)
@@ -228,8 +219,7 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("email")),
-									 reader.GetString(reader.GetOrdinal("pic_url")),
-									 GetChapterIdOfUser(reader.GetString(reader.GetOrdinal("id")))
+									 reader.GetString(reader.GetOrdinal("pic_url"))
 									);
 
 								return u;
@@ -347,8 +337,7 @@ namespace yardSaleWCF
 								 reader.GetString(reader.GetOrdinal("id")),
 								 reader.GetString(reader.GetOrdinal("name")),
 								 reader.GetString(reader.GetOrdinal("email")),
-								 reader.GetString(reader.GetOrdinal("pic_url")),
-								 GetChapterIdOfUser(reader.GetString(reader.GetOrdinal("id")))
+								 reader.GetString(reader.GetOrdinal("pic_url"))
 								);
 
 								users.Add(u);
@@ -471,8 +460,7 @@ namespace yardSaleWCF
 									 reader.GetString(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("email")),
-									 reader.GetString(reader.GetOrdinal("pic_url")),
-									 GetChapterIdOfUser(reader.GetString(reader.GetOrdinal("id")))
+									 reader.GetString(reader.GetOrdinal("pic_url"))
 									);
 								users.Add(u);
 
@@ -486,12 +474,25 @@ namespace yardSaleWCF
 
 		public bool SetChapterStatusOfUser(int status, string user_id)
 		{
+			int affected = 0;
+			if (status < 0)
 			{
-				int affected = 0;
-
 				using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 
-				using (SqlCommand cmd = new SqlCommand("UPDATE dbo.member_status SET status = @status where id = @user_id", connection))
+				using (SqlCommand cmd = new SqlCommand("delete from dbo.member_status where user_id = @user_id", connection))
+				{
+					cmd.Parameters.AddWithValue("@user_id", user_id);
+					connection.Open();
+					affected = cmd.ExecuteNonQuery();
+
+				}
+				return affected > 0 ? true : false;
+			}
+			else
+			{
+				using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+
+				using (SqlCommand cmd = new SqlCommand("UPDATE dbo.member_status SET status = @status where user_id = @user_id", connection))
 				{
 					cmd.Parameters.AddWithValue("@status", status);
 					cmd.Parameters.AddWithValue("@user_id", user_id);
@@ -499,10 +500,7 @@ namespace yardSaleWCF
 					affected = cmd.ExecuteNonQuery();
 
 				}
-				if (affected > 0)
-					return true;
-				else
-					return false;
+				return affected > 0 ? true : false;
 			}
 		}
 
@@ -588,8 +586,9 @@ namespace yardSaleWCF
 			return chapter;
 		}
 
-		public bool SetFBLAChapterPicture(int id, byte[] picture) {
-			
+		public bool SetFBLAChapterPicture(int id, byte[] picture)
+		{
+
 			int affected = 0;
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -603,19 +602,16 @@ namespace yardSaleWCF
 				affected = cmd.ExecuteNonQuery();
 
 			}
-			if (affected > 0)
-				return true;
-			else
-				return false;
+			return affected > 0 ? true : false;
 		}
 
-		int GetChapterStatusOfUser(string user_id)
+		public int[] GetChapterInfoOfUser(string user_id)
 		{
 			//select status from dbo.member_status where user_id = @user_id
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("select status from dbo.member_status where user_id = @user_id", connection))
+				using (SqlCommand cmd = new SqlCommand("select chapter_id,status from dbo.member_status where user_id = @user_id", connection))
 				{
 					cmd.Parameters.AddWithValue("@user_id", user_id);
 					connection.Open();
@@ -628,50 +624,32 @@ namespace yardSaleWCF
 							//TODO: chekc fvalues for null
 							while (reader.Read())
 							{
-								return reader.GetInt32(reader.GetOrdinal("status"));
+								return new int[] { reader.GetInt32(reader.GetOrdinal("chapter_id")), reader.GetInt32(reader.GetOrdinal("status")) };
+
 							}
 						}
 						else
 						{
-							return -1;
+							return new int[] { -1 };
 						}
 					}
 				}
 			}
-			return -1;
+			return new int[] { -1 };
 		}
 
-		int GetChapterIdOfUser(string user_id)
+		byte[] ReadFully(Stream input)
 		{
-			//select status from dbo.member_status where user_id = @user_id
-			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			byte[] buffer = new byte[16 * 1024];
+			using (MemoryStream ms = new MemoryStream())
 			{
-
-				using (SqlCommand cmd = new SqlCommand("select chapter_id from dbo.member_status where user_id = @user_id", connection))
+				int read;
+				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
 				{
-					cmd.Parameters.AddWithValue("@user_id", user_id);
-					connection.Open();
-					using (SqlDataReader reader = cmd.ExecuteReader())
-					{
-						// Check is the reader has any rows at all before starting to read.
-						if (reader.HasRows)
-						{
-							// Read advances to the next row.
-							//TODO: chekc fvalues for null
-							while (reader.Read())
-							{
-								return reader.GetInt32(reader.GetOrdinal("chapter_id"));
-							}
-						}
-						else
-						{
-							return -1;
-						}
-					}
+					ms.Write(buffer, 0, read);
 				}
+				return ms.ToArray();
 			}
-			return -1;
 		}
-
 	}
 }

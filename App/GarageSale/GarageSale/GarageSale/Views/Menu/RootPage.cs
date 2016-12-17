@@ -19,16 +19,13 @@ namespace GarageSale.Views.Menu
 			menuPage.Menu.ItemSelected += (sender, e) => NavigateTo(e.SelectedItem as MenuItem);
 
 			Master = menuPage;
-			Detail = new NavigationPage(new welcomePage())
-			{
-				//BarBackgroundColor = Constants.palette.primary_dark,
-				//BarTextColor = Constants.palette.icons,
-			};
+			Detail = new NavigationPage(new welcomePage()) { BarBackgroundColor = Constants.palette.barColor };
+
 		}
 
 		public void setDetail(Page page)
 		{
-			Detail = new NavigationPage(page);
+			Detail = new NavigationPage(page) { BarBackgroundColor = Constants.palette.barColor };
 			IsPresented = false;
 		}
 
@@ -42,7 +39,7 @@ namespace GarageSale.Views.Menu
 
 			Detail = new NavigationPage(displayPage)
 			{
-				//BarBackgroundColor = Constants.palette.primary_dark,
+				BarBackgroundColor = Constants.palette.barColor,
 				//BarTextColor = Constants.palette.icons,
 			};
 
