@@ -60,11 +60,6 @@ namespace yardSaleWCF
 			return DBACC.GetComments(item_id);
 		}
 
-		public bool SellItem(int item_id)
-		{
-			throw new NotImplementedException();
-		}
-
 		public List<itemWCF> GetSearchedItems(string search)
 		{
 			return DBACC.GetSearchedItems(search);
@@ -113,6 +108,31 @@ namespace yardSaleWCF
 		public int[] GetChapterInfoOfUser(string user_id)
 		{
 			return DBACC.GetChapterInfoOfUser(user_id);
+		}
+
+		public bool processbuyRequest(string user_id, int item_id )
+		{
+
+			itemWCF item = DBACC.GetItem(item_id);
+			userWCF owner = GetUser(item.owner_id);
+			userWCF client = GetUser(user_id);//the user buying the item	
+			fblaChapterWCF fbla = GetFBLAChapter(item.chapter_id);
+
+			string clientMailingMessage = string.Format("You are recieving this message because you showed an intrest in buying an item on The FBLA Fundraising app.\nItem Name: {0} \nItem Description: {1}  \nItem Price: ${2} \nItem Quality: {3} \n\nIn Order to proceed with your order, a payment of ${2} is required to be sent to the following Paypal address: \n\nPaypal Address: {4} \nContact Address: {5} \n\nAny furthur questions should be sent to the contact email listed above, as any emails sent to this addres will not be replied to.", item.name, item.description, item.price, item.quality, fbla.payment_email, fbla.contact_email);
+			string ownerMailingMessage = string.Format("You are recieving this message because someone purchased an item that you listed on The FBLA Fundraising App \nItem Name: {0} \nItem Description: {1}  \nItem Price: ${2} \nItem Quality: {3} \n If your FBLA Chapter advisor is in posession of this item, you can ignore this message. Otherwise, look for an email from The FBLA Chapter of which you have donated this item for a shipping address, and be prepared to ship this item. ", item.name, item.description, item.price, item.quality);
+			string adviserMailingMessage = string.Format("You are recieving this message because someone purchased an item from your FBLA Chapter on The FBLA Fundraising App \nItem Name: {0} \nItem Description: {1}  \nItem Price: ${2} \nItem Quality: {3} \n\nAs the chapter adviser of {4} FBLA, you are responsible for getting the item to the person who bought it. You should check the paypal account at <b>{5}</b> to confirm that adequate payment has been made before shipping the items to the adress listed in the paypal reciept message. In the case that you are not in posession of the item, you should sent the shipping address to the item owner at {6} to allow them to ship the item.", item.name, item.description, item.price, item.quality, fbla.school, fbla.payment_email, owner.email);
+
+			string apptitle = "FBLA NLC Fundraising";
+
+			//send email to client
+			mailing.sendMail(client.email, "Item on "+apptitle, clientMailingMessage);
+			//sent email to item owner 
+			mailing.sendMail(owner.email, "Items on " + apptitle + " bougnt.", ownerMailingMessage);
+			//send email to chapter adviser
+			//mailing.sendMail(fbla.contact_email, "Items on " + apptitle + " bougnt.", adviserMailingMessage);
+
+			DBACC.setItemSellStatus(item.id, 1);
+			return true;
 		}
 	}
 }

@@ -54,6 +54,14 @@ namespace GarageSale.Views
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 		};
 
+		Button donateItem = new Button
+		{
+			Text = "Donate Item",
+			BorderRadius = 0,
+			//Margin = 0,
+			HorizontalOptions = LayoutOptions.FillAndExpand,
+		};
+		
 		Button viewMembers = new Button
 		{
 			Text = "View Members",
@@ -74,8 +82,9 @@ namespace GarageSale.Views
 
 		public fblaChapterPage()
 		{
+			//used forymchapterpage
 			shouldGetChapter = true;
-			fblaid = int.Parse(App.CredManager.GetAccountValue("FBLA_chapter_id"));
+			myfblaid = int.Parse(App.CredManager.GetAccountValue("FBLA_chapter_id"));
 		}
 
 		StackLayout makeGUI()
@@ -89,9 +98,7 @@ namespace GarageSale.Views
 			{
 				Navigation.PushAsync(new fblaMembersPage(fbla.id));
 			});
-
-
-
+				
 			#region basestack
 			return new StackLayout
 			{
@@ -102,6 +109,7 @@ namespace GarageSale.Views
 					profImg,
 					lblSchool,
 					lblLocation,
+					donateItem,
 					new StackLayout {
 						HorizontalOptions = LayoutOptions.FillAndExpand,
 						Orientation = StackOrientation.Horizontal,
@@ -121,6 +129,11 @@ namespace GarageSale.Views
 
 		public void populateProfileFields()
 		{
+			donateItem.Clicked += (s,e) => {
+				Navigation.PushAsync(new newItemPage(fbla.id));
+			};
+
+
 			baseStack = makeGUI();
 			Title = fbla.school + " FBLA";
 			lblSchool.Text = fbla.school;
@@ -140,13 +153,19 @@ namespace GarageSale.Views
 		}
 
 		bool shouldGetChapter = false;
-		int fblaid;
+		int myfblaid;
 
 		protected async override void OnAppearing()
 		{
+			//disabling add item button if user is not logged in
+			if (!App.CredManager.IsLoggedIn())
+				donateItem.IsEnabled = false;
+			else
+				donateItem.IsEnabled = true;
+
 			if (shouldGetChapter)
 			{
-				fbla = await App.MANAGER.YSSI.GetFBLAChapter(fblaid);
+				fbla = await App.MANAGER.YSSI.GetFBLAChapter(myfblaid);
 				populateProfileFields();
 			}
 		}

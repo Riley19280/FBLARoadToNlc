@@ -33,13 +33,6 @@ namespace GarageSale.Views.Menu
 
 			this.Add(new MenuItem()
 			{
-				Title = "Add Item",
-				//IconSource = "leads.png", 
-				TargetType = typeof(newItemPage)//help
-			});
-
-			this.Add(new MenuItem()
-			{
 				Title = "FBLA Chapters",
 				//IconSource = "leads.png", 
 				TargetType = typeof(fblaChaptersListPage)//help

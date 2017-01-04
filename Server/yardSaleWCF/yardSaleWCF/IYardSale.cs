@@ -41,9 +41,6 @@ namespace yardSaleWCF
 		List<commentWCF> GetComments(int item_id);
 
 		[OperationContract]
-		bool SellItem(int item_id);
-
-		[OperationContract]
 		List<itemWCF> GetSearchedItems(string search);
 
 		[OperationContract]
@@ -72,5 +69,8 @@ namespace yardSaleWCF
 
 		[OperationContract]
 		int[] GetChapterInfoOfUser(string user_id);
+
+		[OperationContract]
+		bool processbuyRequest(string user_id, int item_id);
 	}
 }

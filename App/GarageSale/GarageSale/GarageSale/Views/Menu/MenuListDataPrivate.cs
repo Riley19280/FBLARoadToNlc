@@ -18,12 +18,12 @@ namespace GarageSale.Views.Menu
 				TargetType = typeof(logOutPage)
 			});
 
-			this.Add(new MenuItem()
-			{
-				Title = "My Items",
-				//IconSource = "contacts.png", 
-				TargetType = typeof(myItemsPage)
-			});
+			//this.Add(new MenuItem()
+			//{
+			//	Title = "My Items",
+			//	//IconSource = "contacts.png", 
+			//	TargetType = typeof(myItemsPage)
+			//});
 
 			if (App.CredManager.AccountValueExists("FBLA_chapter_id"))
 				if (int.Parse(App.CredManager.GetAccountValue("FBLA_chapter_id")) > 0)
@@ -47,13 +47,6 @@ namespace GarageSale.Views.Menu
 				Title = "Search Users",
 				//IconSource = "contacts.png", 
 				TargetType = typeof(searchUsersPage)
-			});
-
-			this.Add(new MenuItem()
-			{
-				Title = "Add Item",
-				//IconSource = "leads.png", 
-				TargetType = typeof(newItemPage)//help
 			});
 
 			this.Add(new MenuItem()

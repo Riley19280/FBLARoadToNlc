@@ -20,10 +20,11 @@ namespace yardSaleWCF
 	public class itemWCF
 	{
 
-		public itemWCF(int id, string owner_id, string name, string description, byte[] picture, float price, float quality, bool sold, DateTime date_added)
+		public itemWCF(int id, string owner_id,int chapter_id, string name, string description, byte[] picture, float price, float quality, int sold, DateTime date_added)
 		{
 			this.id = id;
 			this.owner_id = owner_id;
+			this.chapter_id = chapter_id;
 			this.name = name;
 			this.description = description;
 			this.picture = picture;
@@ -38,6 +39,8 @@ namespace yardSaleWCF
 		[DataMember]
 		public string owner_id { get; protected set; }
 		[DataMember]
+		public int chapter_id { get; protected set; }
+		[DataMember]
 		public string name { get; protected set; }
 		[DataMember]
 		public string description { get; protected set; }
@@ -48,7 +51,7 @@ namespace yardSaleWCF
 		[DataMember]
 		public float quality { get; protected set; }
 		[DataMember]
-		public bool sold { get; protected set; }
+		public int sold { get; protected set; }
 		[DataMember]
 		public DateTime date_added { get; protected set; }
 	}

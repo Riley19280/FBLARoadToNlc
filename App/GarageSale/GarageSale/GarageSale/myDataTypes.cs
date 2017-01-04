@@ -8,10 +8,11 @@ namespace myDataTypes
 {
 	public class item
 	{
-		public item(int id, string owner_id, string name, string description, byte[] picture, float price, float quality, bool sold, DateTime date_added)
+		public item(int id, string owner_id, int chapter_id, string name, string description, byte[] picture, float price, float quality, int sold, DateTime date_added)
 		{
 			this.id = id;
 			this.owner_id = owner_id;
+			this.chapter_id = chapter_id;
 			this.name = name;
 			this.description = description;
 			this.picture = picture;
@@ -24,12 +25,13 @@ namespace myDataTypes
 
 		public int id { get; protected set; }
 		public string owner_id { get; protected set; }
+		public int chapter_id { get; protected set; }
 		public string name { get; protected set; }
 		public string description { get; protected set; }
 		public byte[] picture { get; protected set; }
 		public float price { get; protected set; }
 		public float quality { get; protected set; }
-		public bool sold { get; protected set; }
+		public int sold { get; protected set; }
 		public DateTime date_added { get; protected set; }
 	}
 

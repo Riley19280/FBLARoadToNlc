@@ -85,15 +85,16 @@ namespace yardSaleWCF
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 
-			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.items(owner_id,name,description,picture,price,quality,sold,date_added) VALUES(@owner_id,@name,@description,@picture,@price,@quality,@sold,SYSDATETIME())", connection))
+			using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.items(owner_id,chapter_id,name,description,picture,price,quality,sold,date_added) VALUES(@owner_id,@chapter_id,@name,@description,@picture,@price,@quality,@sold,SYSDATETIME())", connection))
 			{
 				cmd.Parameters.AddWithValue("@owner_id", i.owner_id);
+				cmd.Parameters.AddWithValue("@chapter_id", i.chapter_id);
 				cmd.Parameters.AddWithValue("@name", i.name);
 				cmd.Parameters.AddWithValue("@description", i.description);
 				cmd.Parameters.Add(new SqlParameter("@picture", SqlDbType.VarBinary, i.picture.Length) { Value = (SqlBinary)i.picture });
 				cmd.Parameters.AddWithValue("@price", i.price);
 				cmd.Parameters.AddWithValue("@quality", i.quality);
-				cmd.Parameters.AddWithValue("@sold", i.sold ? 1 : 0);
+				cmd.Parameters.AddWithValue("@sold", i.sold);
 
 				connection.Open();
 				affected = cmd.ExecuteNonQuery();
@@ -179,12 +180,13 @@ namespace yardSaleWCF
 								itemWCF i = new itemWCF(
 								 reader.GetInt32(reader.GetOrdinal("id")),
 								 reader.GetString(reader.GetOrdinal("owner_id")),
+								 reader.GetInt32(reader.GetOrdinal("chapter_id")),
 								 reader.GetString(reader.GetOrdinal("name")),
 								 reader.GetString(reader.GetOrdinal("description")),
 								 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 								 (float)reader.GetDouble(reader.GetOrdinal("price")),
 								 (float)reader.GetDouble(reader.GetOrdinal("quality")),
-								 reader.GetBoolean(reader.GetOrdinal("sold")),
+								 reader.GetInt32(reader.GetOrdinal("sold")),
 								 reader.GetDateTime(reader.GetOrdinal("date_added"))
 								);
 
@@ -294,12 +296,13 @@ namespace yardSaleWCF
 								itemWCF i = new itemWCF(
 									 reader.GetInt32(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("owner_id")),
+									 reader.GetInt32(reader.GetOrdinal("chapter_id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("description")),
 									 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 									 (float)reader.GetDouble(reader.GetOrdinal("price")),
 									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
-									 reader.GetBoolean(reader.GetOrdinal("sold")),
+									 reader.GetInt32(reader.GetOrdinal("sold")),
 									 reader.GetDateTime(reader.GetOrdinal("date_added"))
 									);
 
@@ -373,12 +376,13 @@ namespace yardSaleWCF
 								itemWCF i = new itemWCF(
 									 reader.GetInt32(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("owner_id")),
+									 reader.GetInt32(reader.GetOrdinal("chapter_id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("description")),
 									 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 									 (float)reader.GetDouble(reader.GetOrdinal("price")),
 									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
-									 reader.GetBoolean(reader.GetOrdinal("sold")),
+									 reader.GetInt32(reader.GetOrdinal("sold")),
 									 reader.GetDateTime(reader.GetOrdinal("date_added"))
 									);
 
@@ -397,8 +401,42 @@ namespace yardSaleWCF
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
+				#region getting items based on users id (obfuscated)
+				//using (SqlCommand cmd = new SqlCommand("select * from dbo.items where owner_id = (select user_id from member_status where chapter_id = @chapter_id)", connection))
+				//{
+				//	cmd.Parameters.AddWithValue("@chapter_id", chapter_id);
+				//	connection.Open();
+				//	using (SqlDataReader reader = cmd.ExecuteReader())
+				//	{
+				//		// Check is the reader has any rows at all before starting to read.
+				//		if (reader.HasRows)
+				//		{
+				//			// Read advances to the next row.
+				//			//TODO: chekc fvalues for null
+				//			while (reader.Read())
+				//			{
+				//				itemWCF i = new itemWCF(
+				//					 reader.GetInt32(reader.GetOrdinal("id")),
+				//					 reader.GetString(reader.GetOrdinal("owner_id")),
+				//					 reader.GetInt32(reader.GetOrdinal("chapter_id")),
+				//					 reader.GetString(reader.GetOrdinal("name")),
+				//					 reader.GetString(reader.GetOrdinal("description")),
+				//					 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
+				//					 (float)reader.GetDouble(reader.GetOrdinal("price")),
+				//					 (float)reader.GetDouble(reader.GetOrdinal("quality")),
+				//					 reader.GetBoolean(reader.GetOrdinal("sold")),
+				//					 reader.GetDateTime(reader.GetOrdinal("date_added"))
+				//					);
 
-				using (SqlCommand cmd = new SqlCommand("select * from dbo.items where owner_id = (select user_id from member_status where chapter_id = @chapter_id)", connection))
+				//				items.Add(i);
+				//			}
+				//		}
+				//	}
+				//}
+				#endregion
+
+				#region get items directly associated with chapter
+				using (SqlCommand cmd = new SqlCommand("select * from dbo.items where chapter_id = @chapter_id)", connection))
 				{
 					cmd.Parameters.AddWithValue("@chapter_id", chapter_id);
 					connection.Open();
@@ -414,12 +452,13 @@ namespace yardSaleWCF
 								itemWCF i = new itemWCF(
 									 reader.GetInt32(reader.GetOrdinal("id")),
 									 reader.GetString(reader.GetOrdinal("owner_id")),
+									 reader.GetInt32(reader.GetOrdinal("chapter_id")),
 									 reader.GetString(reader.GetOrdinal("name")),
 									 reader.GetString(reader.GetOrdinal("description")),
 									 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
 									 (float)reader.GetDouble(reader.GetOrdinal("price")),
 									 (float)reader.GetDouble(reader.GetOrdinal("quality")),
-									 reader.GetBoolean(reader.GetOrdinal("sold")),
+									 reader.GetInt32(reader.GetOrdinal("sold")),
 									 reader.GetDateTime(reader.GetOrdinal("date_added"))
 									);
 
@@ -428,6 +467,7 @@ namespace yardSaleWCF
 						}
 					}
 				}
+				#endregion
 			}
 			return items;
 		}
@@ -636,6 +676,63 @@ namespace yardSaleWCF
 				}
 			}
 			return new int[] { -1 };
+		}
+
+		public itemWCF GetItem(int item_id) {
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("SELECT * from dbo.items where id = @item_id", connection))
+				{
+					cmd.Parameters.AddWithValue("@item_id", item_id);
+
+					connection.Open();
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						// Check is the reader has any rows at all before starting to read.
+						if (reader.HasRows)
+						{
+							while (reader.Read())
+							{
+
+								itemWCF i = new itemWCF(
+								 reader.GetInt32(reader.GetOrdinal("id")),
+								 reader.GetString(reader.GetOrdinal("owner_id")),
+								 reader.GetInt32(reader.GetOrdinal("chapter_id")),
+								 reader.GetString(reader.GetOrdinal("name")),
+								 reader.GetString(reader.GetOrdinal("description")),
+								 (byte[])reader.GetSqlBinary(reader.GetOrdinal("picture")) ?? new byte[0],
+								 (float)reader.GetDouble(reader.GetOrdinal("price")),
+								 (float)reader.GetDouble(reader.GetOrdinal("quality")),
+								 reader.GetInt32(reader.GetOrdinal("sold")),
+								 reader.GetDateTime(reader.GetOrdinal("date_added"))
+								);
+
+								return i;
+							}
+						}
+					}
+				}
+			}
+			return null;
+		}
+
+		public bool setItemSellStatus(int item_id, int status) {
+			int affected = 0;
+
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+
+			using (SqlCommand cmd = new SqlCommand("UPDATE dbo.items set sold = @status where id = @item_id", connection))
+			{
+				cmd.Parameters.AddWithValue("@item_id", item_id);
+				cmd.Parameters.AddWithValue("@status", status);
+
+				connection.Open();
+				affected = cmd.ExecuteNonQuery();
+
+			}
+			return affected > 0 ? true : false;
 		}
 
 		byte[] ReadFully(Stream input)

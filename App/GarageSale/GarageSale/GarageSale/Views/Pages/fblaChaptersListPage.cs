@@ -25,6 +25,7 @@ namespace GarageSale.Views.Pages
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				Placeholder = "Search for FBLA Chapter.."
 			};
+
 			search.SearchCommand = new Command(async () =>
 			{
 				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedItems(search.Text);

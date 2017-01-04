@@ -20,32 +20,34 @@ namespace GarageSale.Views.Pages
 		{
 			this.fbla_id = fbla_id;
 			listView = new userListView();
-
+			Title = "FBLA Members";
 
 			listView.removeEventHandlers();
-			bool clicked = false;
+		
 			listView.ItemSelected += async (s, e) =>
 			{
-				if (clicked)
+				if (listView.SelectedItem == null || (e.SelectedItem as user).id == App.CredManager.GetAccountValue("G_id"))
 					return;
-				clicked = true;
 
-
-
-				var answer = await DisplayActionSheet("Choose Action", "Cancel", null, "View User", "Set Roles");
-				if (answer == "View User")
+				if (int.Parse(App.CredManager.GetAccountValue("FBLA_status")) >= 9)
 				{
-					clicked = false;
+					var answer = await DisplayActionSheet("Choose Action", "Cancel", null, "View User", "Set Roles");
+					if (answer == "View User")
+					{
+						var userView = new userView(e.SelectedItem as myDataTypes.user);
+
+						Navigation.PushAsync(userView);
+					}
+					else if (answer == "Set Roles")
+					{
+						doActionSheet(e.SelectedItem as user);
+					}
+				}
+				else {
 					var userView = new userView(e.SelectedItem as myDataTypes.user);
 
 					Navigation.PushAsync(userView);
 				}
-				else if (answer == "Set Roles")
-				{
-					clicked = false;
-					doActionSheet(e.SelectedItem as user);
-				}
-				clicked = false;
 				listView.SelectedItem = null;
 			};
 
@@ -92,8 +94,6 @@ namespace GarageSale.Views.Pages
 						App.MANAGER.YSSI.SetChapterStatusOfUser(-1, u.id);
 					break;
 			}
-
-
 
 		}
 

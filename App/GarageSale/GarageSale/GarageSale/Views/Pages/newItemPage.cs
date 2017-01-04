@@ -17,15 +17,18 @@ namespace GarageSale.Views.Pages
 
 		ExtendedEntry price;
 
-		Picker quality;
+		Label quality;
 		Image image;
 		StackLayout baseStack;
 
 		byte[] pic = new byte[0];
+		int fbla_id;
 
-		public newItemPage()
+		public newItemPage(int fbla_id)
 		{
 			Title = "New Item For sale";
+
+			this.fbla_id = fbla_id;
 
 			Button postBtn = new Button
 			{
@@ -57,17 +60,32 @@ namespace GarageSale.Views.Pages
 				HeightRequest = 50
 			};
 
-			quality = new Picker
+			quality = new Label
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.End,
-				Title = "Quality",
+				HorizontalTextAlignment = TextAlignment.Center,
+				BackgroundColor = Constants.palette.primary_variant,
+				Text = "Select Quality",
+				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+				HeightRequest=30
+				
 			};
-			quality.Items.Add("\u2605");
-			quality.Items.Add("\u2605\u2605");
-			quality.Items.Add("\u2605\u2605\u2605");
-			quality.Items.Add("\u2605\u2605\u2605\u2605");
-			quality.Items.Add("\u2605\u2605\u2605\u2605\u2605");
+			quality.GestureRecognizers.Add(new TapGestureRecognizer
+			{
+				Command = new Command(async() => {
+					var action = await DisplayActionSheet("Select Quality", "Cancel", null, "\u2605", "\u2605\u2605", "\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605\u2605");
+					switch (action)
+					{
+						case "Cancel":
+							quality.Text = "\u2605\u2605\u2605";
+							break;
+						default:
+							quality.Text = action;
+							break;
+					}
+				}),
+			});
 
 			image = new Image
 			{
@@ -143,13 +161,15 @@ namespace GarageSale.Views.Pages
 			//App.ORM.GetProfileInfo(App.CredManager.GetCredentials());
 			if (!posted && !string.IsNullOrWhiteSpace(name.Text) && !string.IsNullOrWhiteSpace(desc.Text))
 			{
-				myDataTypes.item act = new myDataTypes.item(0, App.CredManager.GetAccountValue("G_id"), name.Text, desc.Text, pic, float.Parse(price.Text), quality.SelectedIndex + 1, false, DateTime.Now);
+				myDataTypes.item act = new myDataTypes.item(0, App.CredManager.GetAccountValue("G_id"),fbla_id, name.Text, desc.Text, pic, float.Parse(price.Text), quality.Text.Length > 5 ? 3 : quality.Text.Length, 0, DateTime.Now);
 
 				bool success = await App.MANAGER.YSSI.AddItem(act);
 
 				if (success)
 				{
-					//Navigation.PopAsync();
+					await DisplayAlert("Item added sucessfully", "Your item was added sucessfully!", "OK");
+					App.rootPage.menuPage.SendBackButtonPressed();
+					
 				}
 				else
 					await DisplayAlert("Error adding item", "There was an error adding your item. Please try again", "OK");

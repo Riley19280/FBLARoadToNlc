@@ -15,20 +15,24 @@ namespace GarageSale.Droid
 	[Activity(Label = "FBLA_Garage_Sale", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
 	{
+		bool resolved = false;
+
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-
-
 			#region Resolver Init
-			SimpleContainer container = new SimpleContainer();
-			container.Register<IDevice>(t => AndroidDevice.CurrentDevice);
-			container.Register<IDisplay>(t => t.Resolve<IDevice>().Display);
-			container.Register<INetwork>(t => t.Resolve<IDevice>().Network);
+			if (!resolved)
+			{
+				SimpleContainer container = new SimpleContainer();
+				container.Register<IDevice>(t => AndroidDevice.CurrentDevice);
+				container.Register<IDisplay>(t => t.Resolve<IDevice>().Display);
+				container.Register<INetwork>(t => t.Resolve<IDevice>().Network);
 
-			Resolver.SetResolver(container.GetResolver());
+				Resolver.SetResolver(container.GetResolver());
+				resolved = true;
+
+			}
 			#endregion
-
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 			LoadApplication(new App());
 		}

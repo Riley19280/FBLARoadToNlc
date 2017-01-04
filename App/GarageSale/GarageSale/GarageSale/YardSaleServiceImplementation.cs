@@ -322,7 +322,7 @@ namespace GarageSale
 		#region From
 		public item convertFromWCF(itemWCF i)
 		{
-			return new item(i.id, i.owner_id, i.name, i.description, i.picture, i.price, i.quality, i.sold, i.date_added);
+			return new item(i.id, i.owner_id,i.chapter_id, i.name, i.description, i.picture, i.price, i.quality, i.sold, i.date_added);
 		}
 		public user convertFromWCF(userWCF u)
 		{
@@ -351,6 +351,7 @@ namespace GarageSale
 
 			item.id = i.id;
 			item.owner_id = i.owner_id;
+			item.chapter_id = i.chapter_id;
 			item.name = i.name;
 			item.description = i.description;
 			item.picture = i.picture;

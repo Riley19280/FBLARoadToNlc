@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="DatabaseAccess.cs" />
+    <Compile Include="mailing.cs" />
     <Compile Include="myDataTypes.cs" />
     <Compile Include="YardSaleService.svc.cs">
       <DependentUpon>YardSaleService.svc</DependentUpon>
@@ -112,6 +113,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\Normal.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

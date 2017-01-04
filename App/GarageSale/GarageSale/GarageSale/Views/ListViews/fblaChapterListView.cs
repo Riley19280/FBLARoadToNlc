@@ -10,7 +10,7 @@ namespace GarageSale.Views.ListViews
 {
 	class fblaChapterListView : ListView
 	{
-
+		Image imageView;
 		public fblaChapterListView()
 		{
 			SeparatorColor = Constants.palette.divider;
@@ -31,14 +31,12 @@ namespace GarageSale.Views.ListViews
 				locLabel = new Label();
 				schoolLabel.SetBinding(Label.TextProperty, "school");
 
-				Image imageView = new Image
+				imageView = new Image
 				{
 					HeightRequest = 75,
 					WidthRequest = 75,
 
 				};
-				imageView.SetBinding(Image.SourceProperty, "pic_url");
-
 
 
 				// Return an assembled ViewCell.
@@ -82,6 +80,8 @@ namespace GarageSale.Views.ListViews
 				myDataTypes.fblaChapter i = e.Item as myDataTypes.fblaChapter;
 				
 				locLabel.Text = i.city + ", " + i.state;
+
+				imageView.Source = ImageSource.FromStream(() => new System.IO.MemoryStream(i.picture));
 			};
 		}
 

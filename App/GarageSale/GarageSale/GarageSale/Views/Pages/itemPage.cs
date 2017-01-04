@@ -53,6 +53,15 @@ namespace GarageSale.Views.Pages
 			HorizontalOptions = LayoutOptions.FillAndExpand
 		};
 
+		Button buyBtn = new Button
+		{
+			Text = "Buy Item",
+			BorderRadius = 0,
+			//Margin = 0,
+			HorizontalOptions = LayoutOptions.FillAndExpand,
+
+		};
+	
 		#endregion
 
 		public itemPage(myDataTypes.item i)
@@ -63,6 +72,11 @@ namespace GarageSale.Views.Pages
 			viewComments.Clicked += (s, e) =>
 			{
 				Navigation.PushAsync(new commentPage(i.id));
+			};
+
+			buyBtn.Clicked += (s, e) =>
+			{
+				Navigation.PushAsync(new buyInstructionsPage(i));
 			};
 
 			#region basestack
@@ -77,6 +91,7 @@ namespace GarageSale.Views.Pages
 							lblDesc,
 							lblPrice,
 							lblQuality,
+							buyBtn,
 							viewComments
 						}
 					}

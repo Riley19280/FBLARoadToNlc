@@ -236,6 +236,8 @@ namespace yardSaleWCF
         
       
         
+        private int chapter_idField;
+        
         private System.DateTime date_addedField;
         
         private string descriptionField;
@@ -252,9 +254,26 @@ namespace yardSaleWCF
         
         private float qualityField;
         
-        private bool soldField;
+        private int soldField;
         
      
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int chapter_id
+        {
+            get
+            {
+                return this.chapter_idField;
+            }
+            set
+            {
+                if ((this.chapter_idField.Equals(value) != true))
+                {
+                    this.chapter_idField = value;
+                    this.RaisePropertyChanged("chapter_id");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime date_added
@@ -393,7 +412,7 @@ namespace yardSaleWCF
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool sold
+        public int sold
         {
             get
             {
@@ -772,14 +791,6 @@ public interface IYardSale
     
     yardSaleWCF.commentWCF[] EndGetComments(System.IAsyncResult result);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/SellItem", ReplyAction="http://tempuri.org/IYardSale/SellItemResponse")]
-    bool SellItem(int item_id);
-    
-    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/SellItem", ReplyAction="http://tempuri.org/IYardSale/SellItemResponse")]
-    System.IAsyncResult BeginSellItem(int item_id, System.AsyncCallback callback, object asyncState);
-    
-    bool EndSellItem(System.IAsyncResult result);
-    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetSearchedItems", ReplyAction="http://tempuri.org/IYardSale/GetSearchedItemsResponse")]
     yardSaleWCF.itemWCF[] GetSearchedItems(string search);
     
@@ -1028,21 +1039,6 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public yardSaleWCF.commentWCF[] EndGetComments(System.IAsyncResult result)
     {
         return base.Channel.EndGetComments(result);
-    }
-    
-    public bool SellItem(int item_id)
-    {
-        return base.Channel.SellItem(item_id);
-    }
-    
-    public System.IAsyncResult BeginSellItem(int item_id, System.AsyncCallback callback, object asyncState)
-    {
-        return base.Channel.BeginSellItem(item_id, callback, asyncState);
-    }
-    
-    public bool EndSellItem(System.IAsyncResult result)
-    {
-        return base.Channel.EndSellItem(result);
     }
     
     public yardSaleWCF.itemWCF[] GetSearchedItems(string search)
