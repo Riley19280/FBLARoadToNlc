@@ -38,7 +38,7 @@ namespace GarageSale.Views
 			HorizontalOptions = LayoutOptions.CenterAndExpand
 		};
 
-		Image profImg = new Image
+		CustomImageView profImg = new CustomImageView
 		{
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 			VerticalOptions = LayoutOptions.FillAndExpand,
@@ -165,7 +165,11 @@ namespace GarageSale.Views
 			lblSchool.Text = fbla.school;
 			lblLocation.Text = fbla.city + ", " + fbla.state;
 
-			profImg.Source = ImageSource.FromStream(() => new MemoryStream(fbla.picture));
+			Task.Run(async () =>
+			{
+				IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+				profImg.SetImageBitmap(await processer.ScaleBitmap(fbla.picture, await processer.GetBitmapOptionsOfImageAsync(fbla.picture), 200, 200));
+			});
 
 			Content = baseStack;
 
