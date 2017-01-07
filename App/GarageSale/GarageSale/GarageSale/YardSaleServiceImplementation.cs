@@ -319,6 +319,21 @@ namespace GarageSale
 		public async Task<int[]> GetChapterInfoOfUser(string user_id) {
 			return await Task.Factory.FromAsync(service.BeginGetChapterInfoOfUser, service.EndGetChapterInfoOfUser, user_id, TaskCreationOptions.None);
 		}
+
+		public async Task<bool> DeleteItem(int item_id) {
+			return await Task.Factory.FromAsync(service.BeginDeleteItem, service.EndDeleteItem, item_id, TaskCreationOptions.LongRunning);
+		}
+
+		public async Task<bool> ProcessBuyRequest(string user_id, int item_id)
+		{
+			return await Task.Factory.FromAsync(service.BeginprocessbuyRequest, service.EndprocessbuyRequest, user_id, item_id, TaskCreationOptions.LongRunning);
+		}
+
+		public async Task<byte[]> GetItemPicture(int item_id) {
+			return await Task.Factory.FromAsync(service.BeginGetItemPicture, service.EndGetItemPicture, item_id, TaskCreationOptions.LongRunning);
+		}
+
+
 		#region From
 		public item convertFromWCF(itemWCF i)
 		{

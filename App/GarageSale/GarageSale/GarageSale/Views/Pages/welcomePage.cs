@@ -16,8 +16,16 @@ namespace GarageSale.Views.Pages
 
 					new Label {
 						Text = "Welcome to my FBLA Fundraising app", FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-						VerticalOptions = LayoutOptions.StartAndExpand,
+						VerticalOptions = LayoutOptions.Start,
 						HorizontalOptions =LayoutOptions.CenterAndExpand
+					},
+					new Image() {
+						HorizontalOptions = LayoutOptions.FillAndExpand,
+						VerticalOptions = LayoutOptions.FillAndExpand,
+						HeightRequest = 256,
+						Aspect = Aspect.AspectFit,
+						Source =ImageSource.FromResource("GarageSale.logo512.png"),
+						
 					}
 
 				}

@@ -28,7 +28,7 @@ namespace myDataTypes
 		public int chapter_id { get; protected set; }
 		public string name { get; protected set; }
 		public string description { get; protected set; }
-		public byte[] picture { get; protected set; }
+		public byte[] picture { get; set; }
 		public float price { get; protected set; }
 		public float quality { get; protected set; }
 		public int sold { get; protected set; }

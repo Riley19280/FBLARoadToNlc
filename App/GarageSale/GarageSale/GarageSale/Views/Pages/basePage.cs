@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace GarageSale
+namespace GarageSale.Views.Pages
 {
 	public class basePage : ContentPage
 	{

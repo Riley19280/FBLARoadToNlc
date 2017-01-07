@@ -33,8 +33,13 @@ namespace GarageSale.Views.Pages
 			{
 				//BackgroundColor = Color.FromRgb(64, 64, 64),
 				VerticalOptions = LayoutOptions.FillAndExpand,
-				HorizontalOptions = LayoutOptions.FillAndExpand
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				Text = "Enter comment.."
 			};
+			commentEditor.Focused += (s, e) => {
+				commentEditor.Text = commentEditor.Text.Replace("Enter comment..", "");
+			};
+
 
 			Button btnAddComment = new Button
 			{
@@ -114,6 +119,9 @@ namespace GarageSale.Views.Pages
 				try
 				{
 					comments= await App.MANAGER.YSSI.GetComments(item_id);
+					if (comments.Count == 0)
+						comments.Add(new comment(0, 0, "", "No Comments to display for this item.",DateTime.Now));
+						
 					commentListView.ItemsSource = comments;
 				}
 				catch (Exception e)

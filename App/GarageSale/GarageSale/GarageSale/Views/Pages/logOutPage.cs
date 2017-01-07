@@ -10,6 +10,7 @@ namespace GarageSale.Views.Pages
 			App.CredManager.DeleteCredentials();
 			App.rootPage.menuPage.Menu.ItemsSource = new MenuListDataPublic();
 			App.rootPage.setDetail(new welcomePage());
+			App.rootPage.menuPage.setMenuText("Menu");
 		}
 	}
 }

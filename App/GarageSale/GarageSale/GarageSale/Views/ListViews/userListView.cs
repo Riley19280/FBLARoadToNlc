@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GarageSale.Views.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace GarageSale.Views.ListViews
 				 {
 					 if (this.SelectedItem != null)
 					 {
-						 var userView = new userView(SelectedItem as myDataTypes.user);
+						 var userView = new userPage(SelectedItem as myDataTypes.user);
 						 this.SelectedItem = null;
 						 Navigation.PushAsync(userView);
 					 }

@@ -19,9 +19,9 @@ namespace GarageSale.Views.Menu
 			});
 
 			this.Add (new MenuItem () { 
-				Title = "All Items", 
+				Title = "Search Items", 
 				//IconSource = "contacts.png", 
-				TargetType = typeof(allItemsPage)
+				TargetType = typeof(searchItemsPage)
 			});
 
 			this.Add(new MenuItem()

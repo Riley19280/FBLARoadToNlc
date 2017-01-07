@@ -167,6 +167,8 @@ namespace GarageSale
 
 						rootPage.menuPage.Menu.ItemsSource = new MenuListDataPrivate();
 						rootPage.setDetail(new welcomePage());
+
+						rootPage.menuPage.setMenuText("Welcome\n" + App.CredManager.GetAccountValue("G_name"));
 					}
 					catch (Exception e)
 					{

@@ -11,19 +11,6 @@ namespace GarageSale.Views.Menu
 	{
 		public MenuListDataPrivate()
 		{
-			this.Add(new MenuItem()
-			{
-				Title = "Log Out",
-				//IconSource = "contacts.png", 
-				TargetType = typeof(logOutPage)
-			});
-
-			//this.Add(new MenuItem()
-			//{
-			//	Title = "My Items",
-			//	//IconSource = "contacts.png", 
-			//	TargetType = typeof(myItemsPage)
-			//});
 
 			if (App.CredManager.AccountValueExists("FBLA_chapter_id"))
 				if (int.Parse(App.CredManager.GetAccountValue("FBLA_chapter_id")) > 0)
@@ -54,6 +41,13 @@ namespace GarageSale.Views.Menu
 				Title = "FBLA Chapters",
 				//IconSource = "leads.png", 
 				TargetType = typeof(fblaChaptersListPage)//help
+			});
+
+			this.Add(new MenuItem()
+			{
+				Title = "Log Out",
+				//IconSource = "contacts.png", 
+				TargetType = typeof(logOutPage)
 			});
 
 			this.Add(new MenuItem()

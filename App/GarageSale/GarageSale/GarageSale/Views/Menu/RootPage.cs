@@ -26,6 +26,7 @@ namespace GarageSale.Views.Menu
 		public void setDetail(Page page)
 		{
 			Detail = new NavigationPage(page) { BarBackgroundColor = Constants.palette.barColor };
+			
 			IsPresented = false;
 		}
 

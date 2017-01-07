@@ -31,13 +31,13 @@ namespace GarageSale.Views.Pages
 			Text = ""
 		};
 
-		Label lblQuality = new Label
+		Label lblCondition = new Label
 		{
 			HorizontalOptions = LayoutOptions.CenterAndExpand,
-			Text = "Quality: "
+			Text = "Condition: "
 		};
 
-		Image profImg = new Image
+		CustomImageView profImg = new CustomImageView
 		{
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 			VerticalOptions = LayoutOptions.FillAndExpand,
@@ -58,10 +58,11 @@ namespace GarageSale.Views.Pages
 			Text = "Buy Item",
 			BorderRadius = 0,
 			//Margin = 0,
+			IsEnabled = false,
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 
 		};
-	
+
 		#endregion
 
 		public itemPage(myDataTypes.item i)
@@ -69,6 +70,25 @@ namespace GarageSale.Views.Pages
 			item = i;
 			Title = i.name;
 
+
+			if (App.CredManager.IsLoggedIn())
+			{
+				int fblaid = -1;
+				int.TryParse(App.CredManager.GetAccountValue("FBLA_chapter_id"), out fblaid);
+
+				if (fblaid == item.chapter_id)
+				{
+					if (int.Parse(App.CredManager.GetAccountValue("FBLA_status")) > 5)
+					{
+						addToolbarItem();
+					}
+				}
+				if (App.CredManager.GetAccountValue("G_id") == item.owner_id)
+				{
+					addToolbarItem();
+				}
+
+			}
 			viewComments.Clicked += (s, e) =>
 			{
 				Navigation.PushAsync(new commentPage(i.id));
@@ -82,6 +102,7 @@ namespace GarageSale.Views.Pages
 			#region basestack
 			baseStack = new StackLayout
 			{
+				Padding = new Thickness(10),
 				Children = {
 					new StackLayout {
 						VerticalOptions = LayoutOptions.FillAndExpand,
@@ -90,7 +111,7 @@ namespace GarageSale.Views.Pages
 							profImg,
 							lblDesc,
 							lblPrice,
-							lblQuality,
+							lblCondition,
 							buyBtn,
 							viewComments
 						}
@@ -106,6 +127,16 @@ namespace GarageSale.Views.Pages
 
 			lblPrice.Text = string.Format(culture, "{0:c2}", item.price);
 
+
+			Task.Run(async() =>
+			{
+				IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+				profImg.SetImageBitmap(await processer.ScaleBitmap(item.picture, await processer.GetBitmapOptionsOfImageAsync(item.picture), 200, 200));
+			});
+
+
+
+
 			profImg.Source = ImageSource.FromStream(() => new MemoryStream(i.picture));
 
 			//giving stars to rating
@@ -114,9 +145,41 @@ namespace GarageSale.Views.Pages
 			{
 				st += "\u2605";
 			}
-			lblQuality.Text += st;
+			lblCondition.Text += st;
 			Content = baseStack;
 
+		}
+
+		bool toolbarDeleteItemAdded = false;
+		void addToolbarItem()
+		{
+			if (toolbarDeleteItemAdded)
+				return;
+			toolbarDeleteItemAdded = true;
+			ToolbarItems.Add(new ToolbarItem("Delete Item", "@drawable/x", async () =>
+			{
+				bool answer = await DisplayAlert("Delete Item", "Are you sure you want to delete this Item?", "Yes", "No");
+				if (answer)
+				{
+					App.MANAGER.YSSI.DeleteItem(item.id);
+					Navigation.PopAsync();
+
+				}
+			}));
+		}
+
+		
+
+		protected override void OnAppearing()
+		{
+			if (App.CredManager.IsLoggedIn()) {
+				buyBtn.IsEnabled = true;
+				buyBtn.Text = "Buy Item";
+			}
+			else {
+				buyBtn.IsEnabled = false;
+				buyBtn.Text = "Log in to buy Item";
+			}
 		}
 	}
 

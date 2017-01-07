@@ -166,7 +166,7 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT * from dbo.items ORDER BY date_added DESC", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP 25 * from dbo.items ORDER BY date_added DESC,name", connection))
 				{
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
@@ -279,10 +279,10 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.items WHERE name LIKE @term ORDER BY date_added DESC", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.items WHERE LOWER(name) LIKE @term ORDER BY date_added DESC", connection))
 				{
 					cmd.Parameters.AddWithValue("@limit", 25);
-					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
+					cmd.Parameters.AddWithValue("@term", "%" + search.ToLower() + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -322,10 +322,10 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.users WHERE name LIKE @term ORDER BY account_created DESC", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.users WHERE LOWER(name) LIKE @term ORDER BY name,account_created DESC", connection))
 				{
 					cmd.Parameters.AddWithValue("@limit", 25);
-					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
+					cmd.Parameters.AddWithValue("@term", "%" + search.ToLower() + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -436,7 +436,7 @@ namespace yardSaleWCF
 				#endregion
 
 				#region get items directly associated with chapter
-				using (SqlCommand cmd = new SqlCommand("select * from dbo.items where chapter_id = @chapter_id)", connection))
+				using (SqlCommand cmd = new SqlCommand("select * from dbo.items where chapter_id = @chapter_id", connection))
 				{
 					cmd.Parameters.AddWithValue("@chapter_id", chapter_id);
 					connection.Open();
@@ -481,6 +481,8 @@ namespace yardSaleWCF
 
 				if (status < 0)//used if we want all users in a chapter 0 is pending member, 1 is member
 					cmd = new SqlCommand("select * from dbo.users where id in (select user_id from dbo.member_status where status >= 1 and chapter_id = @chapter_id)", connection);
+				else if (status == 0)
+					cmd = new SqlCommand("select * from dbo.users where id in (select user_id from yardsale.dbo.member_status where status = @status and chapter_id = @chapter_id)", connection);
 				else
 					cmd = new SqlCommand("select * from dbo.users where id in (select user_id from yardsale.dbo.member_status where status >=@status and chapter_id = @chapter_id)", connection);
 				using (cmd)
@@ -515,33 +517,33 @@ namespace yardSaleWCF
 		public bool SetChapterStatusOfUser(int status, string user_id)
 		{
 			int affected = 0;
+
+			SqlConnection connection = new SqlConnection(Constants.SQLConnectionString);
+			SqlCommand cmd;
+
 			if (status < 0)
 			{
-				using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+				cmd = new SqlCommand("delete from dbo.member_status where user_id = @user_id", connection);
+				cmd.Parameters.AddWithValue("@user_id", user_id);
+			}
+			else if (status == 0)
+			{
+				cmd = new SqlCommand("INSERT INTO dbo.member_status (user_id, status) VALUES (@user_id,@status)", connection);
+				cmd.Parameters.AddWithValue("@status", status);
+				cmd.Parameters.AddWithValue("@user_id", user_id);
 
-				using (SqlCommand cmd = new SqlCommand("delete from dbo.member_status where user_id = @user_id", connection))
-				{
-					cmd.Parameters.AddWithValue("@user_id", user_id);
-					connection.Open();
-					affected = cmd.ExecuteNonQuery();
-
-				}
-				return affected > 0 ? true : false;
 			}
 			else
 			{
-				using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
-
-				using (SqlCommand cmd = new SqlCommand("UPDATE dbo.member_status SET status = @status where user_id = @user_id", connection))
-				{
-					cmd.Parameters.AddWithValue("@status", status);
-					cmd.Parameters.AddWithValue("@user_id", user_id);
-					connection.Open();
-					affected = cmd.ExecuteNonQuery();
-
-				}
-				return affected > 0 ? true : false;
+				cmd = new SqlCommand("UPDATE dbo.member_status SET status = @status where user_id = @user_id", connection);
+				cmd.Parameters.AddWithValue("@status", status);
+				cmd.Parameters.AddWithValue("@user_id", user_id);
 			}
+
+			connection.Open();
+			affected = cmd.ExecuteNonQuery();
+			connection.Close();
+			return affected > 0 ? true : false;
 		}
 
 		public List<fblaChapterWCF> GetSearchedChapters(string search)
@@ -551,10 +553,10 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM dbo.fbla_chapters WHERE name LIKE @term ORDER BY name", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM yardsale.dbo.fbla_chapters WHERE LOWER(name) LIKE '@term' OR LOWER(school) LIKE '@term' OR LOWER(city) LIKE '@term' OR LOWER(state) LIKE '@term' ORDER BY name,school,city,state", connection))
 				{
-					cmd.Parameters.AddWithValue("@limit", 25);
-					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
+					cmd.Parameters.AddWithValue("@limit", 10);
+					cmd.Parameters.AddWithValue("@term", "%" + search.ToLower() + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -678,7 +680,8 @@ namespace yardSaleWCF
 			return new int[] { -1 };
 		}
 
-		public itemWCF GetItem(int item_id) {
+		public itemWCF GetItem(int item_id)
+		{
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
@@ -718,7 +721,8 @@ namespace yardSaleWCF
 			return null;
 		}
 
-		public bool setItemSellStatus(int item_id, int status) {
+		public bool setItemSellStatus(int item_id, int status)
+		{
 			int affected = 0;
 
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
@@ -731,6 +735,22 @@ namespace yardSaleWCF
 				connection.Open();
 				affected = cmd.ExecuteNonQuery();
 
+			}
+			return affected > 0 ? true : false;
+		}
+
+		public bool DeleteItem(int item_id)
+		{
+			int affected = 0;
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("delete from dbo.items where id = @item_id", connection))
+				{
+					cmd.Parameters.AddWithValue("@item_id", item_id);
+					connection.Open();
+					affected = cmd.ExecuteNonQuery();
+
+				}
 			}
 			return affected > 0 ? true : false;
 		}

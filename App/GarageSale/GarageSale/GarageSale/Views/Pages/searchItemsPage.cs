@@ -12,7 +12,9 @@ namespace GarageSale.Views.Pages
 	{
 		ListView listView;
 		SearchBar search;
-
+		StackLayout baseStack;
+		ContentView cv;
+		ActivityIndicator ai;
 		public searchItemsPage()
 		{
 			Title = "Search Items";
@@ -23,31 +25,47 @@ namespace GarageSale.Views.Pages
 				Placeholder = "Search for Item.."
 			};
 
-			search.SearchCommand = new Command( async() =>
-			{	
-					listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedItems(search.Text);
-			});
+			search.SearchCommand = new Command(async () =>
+		   {
+			   cv.Content = ai;
+			   listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedItems(search.Text);
+			   cv.Content = listView;
+		   });
 
 			listView = new itemListView();
 			listView.HorizontalOptions = LayoutOptions.FillAndExpand;
 			listView.VerticalOptions = LayoutOptions.FillAndExpand;
 
-			Content = new StackLayout
+			cv = new ContentView();
+			ai = new ActivityIndicator() { IsRunning = true, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.Center };
+			cv.Content = ai;
+
+			baseStack = new StackLayout
 			{
 				Children = {
 					search,
-					listView
+					cv
+
 				}
 			};
+
+			Content = baseStack;
 		}
 
 		private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			myDataTypes.item i = e.SelectedItem as myDataTypes.item;
-
-			//Navigation.PushAsync(new othersProfile(p.userInfo.user_id));
 		}
 
+		protected async override void OnAppearing()
+		{
+			base.OnAppearing();
+			if (listView.ItemsSource == null)
+			{
+				listView.ItemsSource = await App.MANAGER.YSSI.GetAllItems();
+				cv.Content = listView;
+			}
+		}
 
 	}
 }

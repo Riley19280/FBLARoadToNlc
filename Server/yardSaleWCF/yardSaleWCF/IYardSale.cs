@@ -72,5 +72,9 @@ namespace yardSaleWCF
 
 		[OperationContract]
 		bool processbuyRequest(string user_id, int item_id);
+
+		[OperationContract]
+		bool DeleteItem(int item_id);
+
 	}
 }

@@ -36,7 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="basePage.cs" />
+    <Compile Include="Views\CustomImageView.cs" />
+    <Compile Include="Views\Pages\basePage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="GoogleInfo.cs" />
     <Compile Include="ICredentialManager.cs" />
@@ -54,7 +55,7 @@
     <Compile Include="Views\Pages\fblaMembersPage.cs" />
     <Compile Include="Views\Pages\logOutPage.cs" />
     <Compile Include="Views\Menu\MenuListDataPrivate.cs" />
-    <Compile Include="Views\Pages\genericListPage.cs" />
+    <Compile Include="Views\Pages\fblaChapterItemsPage.cs" />
     <Compile Include="Views\ListViews\itemListView.cs" />
     <Compile Include="Views\Pages\fblaChaptersListPage.cs" />
     <Compile Include="Views\Pages\fblaChapterPage.cs" />
@@ -70,10 +71,11 @@
     <Compile Include="Views\Pages\newItemPage.cs" />
     <Compile Include="Views\Pages\allItemsPage.cs" />
     <Compile Include="Views\Pages\buyInstructionsPage.cs" />
+    <Compile Include="Views\Pages\pendingMembersPage.cs" />
     <Compile Include="Views\Pages\searchItemsPage.cs" />
     <Compile Include="Views\Pages\searchUsersPage.cs" />
     <Compile Include="Views\ListViews\userListView.cs" />
-    <Compile Include="Views\userView.cs" />
+    <Compile Include="Views\Pages\userPage.cs" />
     <Compile Include="Views\Pages\welcomePage.cs" />
     <Compile Include="YardSaleService.cs" />
     <Compile Include="YardSaleServiceImplementation.cs" />
@@ -189,6 +191,9 @@
       <HintPath>..\..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="logo512.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.3.168\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.3.168\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

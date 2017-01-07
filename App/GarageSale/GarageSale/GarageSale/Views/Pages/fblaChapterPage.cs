@@ -61,7 +61,7 @@ namespace GarageSale.Views
 			//Margin = 0,
 			HorizontalOptions = LayoutOptions.FillAndExpand,
 		};
-		
+
 		Button viewMembers = new Button
 		{
 			Text = "View Members",
@@ -91,14 +91,14 @@ namespace GarageSale.Views
 		{
 			viewItems.Command = new Command(() =>
 			{
-				Navigation.PushAsync(new viewListPage(new itemListView(), fbla.id, 1, "Items for sale by " + fbla.school));
+				Navigation.PushAsync(new fblaChapterItemsPage(fbla));
 			});
 
 			viewMembers.Command = new Command(() =>
 			{
 				Navigation.PushAsync(new fblaMembersPage(fbla.id));
 			});
-				
+
 			#region basestack
 			return new StackLayout
 			{
@@ -129,10 +129,36 @@ namespace GarageSale.Views
 
 		public void populateProfileFields()
 		{
-			donateItem.Clicked += (s,e) => {
+			donateItem.Clicked += (s, e) =>
+			{
 				Navigation.PushAsync(new newItemPage(fbla.id));
 			};
 
+			if (App.CredManager.IsLoggedIn())
+			{
+				int myid = -1;
+				int.TryParse(App.CredManager.GetAccountValue("FBLA_chapter_id"), out myid);
+
+				if (fbla.id == myid)//is part of this chapter
+					if (int.Parse(App.CredManager.GetAccountValue("FBLA_status")) > 5)
+						ToolbarItems.Add(new ToolbarItem("Settings", "@drawable/book", () =>
+						{
+							Navigation.PushAsync(new pendingMembersPage(fbla.id));
+						}));
+				if (myid == -1)
+				{
+					ToolbarItems.Add(new ToolbarItem("Settings", "@drawable/book", async () =>
+					{
+						bool yes = await DisplayAlert("Apply to join chapter?", "Would you like to apply to join this chapter?", "Yes", "No");
+						if (yes)
+						{
+							bool sucess = await App.MANAGER.YSSI.SetChapterStatusOfUser(0, App.CredManager.GetAccountValue("G_id"));
+							if (sucess)
+								DisplayAlert("You have applied.", "You have applied to join this chapter. Once an administrator has accepted you you will be a part of " + fbla.school + " FBLA.", "OK");
+						}
+					}));
+				}
+			}
 
 			baseStack = makeGUI();
 			Title = fbla.school + " FBLA";
@@ -142,13 +168,6 @@ namespace GarageSale.Views
 			profImg.Source = ImageSource.FromStream(() => new MemoryStream(fbla.picture));
 
 			Content = baseStack;
-			//TODO: do this if user is admin
-			//if (Constants.AdminUsers.Contains(App.CredManager.GetAccountValue("G_id")) && !adminAlert)
-			//{
-			//	await Task.Delay(5000);
-			//	DisplayAlert("Admin Notice:", "You are logged in as an administrative user!", "Dismiss");
-			//	adminAlert = true;
-			//}
 
 		}
 
@@ -165,11 +184,17 @@ namespace GarageSale.Views
 
 			if (shouldGetChapter)
 			{
-				fbla = await App.MANAGER.YSSI.GetFBLAChapter(myfblaid);
-				populateProfileFields();
+				if (fbla == null)
+				{
+					fbla = await App.MANAGER.YSSI.GetFBLAChapter(myfblaid);
+					populateProfileFields();
+				}
 			}
 		}
-	}
 
+
+	}
 }
+
+
 

@@ -77,8 +77,12 @@ namespace GarageSale.Views.ListViews
 
 			ItemAppearing += (s, e) =>
 			{
+				if (e.Item == null)
+					return;
+
 				myDataTypes.fblaChapter i = e.Item as myDataTypes.fblaChapter;
-				
+			
+					
 				locLabel.Text = i.city + ", " + i.state;
 
 				imageView.Source = ImageSource.FromStream(() => new System.IO.MemoryStream(i.picture));

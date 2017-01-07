@@ -26,25 +26,39 @@ namespace GarageSale.Views.Pages
 		
 			listView.ItemSelected += async (s, e) =>
 			{
-				if (listView.SelectedItem == null || (e.SelectedItem as user).id == App.CredManager.GetAccountValue("G_id"))
-					return;
-
-				if (int.Parse(App.CredManager.GetAccountValue("FBLA_status")) >= 9)
+				if (App.CredManager.IsLoggedIn())
 				{
-					var answer = await DisplayActionSheet("Choose Action", "Cancel", null, "View User", "Set Roles");
-					if (answer == "View User")
+
+					if (listView.SelectedItem == null || (e.SelectedItem as user).id == App.CredManager.GetAccountValue("G_id"))
 					{
-						var userView = new userView(e.SelectedItem as myDataTypes.user);
+						listView.SelectedItem = null;
+						return;
+					}
+					int memberstatus;
+					int.TryParse(App.CredManager.GetAccountValue("FBLA_status"), out memberstatus);
+					if (memberstatus >= 5)
+					{
+						var answer = await DisplayActionSheet("Choose Action", "Cancel", null, "View User", "Set Roles");
+						if (answer == "View User")
+						{
+							var userView = new userPage(e.SelectedItem as myDataTypes.user);
+
+							Navigation.PushAsync(userView);
+						}
+						else if (answer == "Set Roles")
+						{
+							doActionSheet(e.SelectedItem as user);
+						}
+					}
+					else
+					{
+						var userView = new userPage(e.SelectedItem as myDataTypes.user);
 
 						Navigation.PushAsync(userView);
 					}
-					else if (answer == "Set Roles")
-					{
-						doActionSheet(e.SelectedItem as user);
-					}
 				}
 				else {
-					var userView = new userView(e.SelectedItem as myDataTypes.user);
+					var userView = new userPage(e.SelectedItem as myDataTypes.user);
 
 					Navigation.PushAsync(userView);
 				}

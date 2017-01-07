@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace GarageSale.Views
+namespace GarageSale.Views.Pages
 {
-	class userView : basePage
+	class userPage : basePage
 	{
 		ListView listView;
 
@@ -40,7 +40,7 @@ namespace GarageSale.Views
 			HeightRequest = 150,
 		};
 
-		public userView(user u)
+		public userPage(user u)
 		{
 			listView = new itemListView();
 			populateProfileFields(u);

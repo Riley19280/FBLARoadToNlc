@@ -1,7 +1,9 @@
 ﻿using GarageSale.Views.Pages;
+using myDataTypes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +17,9 @@ namespace GarageSale.Views.ListViews
 		{
 			SeparatorColor = Constants.palette.divider;
 
-			Label qualityLabel = null;
+			Label conditionLabel = null;
 			Label priceLabel = null;
-			Image imageView = null;
+			CustomImageView imageView = null;
 			// Source of data items.
 
 			RowHeight = 80;
@@ -27,15 +29,16 @@ namespace GarageSale.Views.ListViews
 			ItemTemplate = new DataTemplate(() =>
 			{
 				// Create views with bindings for displaying each property.
-				Label nameLabel = new Label(), descLabel = new Label();
+				Label nameLabel = new Label() { LineBreakMode = LineBreakMode.TailTruncation }, descLabel = new Label() { LineBreakMode = LineBreakMode.TailTruncation };
 				priceLabel = new Label();
-				qualityLabel = new Label();
+				conditionLabel = new Label();
 				nameLabel.SetBinding(Label.TextProperty, "name");
 				descLabel.SetBinding(Label.TextProperty, "description");
-				//qualityLabel.SetBinding(Label.TextProperty, "quality");
+
+
 
 				//&#9734
-				imageView = new Image
+				imageView = new CustomImageView
 				{
 					HeightRequest = 100,
 					WidthRequest = 100,
@@ -65,7 +68,7 @@ namespace GarageSale.Views.ListViews
 												Orientation = StackOrientation.Horizontal,
 												Children = {
 													priceLabel,
-													qualityLabel
+													conditionLabel
 												}
 											}
 
@@ -91,21 +94,14 @@ namespace GarageSale.Views.ListViews
 				{
 					st += "\u2605";
 				}
-				qualityLabel.Text = st;
+				conditionLabel.Text = st;
 
-				imageView.Source = ImageSource.FromStream(() => new System.IO.MemoryStream(item.picture));
-
-
+				Task.Run(async () =>
+				{
+					IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+					imageView.SetImageBitmap(await processer.ScaleBitmap(item.picture, await processer.GetBitmapOptionsOfImageAsync(item.picture), 200, 200));
+				});
 			};
-
-
-			IsPullToRefreshEnabled = true;
-
-			this.Refreshing += ((sender, eventArgs) =>
-		   {
-
-			   this.IsRefreshing = false;
-		   });
 
 			this.ItemSelected += ((sender, eventArgs) =>
 			{
@@ -117,6 +113,8 @@ namespace GarageSale.Views.ListViews
 					Navigation.PushAsync(itemView);
 				}
 			});
+
+
 
 		}
 

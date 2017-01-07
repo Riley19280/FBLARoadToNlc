@@ -12,7 +12,7 @@ using XLabs.Platform.Services;
 
 namespace GarageSale.Droid
 {
-	[Activity(Label = "FBLA_Garage_Sale", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "Road to FBLA NLC 2017", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
 	{
 		bool resolved = false;

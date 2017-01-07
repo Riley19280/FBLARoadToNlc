@@ -870,6 +870,30 @@ public interface IYardSale
     System.IAsyncResult BeginGetChapterInfoOfUser(string user_id, System.AsyncCallback callback, object asyncState);
     
     int[] EndGetChapterInfoOfUser(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/processbuyRequest", ReplyAction="http://tempuri.org/IYardSale/processbuyRequestResponse")]
+    bool processbuyRequest(string user_id, int item_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/processbuyRequest", ReplyAction="http://tempuri.org/IYardSale/processbuyRequestResponse")]
+    System.IAsyncResult BeginprocessbuyRequest(string user_id, int item_id, System.AsyncCallback callback, object asyncState);
+    
+    bool EndprocessbuyRequest(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/DeleteItem", ReplyAction="http://tempuri.org/IYardSale/DeleteItemResponse")]
+    bool DeleteItem(int item_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/DeleteItem", ReplyAction="http://tempuri.org/IYardSale/DeleteItemResponse")]
+    System.IAsyncResult BeginDeleteItem(int item_id, System.AsyncCallback callback, object asyncState);
+    
+    bool EndDeleteItem(System.IAsyncResult result);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetItemPicture", ReplyAction="http://tempuri.org/IYardSale/GetItemPictureResponse")]
+    byte[] GetItemPicture(int item_id);
+    
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetItemPicture", ReplyAction="http://tempuri.org/IYardSale/GetItemPictureResponse")]
+    System.IAsyncResult BeginGetItemPicture(int item_id, System.AsyncCallback callback, object asyncState);
+    
+    byte[] EndGetItemPicture(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1189,5 +1213,50 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public int[] EndGetChapterInfoOfUser(System.IAsyncResult result)
     {
         return base.Channel.EndGetChapterInfoOfUser(result);
+    }
+    
+    public bool processbuyRequest(string user_id, int item_id)
+    {
+        return base.Channel.processbuyRequest(user_id, item_id);
+    }
+    
+    public System.IAsyncResult BeginprocessbuyRequest(string user_id, int item_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginprocessbuyRequest(user_id, item_id, callback, asyncState);
+    }
+    
+    public bool EndprocessbuyRequest(System.IAsyncResult result)
+    {
+        return base.Channel.EndprocessbuyRequest(result);
+    }
+    
+    public bool DeleteItem(int item_id)
+    {
+        return base.Channel.DeleteItem(item_id);
+    }
+    
+    public System.IAsyncResult BeginDeleteItem(int item_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginDeleteItem(item_id, callback, asyncState);
+    }
+    
+    public bool EndDeleteItem(System.IAsyncResult result)
+    {
+        return base.Channel.EndDeleteItem(result);
+    }
+    
+    public byte[] GetItemPicture(int item_id)
+    {
+        return base.Channel.GetItemPicture(item_id);
+    }
+    
+    public System.IAsyncResult BeginGetItemPicture(int item_id, System.AsyncCallback callback, object asyncState)
+    {
+        return base.Channel.BeginGetItemPicture(item_id, callback, asyncState);
+    }
+    
+    public byte[] EndGetItemPicture(System.IAsyncResult result)
+    {
+        return base.Channel.EndGetItemPicture(result);
     }
 }

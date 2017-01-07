@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Android.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace GarageSale.Views.Pages
 
 		ExtendedEntry price;
 
-		Label quality;
-		Image image;
+		Label condition;
+		CustomImageView image;
 		StackLayout baseStack;
 
 		byte[] pic = new byte[0];
@@ -60,34 +61,35 @@ namespace GarageSale.Views.Pages
 				HeightRequest = 50
 			};
 
-			quality = new Label
+			condition = new Label
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.End,
 				HorizontalTextAlignment = TextAlignment.Center,
 				BackgroundColor = Constants.palette.primary_variant,
-				Text = "Select Quality",
+				Text = "Select Condition",
 				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-				HeightRequest=30
-				
+				HeightRequest = 30
+
 			};
-			quality.GestureRecognizers.Add(new TapGestureRecognizer
+			condition.GestureRecognizers.Add(new TapGestureRecognizer
 			{
-				Command = new Command(async() => {
-					var action = await DisplayActionSheet("Select Quality", "Cancel", null, "\u2605", "\u2605\u2605", "\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605\u2605");
+				Command = new Command(async () =>
+				{
+					var action = await DisplayActionSheet("Select Condition", "Cancel", null, "\u2605", "\u2605\u2605", "\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605\u2605");
 					switch (action)
 					{
 						case "Cancel":
-							quality.Text = "\u2605\u2605\u2605";
+							condition.Text = "\u2605\u2605\u2605";
 							break;
 						default:
-							quality.Text = action;
+							condition.Text = action;
 							break;
 					}
 				}),
 			});
 
-			image = new Image
+			image = new CustomImageView
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
@@ -119,7 +121,7 @@ namespace GarageSale.Views.Pages
 					desc,
 					image,
 					price,
-					quality,
+					condition,
 					cameraBtn,
 					postBtn
 
@@ -149,8 +151,10 @@ namespace GarageSale.Views.Pages
 			IImageProcessing processer = DependencyService.Get<IImageProcessing>();
 
 
-			image.Source = ImageSource.FromStream(() => m.Source);
-			pic = ReadFully(m.Source);
+			Bitmap b = await processer.ScaleBitmap(m.Source, await processer.GetBitmapOptionsOfImageAsync(m.Source), 200, 200);
+			image.SetImageBitmap(b);
+			pic = processer.compress(b);
+			m.Dispose();
 
 		}
 
@@ -159,9 +163,9 @@ namespace GarageSale.Views.Pages
 		{
 
 			//App.ORM.GetProfileInfo(App.CredManager.GetCredentials());
-			if (!posted && !string.IsNullOrWhiteSpace(name.Text) && !string.IsNullOrWhiteSpace(desc.Text))
+			if (!posted && !string.IsNullOrWhiteSpace(name.Text) && !string.IsNullOrWhiteSpace(desc.Text) && price.Text != null)
 			{
-				myDataTypes.item act = new myDataTypes.item(0, App.CredManager.GetAccountValue("G_id"),fbla_id, name.Text, desc.Text, pic, float.Parse(price.Text), quality.Text.Length > 5 ? 3 : quality.Text.Length, 0, DateTime.Now);
+				myDataTypes.item act = new myDataTypes.item(0, App.CredManager.GetAccountValue("G_id"), fbla_id, name.Text, desc.Text, pic, float.Parse(price.Text), condition.Text.Length > 5 ? 3 : condition.Text.Length, 0, DateTime.Now);
 
 				bool success = await App.MANAGER.YSSI.AddItem(act);
 
@@ -169,14 +173,14 @@ namespace GarageSale.Views.Pages
 				{
 					await DisplayAlert("Item added sucessfully", "Your item was added sucessfully!", "OK");
 					App.rootPage.menuPage.SendBackButtonPressed();
-					
+
 				}
 				else
 					await DisplayAlert("Error adding item", "There was an error adding your item. Please try again", "OK");
 			}
 			else
 			{
-				await DisplayAlert("Empty Fields", "Please add a name and/or description to your item", "OK");
+				await DisplayAlert("Empty Fields", "Please add a name, description or price to your item", "OK");
 			}
 
 		}

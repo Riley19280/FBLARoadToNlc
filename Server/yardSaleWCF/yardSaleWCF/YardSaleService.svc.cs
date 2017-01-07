@@ -134,5 +134,10 @@ namespace yardSaleWCF
 			DBACC.setItemSellStatus(item.id, 1);
 			return true;
 		}
+
+		public bool DeleteItem(int item_id) {
+			return DBACC.DeleteItem(item_id);
+		}
+
 	}
 }
