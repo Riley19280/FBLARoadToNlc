@@ -79,7 +79,7 @@ namespace GarageSale.Views.ListViews
 				};
 			});
 
-			ItemAppearing += (s, e) =>
+			ItemAppearing +=async (s, e) =>
 			{
 				myDataTypes.item item = e.Item as myDataTypes.item;
 				//formatting price to money
@@ -96,11 +96,9 @@ namespace GarageSale.Views.ListViews
 				}
 				conditionLabel.Text = st;
 
-				Task.Run(async () =>
-				{
-					IImageProcessing processer = DependencyService.Get<IImageProcessing>();
-					imageView.SetImageBitmap(await processer.ScaleBitmap(item.picture, await processer.GetBitmapOptionsOfImageAsync(item.picture), 200, 200));
-				});
+				IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+				imageView.SetImageBitmap(await processer.ScaleBitmap(item.picture, await processer.GetBitmapOptionsOfImageAsync(item.picture), 200, 200));
+
 			};
 
 			this.ItemSelected += ((sender, eventArgs) =>

@@ -240,8 +240,9 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT * from dbo.comments ORDER BY date_added DESC", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT * from dbo.comments where item_id = @item_id  ORDER BY date_added DESC", connection))
 				{
+					cmd.Parameters.AddWithValue("@item_id", item_id);
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -254,6 +255,7 @@ namespace yardSaleWCF
 									 reader.GetInt32(reader.GetOrdinal("id")),
 									 reader.GetInt32(reader.GetOrdinal("item_id")),
 									 reader.GetString(reader.GetOrdinal("user_id")),
+									 ResolveUserName(reader.GetString(reader.GetOrdinal("user_id"))),
 									 reader.GetString(reader.GetOrdinal("comment")),
 									 reader.GetDateTime(reader.GetOrdinal("date_added"))
 							  		 );
@@ -553,10 +555,10 @@ namespace yardSaleWCF
 			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
 			{
 
-				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM yardsale.dbo.fbla_chapters WHERE LOWER(name) LIKE '@term' OR LOWER(school) LIKE '@term' OR LOWER(city) LIKE '@term' OR LOWER(state) LIKE '@term' ORDER BY name,school,city,state", connection))
+				using (SqlCommand cmd = new SqlCommand("SELECT TOP (@limit) * FROM yardsale.dbo.fbla_chapters WHERE LOWER(name) LIKE @term OR LOWER(school) LIKE @term OR LOWER(city) LIKE @term OR LOWER(state) LIKE @term ORDER BY name,school,city,state", connection))
 				{
 					cmd.Parameters.AddWithValue("@limit", 10);
-					cmd.Parameters.AddWithValue("@term", "%" + search.ToLower() + "%");
+					cmd.Parameters.AddWithValue("@term", "%" + search + "%");
 					connection.Open();
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
@@ -753,6 +755,23 @@ namespace yardSaleWCF
 				}
 			}
 			return affected > 0 ? true : false;
+		}
+
+
+		internal string ResolveUserName(string id)
+		{
+			using (SqlConnection connection = new SqlConnection(Constants.SQLConnectionString))
+			{
+
+				using (SqlCommand cmd = new SqlCommand("select name from dbo.users where id = @user_id", connection))
+				{
+					cmd.Parameters.AddWithValue("user_id", id);
+					connection.Open();
+					string s = (string)cmd.ExecuteScalar();
+					return s;
+
+				}
+			}
 		}
 
 		byte[] ReadFully(Stream input)

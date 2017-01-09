@@ -12,7 +12,10 @@ namespace GarageSale.Views.Pages
 	class userPage : basePage
 	{
 		ListView listView;
+		StackLayout basestack;
 
+
+		#region Views
 		Label lblName = new Label
 		{
 			Text = "",
@@ -21,7 +24,7 @@ namespace GarageSale.Views.Pages
 			FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
 		};
 
-		Label lblRating = new Label
+		Label lblTitle = new Label
 		{//TODO:possibly have user ratings?
 			Text = "",
 			VerticalOptions = LayoutOptions.StartAndExpand,
@@ -39,13 +42,15 @@ namespace GarageSale.Views.Pages
 			WidthRequest = 150,
 			HeightRequest = 150,
 		};
+		#endregion
 
 		public userPage(user u)
 		{
+			Content = new ActivityIndicator() { IsRunning = true };
 			listView = new itemListView();
 			populateProfileFields(u);
 
-			Content = new StackLayout
+			basestack = new StackLayout
 			{
 				Children = {
 					new StackLayout {
@@ -61,7 +66,7 @@ namespace GarageSale.Views.Pages
 								HorizontalOptions = LayoutOptions.FillAndExpand,
 								Children = {
 									lblName,
-									//lblRating,
+									lblTitle,
 								}
 							}
 						}
@@ -77,12 +82,21 @@ namespace GarageSale.Views.Pages
 		{
 
 			List<item> items = await App.MANAGER.YSSI.GetItemsAssociatedWithUser(u.id);
+
+			int[] fblastatus = await App.MANAGER.YSSI.GetChapterInfoOfUser(u.id);
+			if (fblastatus[0] != -1)
+			{
+				fblaChapter f = await App.MANAGER.YSSI.GetFBLAChapter(fblastatus[0]);
+				lblTitle.Text = Constants.DecodeFBLAStatus(fblastatus[1]) + "\n" + f.school + " FBLA";
+			}
+
+
 			listView.ItemsSource = items;
 			if (u != null)
 			{
 				lblName.Text = u.name;
 				Title = u.name;
-				lblStats.Text = "Items: " + items.Count.ToString();
+				lblStats.Text = "Donated Items: " + items.Count.ToString();
 				try
 				{
 					profImg.Source = ImageSource.FromUri(new Uri(u.pic_url));
@@ -95,6 +109,8 @@ namespace GarageSale.Views.Pages
 
 			}
 
+			Content = basestack;
 		}
 	}
 }
+

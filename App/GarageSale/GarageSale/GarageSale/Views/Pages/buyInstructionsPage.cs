@@ -17,6 +17,7 @@ namespace GarageSale.Views.Pages
 			this.item = i;
 			Content = new StackLayout
 			{
+				Padding = new Thickness(10),
 				Children = {
 					//TODO: write buy instructions, include fbla.payment email, no items shipped until payment recieve
 					new Label { Text = string.Format("How it works- Upon continuing, you will recieve an email containing a payment email and contact email for this item. Payment of {0} is to be sent to the payment address via paypal in the email you delievered shortly. Any furthur issues after that point should be handled through the contact email given. No items will be shipped until payment is recieved.",item.price) },

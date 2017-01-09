@@ -55,13 +55,14 @@ namespace GarageSale.Views.Pages
 				
 			};
 
-			Content = listView;
+			Content = new ActivityIndicator() { IsRunning = true, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.Center };
 		}
 
 		protected async override void OnAppearing()
 		{
 			users = await App.MANAGER.YSSI.GetUsersByChapterStatus(0, fbla_id);
 			listView.ItemsSource = users;
+			Content = listView;
 		}
 	}
 }

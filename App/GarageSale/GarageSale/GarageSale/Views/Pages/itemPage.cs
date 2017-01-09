@@ -128,16 +128,12 @@ namespace GarageSale.Views.Pages
 			lblPrice.Text = string.Format(culture, "{0:c2}", item.price);
 
 
-			Task.Run(async() =>
-			{
-				IImageProcessing processer = DependencyService.Get<IImageProcessing>();
-				profImg.SetImageBitmap(await processer.ScaleBitmap(item.picture, await processer.GetBitmapOptionsOfImageAsync(item.picture), 200, 200));
-			});
 
 
 
 
-			profImg.Source = ImageSource.FromStream(() => new MemoryStream(i.picture));
+
+			//profImg.Source = ImageSource.FromStream(() => new MemoryStream(i.picture));
 
 			//giving stars to rating
 			string st = "";
@@ -168,15 +164,21 @@ namespace GarageSale.Views.Pages
 			}));
 		}
 
-		
 
-		protected override void OnAppearing()
+
+		protected override async void OnAppearing()
 		{
-			if (App.CredManager.IsLoggedIn()) {
+
+			IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+			profImg.SetImageBitmap(await processer.ScaleBitmap(item.picture, await processer.GetBitmapOptionsOfImageAsync(item.picture), 200, 200));
+
+			if (App.CredManager.IsLoggedIn())
+			{
 				buyBtn.IsEnabled = true;
 				buyBtn.Text = "Buy Item";
 			}
-			else {
+			else
+			{
 				buyBtn.IsEnabled = false;
 				buyBtn.Text = "Log in to buy Item";
 			}

@@ -14,8 +14,8 @@ namespace GarageSale.Views.ListViews
 		public fblaChapterListView()
 		{
 			SeparatorColor = Constants.palette.divider;
-			Label schoolLabel=null;
-			Label locLabel=null;
+			Label schoolLabel = null;
+			Label locLabel = null;
 			// Source of data items.
 			VerticalOptions = LayoutOptions.FillAndExpand;
 			HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -75,22 +75,21 @@ namespace GarageSale.Views.ListViews
 				}
 			});
 
-			ItemAppearing += (s, e) =>
-			{
-				if (e.Item == null)
-					return;
+			ItemAppearing += async (s, e) =>
+			 {
+				 if (e.Item == null)
+					 return;
 
-				myDataTypes.fblaChapter i = e.Item as myDataTypes.fblaChapter;
-			
-					
-				locLabel.Text = i.city + ", " + i.state;
+				 myDataTypes.fblaChapter i = e.Item as myDataTypes.fblaChapter;
 
-				Task.Run(async () =>
-				{
-					IImageProcessing processer = DependencyService.Get<IImageProcessing>();
-					imageView.SetImageBitmap(await processer.ScaleBitmap(i.picture, await processer.GetBitmapOptionsOfImageAsync(i.picture), 200, 200));
-				});
-			};
+
+				 locLabel.Text = i.city + ", " + i.state;
+				 schoolLabel.Text = i.school;
+
+				 IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+				 imageView.SetImageBitmap(await processer.ScaleBitmap(i.picture, await processer.GetBitmapOptionsOfImageAsync(i.picture), 200, 200));
+
+			 };
 		}
 
 	}

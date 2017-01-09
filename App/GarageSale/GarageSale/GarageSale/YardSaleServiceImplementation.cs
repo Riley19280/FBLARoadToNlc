@@ -329,10 +329,9 @@ namespace GarageSale
 			return await Task.Factory.FromAsync(service.BeginprocessbuyRequest, service.EndprocessbuyRequest, user_id, item_id, TaskCreationOptions.LongRunning);
 		}
 
-		public async Task<byte[]> GetItemPicture(int item_id) {
-			return await Task.Factory.FromAsync(service.BeginGetItemPicture, service.EndGetItemPicture, item_id, TaskCreationOptions.LongRunning);
+		public async Task<bool> SetFBLAChapterPicture(int id, byte[] picture) {
+			return await Task.Factory.FromAsync(service.BeginSetFBLAChapterPicture, service.EndSetFBLAChapterPicture, id, picture, TaskCreationOptions.LongRunning);
 		}
-
 
 		#region From
 		public item convertFromWCF(itemWCF i)
@@ -345,7 +344,7 @@ namespace GarageSale
 		}
 		public comment convertFromWCF(commentWCF c)
 		{
-			return new comment(c.id, c.item_id, c.user_id, c.comment, c.date_added);
+			return new comment(c.id, c.item_id, c.user_id,c.user_name, c.comment, c.date_added);
 		}
 		public bid convertFromWCF(bidWCF b)
 		{
@@ -395,6 +394,7 @@ namespace GarageSale
 			comment.id = c.id;
 			comment.item_id = c.item_id;
 			comment.user_id = c.user_id;
+			comment.user_name = c.user_name;
 			comment.comment = c.comments;
 			comment.date_added = c.date_added;
 

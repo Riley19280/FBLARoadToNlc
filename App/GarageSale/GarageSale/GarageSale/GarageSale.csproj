@@ -71,6 +71,7 @@
     <Compile Include="Views\Pages\newItemPage.cs" />
     <Compile Include="Views\Pages\allItemsPage.cs" />
     <Compile Include="Views\Pages\buyInstructionsPage.cs" />
+    <Compile Include="Views\Pages\helpPage.cs" />
     <Compile Include="Views\Pages\pendingMembersPage.cs" />
     <Compile Include="Views\Pages\searchItemsPage.cs" />
     <Compile Include="Views\Pages\searchUsersPage.cs" />

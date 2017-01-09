@@ -54,7 +54,7 @@ namespace GarageSale.Views.Menu
 			{
 				Title = "Help",
 				//IconSource = "leads.png", 
-				TargetType = typeof(CameraPage)//help
+				TargetType = typeof(helpPage)//help
 			});
 		}
 	}

@@ -53,11 +53,12 @@ namespace myDataTypes
 
 	public class comment
 	{
-		public comment(int id, int item_id, string user_id, string comment, DateTime date_added)
+		public comment(int id, int item_id, string user_id,string user_name, string comment, DateTime date_added)
 		{
 			this.id = id;
 			this.item_id = item_id;
 			this.user_id = user_id;
+			this.user_name = user_name;
 			this.comments = comment;
 			this.date_added = date_added;
 		}
@@ -65,6 +66,7 @@ namespace myDataTypes
 		public int id { get; protected set; }
 		public int item_id { get; protected set; }
 		public string user_id { get; protected set; }
+		public string user_name { get; protected set; }
 		public string comments { get; protected set; }
 		public DateTime date_added { get; protected set; }
 

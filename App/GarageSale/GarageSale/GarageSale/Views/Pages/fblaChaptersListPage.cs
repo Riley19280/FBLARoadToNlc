@@ -14,7 +14,8 @@ namespace GarageSale.Views.Pages
 	{
 		ListView listView;
 		SearchBar search;
-
+		ContentView cv;
+		ActivityIndicator ai;
 		public fblaChaptersListPage()
 		{
 			Title = "FBLA Chapters";
@@ -28,14 +29,20 @@ namespace GarageSale.Views.Pages
 
 			search.SearchCommand = new Command(async () =>
 			{
-				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedItems(search.Text);
+				cv.Content = ai;
+				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedChapters(search.Text);
+				cv.Content = listView;
 			});
+
+			cv = new ContentView();
+			ai = new ActivityIndicator() { IsRunning = true, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.Center };
+			cv.Content = ai;
 
 			Content = new StackLayout
 			{
 				Children = {
 					search,
-					listView
+					cv
 				}
 			};
 		}
@@ -46,6 +53,7 @@ namespace GarageSale.Views.Pages
 			if (listView.ItemsSource == null)
 			{
 				listView.ItemsSource = await App.MANAGER.YSSI.GetSearchedChapters("");
+				cv.Content = listView;
 			}
 		}
 

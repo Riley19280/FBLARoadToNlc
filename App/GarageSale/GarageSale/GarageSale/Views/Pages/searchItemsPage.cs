@@ -52,11 +52,6 @@ namespace GarageSale.Views.Pages
 			Content = baseStack;
 		}
 
-		private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
-			myDataTypes.item i = e.SelectedItem as myDataTypes.item;
-		}
-
 		protected async override void OnAppearing()
 		{
 			base.OnAppearing();

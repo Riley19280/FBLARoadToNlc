@@ -19,7 +19,7 @@ namespace yardSaleWCF
     public partial class userWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-      
+
         
         private string emailField;
         
@@ -117,7 +117,7 @@ namespace yardSaleWCF
     public partial class commentWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-      
+
         
         private string commentField;
         
@@ -128,6 +128,8 @@ namespace yardSaleWCF
         private int item_idField;
         
         private string user_idField;
+        
+        private string user_nameField;
         
      
         
@@ -216,6 +218,23 @@ namespace yardSaleWCF
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string user_name
+        {
+            get
+            {
+                return this.user_nameField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.user_nameField, value) != true))
+                {
+                    this.user_nameField = value;
+                    this.RaisePropertyChanged("user_name");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName)
@@ -234,7 +253,7 @@ namespace yardSaleWCF
     public partial class itemWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-      
+
         
         private int chapter_idField;
         
@@ -446,7 +465,7 @@ namespace yardSaleWCF
     public partial class bidWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-      
+
         
         private float amountField;
         
@@ -544,7 +563,7 @@ namespace yardSaleWCF
     public partial class fblaChapterWCF : object, System.ComponentModel.INotifyPropertyChanged
     {
         
-      
+
         
         private string cityField;
         
@@ -886,14 +905,6 @@ public interface IYardSale
     System.IAsyncResult BeginDeleteItem(int item_id, System.AsyncCallback callback, object asyncState);
     
     bool EndDeleteItem(System.IAsyncResult result);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IYardSale/GetItemPicture", ReplyAction="http://tempuri.org/IYardSale/GetItemPictureResponse")]
-    byte[] GetItemPicture(int item_id);
-    
-    [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IYardSale/GetItemPicture", ReplyAction="http://tempuri.org/IYardSale/GetItemPictureResponse")]
-    System.IAsyncResult BeginGetItemPicture(int item_id, System.AsyncCallback callback, object asyncState);
-    
-    byte[] EndGetItemPicture(System.IAsyncResult result);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1243,20 +1254,5 @@ public partial class YardSaleClient : System.ServiceModel.ClientBase<IYardSale>,
     public bool EndDeleteItem(System.IAsyncResult result)
     {
         return base.Channel.EndDeleteItem(result);
-    }
-    
-    public byte[] GetItemPicture(int item_id)
-    {
-        return base.Channel.GetItemPicture(item_id);
-    }
-    
-    public System.IAsyncResult BeginGetItemPicture(int item_id, System.AsyncCallback callback, object asyncState)
-    {
-        return base.Channel.BeginGetItemPicture(item_id, callback, asyncState);
-    }
-    
-    public byte[] EndGetItemPicture(System.IAsyncResult result)
-    {
-        return base.Channel.EndGetItemPicture(result);
     }
 }

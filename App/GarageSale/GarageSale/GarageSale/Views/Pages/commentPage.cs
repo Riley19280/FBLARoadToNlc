@@ -63,13 +63,17 @@ namespace GarageSale.Views.Pages
 						return;
 					}
 
-					bool sucess = await App.MANAGER.YSSI.AddComment(new comment(-1, item_id, App.CredManager.GetAccountValue("G_id"), commentEditor.Text, DateTime.Now));
+					bool sucess = await App.MANAGER.YSSI.AddComment(new comment(-1, item_id, App.CredManager.GetAccountValue("G_id"), App.CredManager.GetAccountValue("G_name"), commentEditor.Text, DateTime.Now));
 					if (sucess)
 					{
-						comments.Insert(0,new myDataTypes.comment(-1, item_id, App.CredManager.GetAccountValue("G_id"), commentEditor.Text, DateTime.Now));
+					
+
+						comments.Insert(0,new myDataTypes.comment(-1, item_id, App.CredManager.GetAccountValue("G_id"), App.CredManager.GetAccountValue("G_name"), commentEditor.Text, DateTime.Now));
 						commentListView.ItemsSource = comments;
 						Title = "View Comments";
 						Content = viewStack;
+						Navigation.InsertPageBefore(new commentPage(item_id), this);
+						Navigation.PopAsync();
 					}
 					else
 						await DisplayAlert("Error adding Comment", "There was an error adding your comment. Please try again", "OK");
@@ -101,6 +105,10 @@ namespace GarageSale.Views.Pages
 				btnAddComment.Text = "Add a comment";
 				btnAddComment.IsEnabled = true;
 			}
+			else {
+				btnAddComment.Text = "Log in to add a comment.";
+				btnAddComment.IsEnabled = false;
+			}
 
 			Content = viewStack;
 
@@ -116,11 +124,13 @@ namespace GarageSale.Views.Pages
 		{
 			base.OnAppearing();
 			{
+
+
 				try
 				{
 					comments= await App.MANAGER.YSSI.GetComments(item_id);
 					if (comments.Count == 0)
-						comments.Add(new comment(0, 0, "", "No Comments to display for this item.",DateTime.Now));
+						comments.Add(new comment(0, 0, "","", "No Comments to display for this item.",DateTime.Now));
 						
 					commentListView.ItemsSource = comments;
 				}

@@ -27,7 +27,7 @@ namespace GarageSale.Views.ListViews
 			{
 				// Create views with bindings for displaying each property.
 				Label nameLabel = new Label(), commentLabel = new Label();
-				nameLabel.SetBinding(Label.TextProperty, "user_id");
+				nameLabel.SetBinding(Label.TextProperty, "user_name");
 				commentLabel.SetBinding(Label.TextProperty, "comments");
 				//commentLabel.TextColor = Color.Black;
 				// Return an assembled ViewCell.

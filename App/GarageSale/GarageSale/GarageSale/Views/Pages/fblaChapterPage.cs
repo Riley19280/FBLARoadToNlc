@@ -1,4 +1,5 @@
-﻿using GarageSale.Views.ListViews;
+﻿using Android.Graphics;
+using GarageSale.Views.ListViews;
 using GarageSale.Views.Pages;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XLabs.Platform.Services.Media;
 
 namespace GarageSale.Views
 {
@@ -140,11 +142,48 @@ namespace GarageSale.Views
 				int.TryParse(App.CredManager.GetAccountValue("FBLA_chapter_id"), out myid);
 
 				if (fbla.id == myid)//is part of this chapter
-					if (int.Parse(App.CredManager.GetAccountValue("FBLA_status")) > 5)
+					if (int.Parse(App.CredManager.GetAccountValue("FBLA_status")) > 4)
+					{
 						ToolbarItems.Add(new ToolbarItem("Settings", "@drawable/book", () =>
 						{
 							Navigation.PushAsync(new pendingMembersPage(fbla.id));
 						}));
+
+						profImg.GestureRecognizers.Add(new TapGestureRecognizer
+						{
+							Command = new Command(async () =>
+							{
+								var answer = await DisplayAlert("Change Chapter picture", "Would you like to change the Chapters picture?", "Yes", "No");
+								if (answer)
+								{
+									var action = await DisplayActionSheet("Take or select photo", "Cancel", null, "Take Picture", "Select picture");
+									MediaFile m = null;
+									switch (action)
+									{
+										case "Take Picture":
+											m = await App.MANAGER.MediaContorller.TakePicture();
+											break;
+										case "Select picture":
+											m = await App.MANAGER.MediaContorller.SelectPicture();
+											break;
+									}
+
+									if (m == null) { return; }
+
+									IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+
+
+									Bitmap b = await processer.ScaleBitmap(m.Source, await processer.GetBitmapOptionsOfImageAsync(m.Source), 200, 200);
+									profImg.SetImageBitmap(b);
+									App.MANAGER.YSSI.SetFBLAChapterPicture(fbla.id, processer.compress(b));
+									
+									m.Dispose();
+								}
+							}),
+							NumberOfTapsRequired = 1
+						});
+
+					}
 				if (myid == -1)
 				{
 					ToolbarItems.Add(new ToolbarItem("Settings", "@drawable/book", async () =>
@@ -165,11 +204,7 @@ namespace GarageSale.Views
 			lblSchool.Text = fbla.school;
 			lblLocation.Text = fbla.city + ", " + fbla.state;
 
-			Task.Run(async () =>
-			{
-				IImageProcessing processer = DependencyService.Get<IImageProcessing>();
-				profImg.SetImageBitmap(await processer.ScaleBitmap(fbla.picture, await processer.GetBitmapOptionsOfImageAsync(fbla.picture), 200, 200));
-			});
+
 
 			Content = baseStack;
 
@@ -194,6 +229,12 @@ namespace GarageSale.Views
 					populateProfileFields();
 				}
 			}
+
+
+			IImageProcessing processer = DependencyService.Get<IImageProcessing>();
+			profImg.SetImageBitmap(await processer.ScaleBitmap(fbla.picture, await processer.GetBitmapOptionsOfImageAsync(fbla.picture), 200, 200));
+
+
 		}
 
 

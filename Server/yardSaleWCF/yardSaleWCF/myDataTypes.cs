@@ -81,11 +81,12 @@ namespace yardSaleWCF
 	[DataContract]
 	public class commentWCF
 	{
-		public commentWCF(int id, int item_id, string user_id, string comment, DateTime date_added)
+		public commentWCF(int id, int item_id, string user_id,string user_name, string comment, DateTime date_added)
 		{
 			this.id = id;
 			this.item_id = item_id;
 			this.user_id = user_id;
+			this.user_name = user_name;
 			this.comment = comment;
 			this.date_added = date_added;
 		}
@@ -95,6 +96,8 @@ namespace yardSaleWCF
 		public int item_id { get; protected set; }
 		[DataMember]
 		public string user_id { get; protected set; }
+		[DataMember]
+		public string user_name { get; protected set; }
 		[DataMember]
 		public string comment { get; protected set; }
 		[DataMember]
